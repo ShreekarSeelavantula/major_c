@@ -5,9 +5,11 @@ from app.routes import auth, pages
 
 app = FastAPI(title="AI Study Planner")
 
-# Static files
+# Static files (CSS, JS, images)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-# Routes
+# Page routes (/, /signup, /login, /dashboard)
 app.include_router(pages.router)
-app.include_router(auth.router)   # ❌ NO prefix here
+
+# Auth routes (/auth/signup, /auth/login)
+app.include_router(auth.router)
