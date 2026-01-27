@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pymongo
+python-jose
+passlib[bcrypt]
+jinja2
+python-multipart
+pytesseract
+Pillow
+pdfplumber
