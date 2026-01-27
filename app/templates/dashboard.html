@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard | Prep Genie{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-1">Dashboard</h2>
+<p class="text-muted mb-4">
+    Welcome back! You are learning at a <strong>Medium</strong> pace.
+</p>
+
+<!-- Stats Row -->
+<div class="row g-4 mb-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Active Plans</h6>
+                <h2 class="fw-bold">0</h2>
+                <small class="text-muted">Currently in progress</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Total Plans Created</h6>
+                <h2 class="fw-bold">0</h2>
+                <small class="text-muted">Lifetime</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Study Pace</h6>
+                <h2 class="fw-bold">–</h2>
+                <small class="text-muted">Based on assessment</small>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Study Plans Section -->
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Your Study Plans</h5>
+            <a href="/plans/create" class="btn btn-primary">
+                ➕ Create Plan
+            </a>
+        </div>
+
+        <!-- Empty State -->
+        <div class="text-center py-5">
+            <p class="text-muted mb-2">
+                No active plans
+            </p>
+            <p class="text-muted">
+                Upload a syllabus to get started.
+            </p>
+
+            <a href="/plans/create" class="btn btn-outline-primary mt-3">
+                Generate My Plan
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
