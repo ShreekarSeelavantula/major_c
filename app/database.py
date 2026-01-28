@@ -12,3 +12,7 @@ syllabus_collection = db["syllabus"]
 
 # GridFS bucket
 fs = gridfs.GridFS(db)
+
+
+syllabus_collection = db["syllabus"]
+

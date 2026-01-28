@@ -1,10 +1,13 @@
 from fastapi import APIRouter, Request, UploadFile, File, HTTPException, status
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
 from bson import ObjectId
 
 from app.database import fs, syllabus_collection
+# from app.services.syllabus_parser import extract_text_from_pdf  # Module B
 
 router = APIRouter(tags=["Syllabus"])
+templates = Jinja2Templates(directory="app/templates")
 
 ALLOWED_TYPES = {
     "application/pdf",
@@ -15,33 +18,45 @@ ALLOWED_TYPES = {
 MAX_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
+# ---------------- Upload Page ----------------
+@router.get("/upload", response_class=HTMLResponse)
+def upload_page(request: Request):
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    return templates.TemplateResponse(
+        "upload.html",
+        {"request": request}
+    )
+
+
+# ---------------- Upload Handler ----------------
 @router.post("/upload")
 async def upload_syllabus(
     request: Request,
     file: UploadFile = File(...)
 ):
-    # 1️⃣ Auth check
+    # 🔐 Auth check
     user_id = request.session.get("user_id")
     if not user_id:
         raise HTTPException(status_code=401, detail="Not authenticated")
 
-    # 2️⃣ File type validation
+    # 📄 File type check
     if file.content_type not in ALLOWED_TYPES:
         raise HTTPException(
             status_code=400,
             detail="Only PDF, JPG, PNG files allowed"
         )
 
-    # 3️⃣ Read file
+    # 📦 Read file
     contents = await file.read()
-
     if len(contents) > MAX_SIZE:
         raise HTTPException(
             status_code=400,
             detail="File exceeds 10MB limit"
         )
 
-    # 4️⃣ Store file in GridFS
+    # 🗄 Store in GridFS
     file_id = fs.put(
         contents,
         filename=file.filename,
@@ -49,8 +64,8 @@ async def upload_syllabus(
         metadata={"user_id": user_id}
     )
 
-    # 5️⃣ Store metadata
-    syllabus_collection.insert_one({
+    # 🧾 Store metadata
+    result = syllabus_collection.insert_one({
         "user_id": ObjectId(user_id),
         "file_id": file_id,
         "filename": file.filename,
@@ -58,8 +73,34 @@ async def upload_syllabus(
         "status": "uploaded"
     })
 
-    # 6️⃣ Redirect
+    syllabus_id = str(result.inserted_id)
+
+    # 🔁 Redirect to preview
     return RedirectResponse(
-        url="/dashboard",
+        url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
+    )
+
+
+# ---------------- Preview Page ----------------
+@router.get("/syllabus/preview/{syllabus_id}", response_class=HTMLResponse)
+def preview_syllabus(request: Request, syllabus_id: str):
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    syllabus = syllabus_collection.find_one({
+        "_id": ObjectId(syllabus_id),
+        "user_id": ObjectId(request.session["user_id"])
+    })
+
+    if not syllabus:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+
+    return templates.TemplateResponse(
+        "syllabus_preview.html",
+        {
+            "request": request,
+            "filename": syllabus["filename"],
+            "status": syllabus["status"]
+        }
     )
