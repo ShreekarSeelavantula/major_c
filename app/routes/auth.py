@@ -103,10 +103,13 @@ def login(
     request.session["user_email"] = db_user["email"]
     request.session["user_name"] = db_user["name"]
 
-    return RedirectResponse(
-        url="/dashboard",
-        status_code=status.HTTP_303_SEE_OTHER
+    response = RedirectResponse(
+    url="/dashboard",
+    status_code=status.HTTP_303_SEE_OTHER
     )
+
+    return response
+
 
 
 # ---------- LOGOUT ----------

@@ -36,15 +36,11 @@ def login_page(request: Request):
 def dashboard(request: Request):
     return templates.TemplateResponse(
         "dashboard.html",
-        {"request": request}
-    )
-
-
-@router.get("/upload", response_class=HTMLResponse)
-def upload_syllabus(request: Request):
-    return templates.TemplateResponse(
-        "upload.html",
-        {"request": request}
+        {
+            "request": request,
+            "active_page": "dashboard",
+            "user_name": request.session.get("user_name")
+        }
     )
 
 
@@ -52,7 +48,10 @@ def upload_syllabus(request: Request):
 def study_plans(request: Request):
     return templates.TemplateResponse(
         "plans.html",
-        {"request": request}
+        {
+            "request": request,
+            "active_page": "plans"
+        }
     )
 
 
@@ -60,11 +59,15 @@ def study_plans(request: Request):
 def profile(request: Request):
     return templates.TemplateResponse(
         "profile.html",
-        {"request": request}
+        {
+            "request": request,
+            "active_page": "profile",
+            "user_name": request.session.get("user_name"),
+            "user_email": request.session.get("user_email")
+        }
     )
 
 
 @router.get("/logout")
 def logout():
-    # Session cleanup will be added later
     return RedirectResponse(url="/login", status_code=303)
