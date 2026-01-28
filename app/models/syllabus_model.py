@@ -1,5 +1,19 @@
 from datetime import datetime
 from bson import ObjectId
+from typing import Optional
+from pydantic import BaseModel, Field
+
+
+class SyllabusModel(BaseModel):
+    user_id: ObjectId
+    file_id: ObjectId
+    filename: str
+    content_type: str
+
+    status: str = "uploaded"  # uploaded | parsing | parsed | failed
+    extracted_text: Optional[str] = None
+
+    created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
 def syllabus_document(
@@ -14,6 +28,6 @@ def syllabus_document(
         "file_id": file_id,
         "filename": filename,
         "content_type": content_type,
-        "status": "uploaded",  # uploaded | parsed | assessed
-        "uploaded_at": datetime.utcnow()
+        "status": "uploaded",
+        "created_at": datetime.utcnow()
     }
