@@ -54,6 +54,21 @@ def dashboard(request: Request):
     )
 
 
+@router.get("/upload", response_class=HTMLResponse)
+def upload_page(request: Request):
+    if not require_login(request):
+        return RedirectResponse("/login", status_code=303)
+
+    return templates.TemplateResponse(
+        "upload.html",
+        {
+            "request": request,
+            "active_page": "upload"
+        }
+    )
+    
+
+
 @router.get("/plans", response_class=HTMLResponse)
 def study_plans(request: Request):
     if not require_login(request):

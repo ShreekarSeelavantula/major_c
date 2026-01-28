@@ -13,10 +13,10 @@
 <div class="card shadow-sm mb-4">
     <div class="card-body text-center p-5">
 
-        <form method="post" action="#" enctype="multipart/form-data">
+        <form method="post" action="/upload" enctype="multipart/form-data">
 
             <!-- Drag & Drop Box -->
-            <div class="border border-2 border-dashed rounded p-5 mb-3"
+            <div class="border border-2 rounded p-5 mb-3"
                  style="border-style: dashed; cursor: pointer;">
                 
                 <p class="mb-2 fw-semibold">
@@ -28,9 +28,10 @@
 
                 <input
                     type="file"
-                    name="syllabus"
+                    name="file"
                     accept=".pdf,.jpg,.jpeg,.png"
                     class="form-control"
+                    required
                 >
 
             </div>
