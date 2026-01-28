@@ -5,7 +5,9 @@ from bson import ObjectId
 
 from app.database import fs, syllabus_collection
 from app.services.syllabus_parser import extract_text_from_pdf
-from app.services.ocr_service import extract_text_with_ocr   # ✅ OCR fallback
+from app.services.ocr_service import extract_text_with_ocr
+from app.services.syllabus_structurer import structure_syllabus
+from app.services.syllabus_validator import is_valid_syllabus
 
 router = APIRouter(tags=["Syllabus"])
 templates = Jinja2Templates(directory="app/templates")
@@ -42,7 +44,7 @@ async def upload_syllabus(
     if not user_id:
         raise HTTPException(status_code=401, detail="Not authenticated")
 
-    # 📄 File type check
+    # 📄 File type validation
     if file.content_type not in ALLOWED_TYPES:
         raise HTTPException(
             status_code=400,
@@ -75,26 +77,38 @@ async def upload_syllabus(
         except Exception:
             extracted_text = ""
 
-        # 🔁 OCR fallback if text is too small
+        # 🔁 OCR fallback
         if not extracted_text or len(extracted_text.strip()) < 50:
             extracted_text = extract_text_with_ocr(contents)
             status_value = "parsed_with_ocr"
         else:
             status_value = "parsed"
 
-    # 🧾 Store metadata + extracted text
+    # 🛑 Syllabus validation (NEW – critical)
+    if not is_valid_syllabus(extracted_text):
+        raise HTTPException(
+            status_code=400,
+            detail="Uploaded document does not appear to be a syllabus"
+        )
+
+    # 🧩 Module 4A — Structure syllabus
+    structured_syllabus = None
+    structured_units = structure_syllabus(extracted_text)
+    structured_syllabus = [unit.dict() for unit in structured_units]
+
+    # 🧾 Store everything
     result = syllabus_collection.insert_one({
         "user_id": ObjectId(user_id),
         "file_id": file_id,
         "filename": file.filename,
         "content_type": file.content_type,
         "status": status_value,
-        "extracted_text": extracted_text
+        "extracted_text": extracted_text,
+        "structured_syllabus": structured_syllabus
     })
 
     syllabus_id = str(result.inserted_id)
 
-    # 🔁 Redirect to preview
     return RedirectResponse(
         url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
@@ -121,6 +135,7 @@ def preview_syllabus(request: Request, syllabus_id: str):
             "request": request,
             "filename": syllabus["filename"],
             "status": syllabus["status"],
-            "text": syllabus.get("extracted_text", "")
+            "text": syllabus.get("extracted_text", ""),
+            "structured": syllabus.get("structured_syllabus")
         }
     )
