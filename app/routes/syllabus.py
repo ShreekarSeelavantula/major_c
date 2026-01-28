@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 from bson import ObjectId
 
 from app.database import fs, syllabus_collection
-# from app.services.syllabus_parser import extract_text_from_pdf  # Module B
+from app.services.syllabus_parser import extract_text_from_pdf  # ✅ Module B enabled
 
 router = APIRouter(tags=["Syllabus"])
 templates = Jinja2Templates(directory="app/templates")
@@ -56,7 +56,7 @@ async def upload_syllabus(
             detail="File exceeds 10MB limit"
         )
 
-    # 🗄 Store in GridFS
+    # 🗄 Store file in GridFS
     file_id = fs.put(
         contents,
         filename=file.filename,
@@ -64,13 +64,22 @@ async def upload_syllabus(
         metadata={"user_id": user_id}
     )
 
-    # 🧾 Store metadata
+    # 🧠 Extract text (PDF only for now)
+    extracted_text = None
+    status_value = "uploaded"
+
+    if file.content_type == "application/pdf":
+        extracted_text = extract_text_from_pdf(contents)
+        status_value = "parsed" if extracted_text else "uploaded"
+
+    # 🧾 Store metadata + extracted text
     result = syllabus_collection.insert_one({
         "user_id": ObjectId(user_id),
         "file_id": file_id,
         "filename": file.filename,
         "content_type": file.content_type,
-        "status": "uploaded"
+        "status": status_value,
+        "extracted_text": extracted_text
     })
 
     syllabus_id = str(result.inserted_id)
@@ -101,6 +110,7 @@ def preview_syllabus(request: Request, syllabus_id: str):
         {
             "request": request,
             "filename": syllabus["filename"],
-            "status": syllabus["status"]
+            "status": syllabus["status"],
+            "text": syllabus.get("extracted_text", "")
         }
     )

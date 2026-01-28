@@ -12,14 +12,23 @@
 <div class="card shadow-sm">
     <div class="card-body">
 
-        <pre style="
+
+        {% if text %}
+            <pre style="
             white-space: pre-wrap;
             max-height: 400px;
             overflow-y: auto;
             background: #f8f9fa;
             padding: 15px;
             border-radius: 6px;
-        ">{{ text }}</pre>
+            ">{{ text }}</pre>
+        {% else %}
+            <p class="text-muted">
+                No text extracted yet.
+            </p>
+        {% endif %}
+
+     
 
     </div>
 </div>

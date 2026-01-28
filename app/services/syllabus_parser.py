@@ -1,14 +1,12 @@
 import fitz  # PyMuPDF
+from io import BytesIO
 
 
-def extract_text_from_pdf(pdf_bytes: bytes) -> str:
-    """
-    Extract text from PDF bytes safely
-    """
-    text = []
+def extract_text_from_pdf(file_bytes: bytes) -> str:
+    text = ""
 
-    with fitz.open(stream=pdf_bytes, filetype="pdf") as doc:
+    with fitz.open(stream=BytesIO(file_bytes), filetype="pdf") as doc:
         for page in doc:
-            text.append(page.get_text())
+            text += page.get_text()
 
-    return "\n".join(text).strip()
+    return text.strip()
