@@ -4,7 +4,8 @@ from fastapi.templating import Jinja2Templates
 from bson import ObjectId
 
 from app.database import fs, syllabus_collection
-from app.services.syllabus_parser import extract_text_from_pdf  # ✅ Module B enabled
+from app.services.syllabus_parser import extract_text_from_pdf
+from app.services.ocr_service import extract_text_with_ocr   # ✅ OCR fallback
 
 router = APIRouter(tags=["Syllabus"])
 templates = Jinja2Templates(directory="app/templates")
@@ -64,13 +65,22 @@ async def upload_syllabus(
         metadata={"user_id": user_id}
     )
 
-    # 🧠 Extract text (PDF only for now)
-    extracted_text = None
+    # 🧠 Text extraction
+    extracted_text = ""
     status_value = "uploaded"
 
     if file.content_type == "application/pdf":
-        extracted_text = extract_text_from_pdf(contents)
-        status_value = "parsed" if extracted_text else "uploaded"
+        try:
+            extracted_text = extract_text_from_pdf(contents)
+        except Exception:
+            extracted_text = ""
+
+        # 🔁 OCR fallback if text is too small
+        if not extracted_text or len(extracted_text.strip()) < 50:
+            extracted_text = extract_text_with_ocr(contents)
+            status_value = "parsed_with_ocr"
+        else:
+            status_value = "parsed"
 
     # 🧾 Store metadata + extracted text
     result = syllabus_collection.insert_one({
