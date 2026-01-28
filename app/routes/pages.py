@@ -6,6 +6,14 @@ router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 
+# ---------- Auth Guard ----------
+def require_login(request: Request):
+    if "user_id" not in request.session:
+        return False
+    return True
+
+
+# ---------- Public Pages ----------
 @router.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse(
@@ -30,10 +38,12 @@ def login_page(request: Request):
     )
 
 
-# ---------------- Dashboard Pages ---------------- #
-
+# ---------- Dashboard Pages ----------
 @router.get("/dashboard", response_class=HTMLResponse)
 def dashboard(request: Request):
+    if not require_login(request):
+        return RedirectResponse("/login", status_code=303)
+
     return templates.TemplateResponse(
         "dashboard.html",
         {
@@ -46,6 +56,9 @@ def dashboard(request: Request):
 
 @router.get("/plans", response_class=HTMLResponse)
 def study_plans(request: Request):
+    if not require_login(request):
+        return RedirectResponse("/login", status_code=303)
+
     return templates.TemplateResponse(
         "plans.html",
         {
@@ -57,6 +70,9 @@ def study_plans(request: Request):
 
 @router.get("/profile", response_class=HTMLResponse)
 def profile(request: Request):
+    if not require_login(request):
+        return RedirectResponse("/login", status_code=303)
+
     return templates.TemplateResponse(
         "profile.html",
         {
@@ -69,5 +85,6 @@ def profile(request: Request):
 
 
 @router.get("/logout")
-def logout():
+def logout(request: Request):
+    request.session.clear()
     return RedirectResponse(url="/login", status_code=303)
