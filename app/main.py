@@ -10,8 +10,10 @@ app = FastAPI(title="AI Study Planner")
 # 🔐 Session support (required for login → dashboard)
 app.add_middleware(
     SessionMiddleware,
-    secret_key="change-this-secret-later"
+    secret_key="prepgenie-secret-key",  # change later
+    max_age=60 * 60 * 24  # 1 day
 )
+
 
 # Static files (CSS, JS, images)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
