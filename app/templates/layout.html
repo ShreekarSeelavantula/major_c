@@ -37,11 +37,7 @@
             color: white;
         }
 
-        .logout {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-        }
+        
     </style>
 </head>
 
@@ -49,14 +45,14 @@
 <div class="d-flex">
 
     <!-- Sidebar -->
-    <div class="sidebar p-3 position-relative">
+    <div class="sidebar p-3 d-flex flex-column">
         <h4 class="mb-4 text-primary fw-bold">🧞 Prep Genie</h4>
 
         <a href="/dashboard">📊 Dashboard</a>
         <a href="/plans">📚 Study Plans</a>
         <a href="/profile">👤 Profile</a>
 
-        <div class="logout px-3">
+        <div class="mt-auto px-3">
             <a href="/auth/logout" class="btn btn-outline-danger w-100">
                 Logout
             </a>

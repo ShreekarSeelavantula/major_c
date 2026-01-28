@@ -1,12 +1,78 @@
 {% extends "layout.html" %}
 
-{% block title %}Study Plans | Prep Genie{% endblock %}
+{% block title %}Upload Syllabus | Prep Genie{% endblock %}
 
 {% block content %}
-<h2 class="fw-bold mb-3">Your Study Plans</h2>
 
-<div class="card p-4 shadow-sm text-center">
-    <p class="text-muted mb-2">No plans created yet.</p>
-    <a href="/upload" class="btn btn-primary">Create New Plan</a>
+<h2 class="fw-bold mb-1">Upload Syllabus</h2>
+<p class="text-muted mb-4">
+    We'll analyze your document to understand the topics and difficulty.
+</p>
+
+<!-- Upload Card -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body text-center p-5">
+
+        <form method="post" action="/upload" enctype="multipart/form-data">
+
+            <!-- Drag & Drop Box -->
+            <div class="border border-2 border-dashed rounded p-5 mb-3"
+                 style="border-style: dashed; cursor: pointer;">
+                
+                <p class="mb-2 fw-semibold">
+                    Drag & drop your PDF or Image here
+                </p>
+                <p class="text-muted mb-3">
+                    or click to select
+                </p>
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    class="form-control"
+                    required
+                >
+
+            </div>
+
+            <small class="text-muted d-block mb-4">
+                Max 10MB • PDF, JPG, PNG
+            </small>
+
+            <button type="submit" class="btn btn-primary px-5">
+                Upload
+            </button>
+
+        </form>
+
+    </div>
 </div>
+
+<!-- Progress Steps -->
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between text-center">
+
+            <div class="flex-fill">
+                <div class="fw-bold text-primary">1</div>
+                <div class="small">Upload</div>
+            </div>
+
+            <div class="flex-fill">
+                <div class="fw-bold text-muted">2</div>
+                <div class="small text-muted">Parse</div>
+            </div>
+
+            <div class="flex-fill">
+                <div class="fw-bold text-muted">3</div>
+                <div class="small text-muted">Assess</div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
 {% endblock %}
