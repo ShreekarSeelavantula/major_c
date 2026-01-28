@@ -21,7 +21,7 @@ STOP_WORDS = {
 # ---------------- Subtopic Counter ----------------
 def count_subtopics(text: str) -> int:
     """
-    Counts bullet points, numbered lists, or line breaks
+    Counts bullet points or numbered lists
     """
     lines = text.split("\n")
     bullets = [
@@ -46,14 +46,13 @@ def extract_bloom_verb(text: str) -> str:
     if not found_verbs:
         return "define"  # safe default
 
-    # Return highest cognitive verb
     return max(found_verbs, key=lambda v: BLOOM_VERBS[v])
 
 
 # ---------------- Concept Density ----------------
 def count_concepts(text: str) -> int:
     """
-    Counts technical terms using commas and noun phrases
+    Counts technical concepts using commas and phrases
     """
     words = re.split(r"[,\n]", text)
     concepts = []
@@ -79,8 +78,11 @@ def estimate_dependency(unit_index: int) -> int:
         return 3
 
 
-# ---------------- Main Analyzer ----------------
+# ---------------- Topic Analyzer ----------------
 def analyze_topic(topic_text: str, unit_index: int) -> dict:
+    """
+    Analyzes a single topic
+    """
     subtopics = count_subtopics(topic_text)
     verb = extract_bloom_verb(topic_text)
     concepts = count_concepts(topic_text)
@@ -91,5 +93,33 @@ def analyze_topic(topic_text: str, unit_index: int) -> dict:
         "verb": verb,
         "concepts": concepts,
         "dependencies": dependency,
-        "weightage": None  # future use
+        "weightage": None
     }
+
+
+# ---------------- NEW: Topic Extractor ----------------
+def extract_topics(structured_syllabus):
+    """
+    Converts structured syllabus into topic dictionaries
+    suitable for complexity engine
+    """
+
+    topics = []
+
+    for unit_index, unit in enumerate(structured_syllabus, start=1):
+        for topic in unit.get("topics", []):
+            analysis = analyze_topic(
+                topic_text=topic.get("title", ""),
+                unit_index=unit_index
+            )
+
+            topics.append({
+                "title": topic.get("title", ""),
+                "subtopics": analysis["subtopics"],
+                "verbs": [analysis["verb"]],
+                "concepts": analysis["concepts"],
+                "dependencies": analysis["dependencies"],
+                "weightage": analysis["weightage"]
+            })
+
+    return topics
