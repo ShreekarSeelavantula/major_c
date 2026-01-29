@@ -39,7 +39,7 @@ def structure_syllabus(text: str) -> List[Unit]:
 
         # Detect unit heading
         if is_unit_heading(line):
-            current_unit = Unit(name=line, topics=[])
+            current_unit = Unit(unit_number=len(units) + 1, title=line, topics=[])
             units.append(current_unit)
             continue
 
@@ -52,7 +52,8 @@ def structure_syllabus(text: str) -> List[Unit]:
     # Fallback: no units detected
     if not units:
         fallback_unit = Unit(
-            name="General Topics",
+            unit_number=1,
+            title="General Topics",
             topics=[Topic(title=clean_line(l)) for l in lines if len(clean_line(l)) > 4]
         )
         units.append(fallback_unit)

@@ -3,11 +3,6 @@ from app.services.complexity_engine import compute_complexity
 
 
 def process_syllabus(structured_syllabus):
-    """
-    structured_syllabus: output of structure_syllabus()
-    returns: list of topics with complexity classification
-    """
-
     topics = extract_topics(structured_syllabus)
     results = []
 

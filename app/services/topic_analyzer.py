@@ -1,4 +1,5 @@
 import re
+from app.models.structured_syllabus import Unit, Topic
 
 # ---------------- Bloom's Verb Mapping ----------------
 BLOOM_VERBS = {
@@ -13,16 +14,10 @@ BLOOM_VERBS = {
     "optimize": 4
 }
 
-STOP_WORDS = {
-    "and", "or", "the", "of", "to", "in", "for", "with"
-}
+STOP_WORDS = {"and", "or", "the", "of", "to", "in", "for", "with"}
 
 
-# ---------------- Subtopic Counter ----------------
 def count_subtopics(text: str) -> int:
-    """
-    Counts bullet points or numbered lists
-    """
     lines = text.split("\n")
     bullets = [
         line for line in lines
@@ -31,95 +26,54 @@ def count_subtopics(text: str) -> int:
     return max(len(bullets), 1)
 
 
-# ---------------- Verb Extractor ----------------
 def extract_bloom_verb(text: str) -> str:
-    """
-    Finds highest-order Bloom verb in text
-    """
-    text_lower = text.lower()
-    found_verbs = []
-
-    for verb in BLOOM_VERBS:
-        if verb in text_lower:
-            found_verbs.append(verb)
-
-    if not found_verbs:
-        return "define"  # safe default
-
-    return max(found_verbs, key=lambda v: BLOOM_VERBS[v])
+    text = text.lower()
+    found = [v for v in BLOOM_VERBS if v in text]
+    return max(found, key=lambda v: BLOOM_VERBS[v]) if found else "define"
 
 
-# ---------------- Concept Density ----------------
 def count_concepts(text: str) -> int:
-    """
-    Counts technical concepts using commas and phrases
-    """
     words = re.split(r"[,\n]", text)
-    concepts = []
-
-    for word in words:
-        clean = word.strip().lower()
-        if clean and clean not in STOP_WORDS and len(clean) > 3:
-            concepts.append(clean)
-
+    concepts = [
+        w.strip().lower()
+        for w in words
+        if w.strip().lower() not in STOP_WORDS and len(w.strip()) > 3
+    ]
     return max(len(concepts), 1)
 
 
-# ---------------- Dependency Estimation ----------------
 def estimate_dependency(unit_index: int) -> int:
-    """
-    Earlier units are easier, later units depend more
-    """
     if unit_index == 1:
         return 1
     elif unit_index == 2:
         return 2
-    else:
-        return 3
+    return 3
 
 
-# ---------------- Topic Analyzer ----------------
+# ---------------- Complexity Feature Extractor ----------------
 def analyze_topic(topic_text: str, unit_index: int) -> dict:
-    """
-    Analyzes a single topic
-    """
-    subtopics = count_subtopics(topic_text)
-    verb = extract_bloom_verb(topic_text)
-    concepts = count_concepts(topic_text)
-    dependency = estimate_dependency(unit_index)
-
     return {
-        "subtopics": subtopics,
-        "verb": verb,
-        "concepts": concepts,
-        "dependencies": dependency,
+        "subtopics": count_subtopics(topic_text),
+        "verb": extract_bloom_verb(topic_text),
+        "concepts": count_concepts(topic_text),
+        "dependencies": estimate_dependency(unit_index),
         "weightage": None
     }
 
 
-# ---------------- NEW: Topic Extractor ----------------
-def extract_topics(structured_syllabus):
-    """
-    Converts structured syllabus into topic dictionaries
-    suitable for complexity engine
-    """
-
+# ---------------- FIXED: Structured → Flat Topics ----------------
+def extract_topics(structured_syllabus: list[Unit]):
     topics = []
 
     for unit_index, unit in enumerate(structured_syllabus, start=1):
-        for topic in unit.get("topics", []):
-            analysis = analyze_topic(
-                topic_text=topic.get("title", ""),
-                unit_index=unit_index
-            )
+        for topic in unit.topics:   # ✅ attribute access
+            title = topic.title
+
+            analysis = analyze_topic(title, unit_index)
 
             topics.append({
-                "title": topic.get("title", ""),
-                "subtopics": analysis["subtopics"],
-                "verbs": [analysis["verb"]],
-                "concepts": analysis["concepts"],
-                "dependencies": analysis["dependencies"],
-                "weightage": analysis["weightage"]
+                "title": title,
+                **analysis
             })
 
     return topics
