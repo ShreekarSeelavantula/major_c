@@ -62,18 +62,40 @@ def analyze_topic(topic_text: str, unit_index: int) -> dict:
 
 
 # ---------------- FIXED: Structured → Flat Topics ----------------
-def extract_topics(structured_syllabus: list[Unit]):
+def extract_topics(structured_syllabus):
     topics = []
 
+    INVALID_PREFIXES = ("unit", "module", "chapter")
+
     for unit_index, unit in enumerate(structured_syllabus, start=1):
-        for topic in unit.topics:   # ✅ attribute access
-            title = topic.title
+
+        # ✅ Support both dicts and Pydantic models
+        unit_topics = (
+            unit.topics if hasattr(unit, "topics")
+            else unit.get("topics", [])
+        )
+
+        for topic in unit_topics:
+            title = (
+                topic.title if hasattr(topic, "title")
+                else topic.get("title", "")
+            ).strip()
+
+            # 🚫 Skip structural headings
+            if title.lower().startswith(INVALID_PREFIXES):
+                continue
+
+            # 🚫 Skip junk
+            if len(title) < 5:
+                continue
 
             analysis = analyze_topic(title, unit_index)
 
             topics.append({
                 "title": title,
+                "unit_index": unit_index,
                 **analysis
             })
 
     return topics
+

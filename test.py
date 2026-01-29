@@ -1,17 +1,20 @@
 from app.services.syllabus_pipeline import process_syllabus
-from app.services.syllabus_structurer import structure_syllabus
 
-text = """
-UNIT I
-Introduction to DBMS
-Explain database and DBMS concepts
+structured = [
+    {
+        "topics": [
+            {"title": "Introduction to DBMS"},
+            {"title": "Explain database and DBMS concepts"}
+        ]
+    },
+    {
+        "topics": [
+            {"title": "Normalization"},
+            {"title": "Analyze normalization techniques"}
+        ]
+    }
+]
 
-UNIT II
-Normalization
-Analyze normalization techniques
-"""
-
-structured = structure_syllabus(text)
 output = process_syllabus(structured)
 
 for o in output:
