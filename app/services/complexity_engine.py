@@ -12,56 +12,47 @@ VERB_SCORES = {
 }
 
 
-def compute_complexity(topic: dict):
+def compute_complexity(topic_features: dict) -> dict:
     """
-    topic = {
-        title,
-        subtopics,
-        verb,
-        concepts,
-        dependencies,
-        weightage
+    topic_features expects:
+    {
+        title: str,
+        verb: str,
+        subtopics: int,
+        concepts: int,
+        dependencies: int,
+        unit_index: int
     }
     """
 
-    score = 0
+    # Base score from structure
+    score = (
+        topic_features.get("subtopics", 1) * 1 +
+        topic_features.get("concepts", 1) * 1 +
+        topic_features.get("dependencies", 0) * 2
+    )
 
-    # 1️⃣ Subtopics
-    if topic["subtopics"] <= 2:
-        score += 1
-    elif topic["subtopics"] <= 4:
-        score += 2
-    else:
-        score += 3
+    # Bloom's taxonomy verb weight
+    verb_weights = {
+        "define": 1,
+        "describe": 1,
+        "explain": 2,
+        "discuss": 2,
+        "apply": 3,
+        "compare": 3,
+        "analyze": 4,
+        "design": 4,
+        "evaluate": 5,
+        "create": 5
+    }
 
-    # 2️⃣ Bloom verb
-    score += VERB_SCORES.get(topic["verb"], 2)
+    verb = topic_features.get("verb", "").lower()
+    score += verb_weights.get(verb, 1)
 
-    # 3️⃣ Concept density
-    if topic["concepts"] <= 2:
-        score += 1
-    elif topic["concepts"] <= 4:
-        score += 2
-    else:
-        score += 3
-
-    # 4️⃣ Dependency level
-    score += topic["dependencies"]
-
-    # 5️⃣ Weightage (optional)
-    if topic.get("weightage"):
-        w = topic["weightage"]
-        if w > 10:
-            score += 3
-        elif w >= 5:
-            score += 2
-        else:
-            score += 1
-
-    # 🔍 Final classification
-    if score <= 6:
+    # Complexity classification
+    if score <= 5:
         complexity = "Easy"
-    elif score <= 10:
+    elif score <= 9:
         complexity = "Medium"
     else:
         complexity = "Hard"
@@ -70,3 +61,4 @@ def compute_complexity(topic: dict):
         "score": score,
         "complexity": complexity
     }
+
