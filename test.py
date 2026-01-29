@@ -4,7 +4,11 @@ from app.services.syllabus_structurer import structure_syllabus
 text = """
 UNIT I
 Introduction to DBMS
-Normalization techniques
+Explain database and DBMS concepts
+
+UNIT II
+Normalization
+Analyze normalization techniques
 """
 
 structured = structure_syllabus(text)
