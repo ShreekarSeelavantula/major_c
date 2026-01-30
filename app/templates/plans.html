@@ -1,78 +1,54 @@
 {% extends "layout.html" %}
 
-{% block title %}Upload Syllabus | Prep Genie{% endblock %}
+{% block title %}Your Study Plan | Prep Genie{% endblock %}
 
 {% block content %}
 
-<h2 class="fw-bold mb-1">Upload Syllabus</h2>
+<h2 class="fw-bold mb-2">📅 Your Adaptive Study Plan</h2>
+
 <p class="text-muted mb-4">
-    We'll analyze your document to understand the topics and difficulty.
+    Daily Hours: <strong>{{ meta.hours_per_day }}</strong> |
+    Deadline: <strong>{{ meta.deadline_days }} days</strong>
 </p>
 
-<!-- Upload Card -->
+<hr>
+
+{% for day, tasks in plan.items() %}
 <div class="card shadow-sm mb-4">
-    <div class="card-body text-center p-5">
-
-        <form method="post" action="/upload" enctype="multipart/form-data">
-
-            <!-- Drag & Drop Box -->
-            <div class="border border-2 border-dashed rounded p-5 mb-3"
-                 style="border-style: dashed; cursor: pointer;">
-                
-                <p class="mb-2 fw-semibold">
-                    Drag & drop your PDF or Image here
-                </p>
-                <p class="text-muted mb-3">
-                    or click to select
-                </p>
-
-                <input
-                    type="file"
-                    name="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    class="form-control"
-                    required
-                >
-
-            </div>
-
-            <small class="text-muted d-block mb-4">
-                Max 10MB • PDF, JPG, PNG
-            </small>
-
-            <button type="submit" class="btn btn-primary px-5">
-                Upload
-            </button>
-
-        </form>
-
-    </div>
-</div>
-
-<!-- Progress Steps -->
-<div class="card shadow-sm">
     <div class="card-body">
 
-        <div class="d-flex justify-content-between text-center">
+        <h5 class="fw-bold mb-3">Day {{ day }}</h5>
 
-            <div class="flex-fill">
-                <div class="fw-bold text-primary">1</div>
-                <div class="small">Upload</div>
-            </div>
+        <ul class="list-group list-group-flush">
+            {% for task in tasks %}
 
-            <div class="flex-fill">
-                <div class="fw-bold text-muted">2</div>
-                <div class="small text-muted">Parse</div>
-            </div>
+                {% if task.type == "study" %}
+                <li class="list-group-item">
+                    📘 <strong>{{ task.topic }}</strong>
+                    — {{ task.hours }} hrs
+                    <span class="badge bg-secondary ms-2">
+                        {{ task.complexity }}
+                    </span>
+                </li>
 
-            <div class="flex-fill">
-                <div class="fw-bold text-muted">3</div>
-                <div class="small text-muted">Assess</div>
-            </div>
+                {% elif task.type == "revision" %}
+                <li class="list-group-item">
+                    🔁 <strong>Revision:</strong>
+                    {{ task.topic }} — {{ task.hours }} hrs
+                </li>
 
-        </div>
+                {% elif task.type == "micro_test" %}
+                <li class="list-group-item">
+                    🧪 Micro Test — {{ task.questions }} questions
+                </li>
+
+                {% endif %}
+
+            {% endfor %}
+        </ul>
 
     </div>
 </div>
+{% endfor %}
 
 {% endblock %}
