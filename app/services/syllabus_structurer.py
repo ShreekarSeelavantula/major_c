@@ -22,7 +22,17 @@ NOISE_PATTERNS = [
     r"engineering college",
     r"department of",
     r"university",
+    r"regulation",
     r"total credits"
+]
+
+STOP_SECTIONS = [
+    "course objectives",
+    "course outcomes",
+    "text books",
+    "textbooks",
+    "reference books",
+    "references"
 ]
 
 
@@ -47,8 +57,30 @@ def clean_line(line: str) -> str:
 
 
 def clean_unit_title(line: str) -> str:
-    # Keep UNIT label but remove trailing clutter
     return clean_line(line).rstrip(":").title()
+
+
+def looks_like_continuation(line: str) -> bool:
+    return (
+        line[0].islower()
+        or line.startswith("(")
+        or line.startswith(",")
+        or line.startswith("-")
+    )
+
+
+def split_topics(line: str) -> List[str]:
+    parts = [p.strip() for p in line.split(",") if len(p.strip()) > 4]
+    return parts if len(parts) > 1 else [line]
+
+
+def is_stop_section(line: str) -> bool:
+    lower = line.lower()
+    return any(k in lower for k in STOP_SECTIONS)
+
+
+def looks_like_heading(line: str) -> bool:
+    return line.isupper() and len(line.split()) <= 6
 
 
 # -----------------------------
@@ -60,11 +92,21 @@ def structure_syllabus(text: str) -> List[Unit]:
 
     units: List[Unit] = []
     current_unit: Unit | None = None
+    last_topic: Topic | None = None
+    stop_parsing = False
 
     for raw_line in lines:
         line = clean_line(raw_line)
 
-        if len(line) < 4 or is_noise(line):
+        if not line or len(line) < 4:
+            continue
+
+        # Stop parsing after objectives / books
+        if is_stop_section(line):
+            stop_parsing = True
+            continue
+
+        if stop_parsing or is_noise(line):
             continue
 
         # -----------------------------
@@ -77,19 +119,31 @@ def structure_syllabus(text: str) -> List[Unit]:
                 topics=[]
             )
             units.append(current_unit)
+            last_topic = None
             continue
 
         # -----------------------------
         # Topic detection
         # -----------------------------
         if current_unit:
-            # Avoid dumping huge paragraphs as topics
+            # Reject large paragraphs
             if len(line) > 180:
                 continue
 
-            current_unit.topics.append(
-                Topic(title=line)
-            )
+            # Reject admin-style headings
+            if looks_like_heading(line):
+                continue
+
+            # Continuation line
+            if last_topic and looks_like_continuation(line):
+                last_topic.title += " " + line
+                continue
+
+            # Split comma-based topics
+            for t in split_topics(line):
+                topic = Topic(title=t)
+                current_unit.topics.append(topic)
+                last_topic = topic
 
     # -----------------------------
     # Fallback (no units found)
@@ -98,14 +152,16 @@ def structure_syllabus(text: str) -> List[Unit]:
         fallback_topics = [
             Topic(title=clean_line(l))
             for l in lines
-            if len(clean_line(l)) > 6 and not is_noise(clean_line(l))
+            if len(clean_line(l)) > 6
+            and not is_noise(clean_line(l))
+            and not is_stop_section(clean_line(l))
         ]
 
         units.append(
             Unit(
                 unit_number=1,
                 title="General Topics",
-                topics=fallback_topics[:40]  # safety cap
+                topics=fallback_topics[:40]
             )
         )
 
