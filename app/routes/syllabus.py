@@ -21,23 +21,20 @@ ALLOWED_TYPES = {
 MAX_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
-# -----------------------------
+# --------------------------------------------------
 # Upload Page
-# -----------------------------
+# --------------------------------------------------
 @router.get("/upload", response_class=HTMLResponse)
 def upload_page(request: Request):
     if "user_id" not in request.session:
         return RedirectResponse("/login", status_code=303)
 
-    return templates.TemplateResponse(
-        "upload.html",
-        {"request": request}
-    )
+    return templates.TemplateResponse("upload.html", {"request": request})
 
 
-# -----------------------------
-# Upload Handler
-# -----------------------------
+# --------------------------------------------------
+# Upload Handler (PREVIEW ONLY)
+# --------------------------------------------------
 @router.post("/upload")
 async def upload_syllabus(
     request: Request,
@@ -48,17 +45,11 @@ async def upload_syllabus(
         raise HTTPException(status_code=401, detail="Not authenticated")
 
     if file.content_type not in ALLOWED_TYPES:
-        raise HTTPException(
-            status_code=400,
-            detail="Only PDF, JPG, PNG allowed"
-        )
+        raise HTTPException(status_code=400, detail="Only PDF, JPG, PNG allowed")
 
     contents = await file.read()
     if len(contents) > MAX_SIZE:
-        raise HTTPException(
-            status_code=400,
-            detail="File exceeds 10MB limit"
-        )
+        raise HTTPException(status_code=400, detail="File exceeds 10MB limit")
 
     # Store file in GridFS
     file_id = fs.put(
@@ -68,48 +59,28 @@ async def upload_syllabus(
         metadata={"user_id": user_id}
     )
 
-    extracted_text = ""
-    status_value = "uploaded"
+    # -------- PREVIEW EXTRACTION (FIRST 3 PAGES ONLY) --------
+    preview_text = ""
 
     if file.content_type == "application/pdf":
-        extracted_text = extract_text_from_pdf(contents)
+        preview_text = extract_text_from_pdf(contents, max_pages=3)
 
-        if not extracted_text or len(extracted_text.strip()) < 50:
-            extracted_text = extract_text_with_ocr(contents)
-            status_value = "parsed_with_ocr"
-        else:
-            status_value = "parsed"
+        if not preview_text or len(preview_text.strip()) < 50:
+            preview_text = extract_text_with_ocr(contents)
 
-    # -----------------------------
-    # Intelligent syllabus analysis
-    # -----------------------------
-    analysis = analyze_syllabus(extracted_text)
-
-    if not analysis["is_syllabus"]:
-        raise HTTPException(
-            status_code=400,
-            detail="Uploaded document does not appear to be a syllabus"
-        )
-
-    if analysis["has_multiple_subjects"]:
-        final_status = "awaiting_subject_selection"
-    else:
-        final_status = "ready_for_structuring"
-
-    result = syllabus_collection.insert_one({
+    syllabus_id = syllabus_collection.insert_one({
         "user_id": ObjectId(user_id),
         "file_id": file_id,
         "filename": file.filename,
         "content_type": file.content_type,
-        "status": final_status,
-        "analysis": analysis,
-        "subjects_detected": analysis.get("subjects", []),
+        "preview_text": preview_text,
+        "full_text": None,
+        "validated": False,
+        "subjects_detected": [],
         "selected_subject": None,
-        "extracted_text": extracted_text,
-        "structured_syllabus": None
-    })
-
-    syllabus_id = str(result.inserted_id)
+        "structured_syllabus": None,
+        "status": "preview"
+    }).inserted_id
 
     return RedirectResponse(
         url=f"/syllabus/preview/{syllabus_id}",
@@ -117,9 +88,9 @@ async def upload_syllabus(
     )
 
 
-# -----------------------------
+# --------------------------------------------------
 # Preview Page
-# -----------------------------
+# --------------------------------------------------
 @router.get("/syllabus/preview/{syllabus_id}", response_class=HTMLResponse)
 def preview_syllabus(request: Request, syllabus_id: str):
     if "user_id" not in request.session:
@@ -137,23 +108,16 @@ def preview_syllabus(request: Request, syllabus_id: str):
         "syllabus_preview.html",
         {
             "request": request,
-            "filename": syllabus["filename"],
-            "status": syllabus["status"],
-            "subjects": syllabus.get("subjects_detected", []),
-            "analysis": syllabus.get("analysis", {})
+            "syllabus": syllabus
         }
     )
 
 
-# -----------------------------
-# Subject Selection Handler
-# -----------------------------
-@router.post("/syllabus/select-subject")
-def select_subject(
-    request: Request,
-    syllabus_id: str = Form(...),
-    selected_subject: str = Form(...)
-):
+# --------------------------------------------------
+# Validate Syllabus (USER ACTION)
+# --------------------------------------------------
+@router.post("/syllabus/validate/{syllabus_id}")
+def validate_syllabus(request: Request, syllabus_id: str):
     if "user_id" not in request.session:
         return RedirectResponse("/login", status_code=303)
 
@@ -165,46 +129,49 @@ def select_subject(
     if not syllabus:
         raise HTTPException(status_code=404, detail="Syllabus not found")
 
-    full_text = syllabus.get("extracted_text", "")
-    subjects = syllabus.get("subjects_detected", [])
+    analysis = analyze_syllabus(syllabus["preview_text"])
 
-    lines = full_text.splitlines()
-    collected = []
-    capture = False
-
-    for line in lines:
-        if selected_subject.lower() in line.lower():
-            capture = True
-
-        if capture:
-            collected.append(line)
-
-        if capture:
-            for s in subjects:
-                if s != selected_subject and s.lower() in line.lower():
-                    capture = False
-                    break
-
-    subject_text = "\n".join(collected).strip()
-
-    if len(subject_text) < 200:
-        raise HTTPException(
-            status_code=400,
-            detail="Failed to isolate subject syllabus"
-        )
-
-    structured_units = structure_syllabus(subject_text)
+    if not analysis["is_syllabus"]:
+        raise HTTPException(status_code=400, detail=analysis["reason"])
 
     syllabus_collection.update_one(
         {"_id": ObjectId(syllabus_id)},
-        {"$set": {
-            "selected_subject": selected_subject,
-            "structured_syllabus": [u.dict() for u in structured_units],
-            "status": "ready_for_structuring"
-        }}
+        {"$set": {"validated": True, "status": "validated"}}
     )
 
     return RedirectResponse(
-        url=f"/plan/configure/{syllabus_id}",
-        status_code=303
+        url=f"/syllabus/extract-full/{syllabus_id}",
+        status_code=status.HTTP_303_SEE_OTHER
+    )
+
+
+# --------------------------------------------------
+# Full Extraction (ALL PAGES)
+# --------------------------------------------------
+@router.get("/syllabus/extract-full/{syllabus_id}")
+def extract_full_syllabus(request: Request, syllabus_id: str):
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    syllabus = syllabus_collection.find_one({
+        "_id": ObjectId(syllabus_id),
+        "user_id": ObjectId(request.session["user_id"])
+    })
+
+    if not syllabus:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+
+    file_bytes = fs.get(syllabus["file_id"]).read()
+
+    full_text = extract_text_from_pdf(file_bytes)
+
+    syllabus_collection.update_one(
+        {"_id": ObjectId(syllabus_id)},
+        {"$set": {"full_text": full_text, "status": "full_extracted"}}
+    )
+
+    # NEXT STEP: subject detection (we’ll do next)
+    return RedirectResponse(
+        url=f"/syllabus/preview/{syllabus_id}",
+        status_code=status.HTTP_303_SEE_OTHER
     )

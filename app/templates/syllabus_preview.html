@@ -5,68 +5,45 @@
 {% block content %}
 
 <h2 class="fw-bold mb-2">Syllabus Preview</h2>
-<p class="text-muted mb-4">
-    Extracted from <strong>{{ filename }}</strong>
+<p class="text-muted mb-3">
+    Extracted from <strong>{{ syllabus.filename }}</strong>
 </p>
 
 <div class="card shadow-sm mb-4">
     <div class="card-body">
 
-        {% if status == "awaiting_subject_selection" %}
+        <h5 class="fw-semibold mb-2">
+            Extracted Text Preview (First 3 Pages)
+        </h5>
 
-            <h5 class="fw-semibold mb-3">
-                Multiple subjects detected
-            </h5>
+        <p class="text-muted mb-3">
+            Please verify that the extracted text looks like a syllabus before continuing.
+        </p>
 
-            <p class="text-muted">
-                Please select the subject you want to generate a study plan for.
-            </p>
+        <pre style="
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        ">
+{{ syllabus.preview_text or "No text could be extracted." }}
+        </pre>
 
-            <form method="post" action="/syllabus/select-subject">
-
-                <input type="hidden" name="syllabus_id" value="{{ request.path.split('/')[-1] }}">
-
-                {% for subject in subjects %}
-                    <div class="form-check mb-2">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="selected_subject"
-                            value="{{ subject }}"
-                            required
-                        >
-                        <label class="form-check-label">
-                            {{ subject }}
-                        </label>
-                    </div>
-                {% endfor %}
-
-                <button type="submit" class="btn btn-primary mt-3">
-                    Continue →
+        {% if not syllabus.validated %}
+            <form method="post"
+                  action="/syllabus/validate/{{ syllabus._id }}"
+                  class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-success">
+                    Validate syllabus →
                 </button>
-
             </form>
-
         {% else %}
-
-            <h6 class="fw-semibold mb-2">Extracted Text (Preview)</h6>
-
-            <pre style="
-                white-space: pre-wrap;
-                max-height: 400px;
-                overflow-y: auto;
-                background: #f8f9fa;
-                padding: 15px;
-                border-radius: 6px;
-            ">{{ analysis or "No analysis available" }}</pre>
-
-            <div class="d-flex justify-content-end mt-4">
-                <a href="/plan/configure/{{ request.path.split('/')[-1] }}"
-                   class="btn btn-primary">
-                    Continue →
-                </a>
+            <div class="alert alert-success mt-4">
+                Syllabus validated successfully. Processing full document…
             </div>
-
         {% endif %}
 
     </div>
