@@ -31,7 +31,7 @@ METADATA_KEYWORDS = [
     "course objectives",
     "course outcomes",
     "l t p c",
-    "credits"
+    "credits",
 ]
 
 NOISE_KEYWORDS = [
@@ -59,7 +59,7 @@ STOP_SECTIONS = [
     "text books",
     "textbooks",
     "reference books",
-    "references"
+    "references",
 ]
 
 
@@ -73,7 +73,7 @@ def is_stop_section(line: str) -> bool:
 
 COURSE_CODE_REGEX = re.compile(
     r"^[A-Z]{2,4}\d{3,4}[A-Z]{0,2}\s*:\s*.+",
-    re.IGNORECASE
+    re.IGNORECASE,
 )
 
 
@@ -106,7 +106,7 @@ def extract_primary_subject_text(text: str) -> str:
 
 UNIT_REGEX = re.compile(
     r"^\s*UNIT\s*[-:]?\s*(I|II|III|IV|V|VI|VII|VIII|IX|X|\d+)\b",
-    re.IGNORECASE
+    re.IGNORECASE,
 )
 
 
@@ -135,25 +135,45 @@ def looks_like_continuation(line: str) -> bool:
 
 
 # =================================================
-# SMART TOPIC SPLITTING (UPGRADED)
+# SMART TOPIC SPLITTING (SAFE + LOSSLESS)
 # =================================================
 
 def smart_split_topics(text: str) -> List[str]:
-    """
-    Split comma-separated topics ONLY when they are truly independent.
-    """
     raw_parts = [p.strip() for p in text.split(",")]
-
     topics: List[str] = []
     buffer = ""
+
+    ENUMERATION_HINTS = {
+        "algorithms",
+        "ciphers",
+        "techniques",
+        "methods",
+        "protocols",
+        "attacks",
+        "mechanisms",
+    }
+
+    def looks_like_enum_context(s: str) -> bool:
+        s = s.lower()
+        return any(h in s for h in ENUMERATION_HINTS)
+
+    enum_mode = looks_like_enum_context(text)
 
     for part in raw_parts:
         if not part:
             continue
 
-        # merge short or dependent fragments
+        word_count = len(part.split())
+
+        # ENUMERATION MODE → split aggressively but NEVER discard
+        if enum_mode:
+            topics.append(part)
+            buffer = ""
+            continue
+
+        # NORMAL MODE → preserve conceptual phrases
         if (
-            len(part.split()) <= 2
+            word_count <= 2
             or " and " in part.lower()
             or part.isupper()
         ):
@@ -167,12 +187,39 @@ def smart_split_topics(text: str) -> List[str]:
     if buffer:
         topics.append(buffer)
 
-    # final cleanup
-    return [t.strip() for t in topics if len(t.strip()) > 4]
+    # =================================================
+    # FINAL SAFETY SPLIT (ONLY WHEN NEEDED)
+    # =================================================
+    final_topics: List[str] = []
+
+    for t in topics:
+        if "," in t and len(t) > 40:
+            final_topics.extend(
+                [p.strip() for p in t.split(",") if p.strip()]
+            )
+        else:
+            final_topics.append(t)
+
+    # =================================================
+    # 🔒 LOSSLESS FILTER (THIS FIXES HMAC / CMAC)
+    # =================================================
+    cleaned: List[str] = []
+    for t in final_topics:
+        t = t.strip()
+        if not t:
+            continue
+
+        # keep if:
+        # - length >= 3 OR
+        # - ALL CAPS technical token (AES, HMAC, RC4, etc.)
+        if len(t) >= 3 or t.isupper():
+            cleaned.append(t)
+
+    return cleaned
 
 
 # =================================================
-# CORE STRUCTURER (FINAL)
+# CORE STRUCTURER
 # =================================================
 
 def structure_syllabus(text: str) -> List[Unit]:
@@ -191,14 +238,12 @@ def structure_syllabus(text: str) -> List[Unit]:
         if is_noise(line) or is_metadata(line):
             continue
 
-        # -------------------------------
         # UNIT DETECTION
-        # -------------------------------
         if is_unit_heading(line):
             current_unit = Unit(
                 unit_number=len(units) + 1,
                 title=f"Unit {len(units) + 1}",
-                topics=[]
+                topics=[],
             )
             units.append(current_unit)
             last_topic = None
@@ -208,80 +253,48 @@ def structure_syllabus(text: str) -> List[Unit]:
         if not current_unit:
             continue
 
-        # -------------------------------
-        # UNIT TITLE LOGIC (SURGICAL FIX)
-        # -------------------------------
+        # UNIT TITLE
         if expecting_unit_title:
-            # if first line has colon → it's sub-unit, not unit title
-            if ":" in line:
-                expecting_unit_title = False
-            else:
+            if ":" not in line:
                 current_unit.title = line.rstrip(":")
                 expecting_unit_title = False
                 continue
+            expecting_unit_title = False
 
-        # -------------------------------
-        # STOP AT REFERENCES
-        # -------------------------------
         if is_stop_section(line):
             break
 
-        # -------------------------------
-        # SUB-UNIT HANDLING
-        # -------------------------------
+        # SUB-UNIT
         if is_subunit_heading(line):
             head, rest = line.split(":", 1)
-
-            # store sub-unit as topic
             current_unit.topics.append(Topic(title=head.strip()))
-
             for t in smart_split_topics(rest):
                 current_unit.topics.append(Topic(title=t))
-
             last_topic = None
             continue
 
-        # -------------------------------
-        # IGNORE ADMIN HEADINGS
-        # -------------------------------
         if looks_like_heading(line):
             continue
 
         if len(line) > 240:
             continue
 
-        # -------------------------------
-        # CONTINUATION MERGE
-        # -------------------------------
         if last_topic and looks_like_continuation(line):
             last_topic.title += " " + line
             continue
 
-        # -------------------------------
-        # NORMAL TOPIC EXTRACTION
-        # -------------------------------
         topics = smart_split_topics(line)
-        if not topics:
-            continue
-
         for t in topics:
             topic = Topic(title=t)
             current_unit.topics.append(topic)
             last_topic = topic
 
-    # -------------------------------
-    # SAFETY FALLBACK
-    # -------------------------------
     if not units:
         units.append(
             Unit(
                 unit_number=1,
                 title="Syllabus Topics",
-                topics=[
-                    Topic(title=l)
-                    for l in lines
-                    if len(l) > 6
-                ][:30]
+                topics=[Topic(title=l) for l in lines if len(l) > 6][:30],
             )
         )
 
