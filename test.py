@@ -1,98 +1,41 @@
-from app.core.adaptive_plan_generator import generate_adaptive_plan
-from datetime import date, timedelta
+from pymongo import MongoClient
+from bson import ObjectId
+import json
 
-# =====================================================
-# 1. SIMULATED SYLLABUS PIPELINE OUTPUT
-# (Matches syllabus_pipeline.process_syllabus)
-# =====================================================
+# ---- Mongo Connection (same as database.py) ----
+MONGO_URL = "mongodb+srv://dbUser:shreekar1572004@cluster0.4wsqsxc.mongodb.net/study_planner?retryWrites=true&w=majority"
 
-topics = [
-    {
-        "topic": "Introduction to DBMS",
-        "complexity": "Easy",
-        "estimated_hours": 0.5
-    },
-    {
-        "topic": "ER Model",
-        "complexity": "Easy",
-        "estimated_hours": 1.0
-    },
-    {
-        "topic": "Relational Algebra",
-        "complexity": "Medium",
-        "estimated_hours": 1.5
-    },
-    {
-        "topic": "Normalization",
-        "complexity": "Hard",
-        "estimated_hours": 2.5
-    },
-    {
-        "topic": "Indexing",
-        "complexity": "Medium",
-        "estimated_hours": 2.0
+client = MongoClient(MONGO_URL)
+db = client["ai_study_planner"]
+syllabus_collection = db["syllabus"]
+
+# ---- Fetch latest syllabus record ----
+latest = syllabus_collection.find().sort("_id", -1).limit(1)
+
+for doc in latest:
+    print("\n========== LATEST SYLLABUS RECORD ==========\n")
+
+    output = {
+        "id": str(doc.get("_id")),
+        "filename": doc.get("filename"),
+        "status": doc.get("status"),
+        "validated": doc.get("validated"),
+        "has_full_text": bool(doc.get("full_text")),
+        "subjects_detected": doc.get("subjects_detected"),
+        "selected_subject": doc.get("selected_subject"),
+        "structured_syllabus_preview": []
     }
-]
 
-# =====================================================
-# 2. SIMULATED LEARNER STATE SNAPSHOT
-# =====================================================
+    structured = doc.get("structured_syllabus") or []
 
-learner_state = {
-    "learning_speed": 1.0,
-    "topic_states": {
-        "Introduction to DBMS": {"familiarity": 0.7},
-        "ER Model": {"familiarity": 0.6},
-        "Relational Algebra": {"familiarity": 0.3},
-        "Normalization": {"familiarity": 0.1},
-        "Indexing": {"familiarity": 0.2},
-    }
-}
+    for unit in structured:
+        output["structured_syllabus_preview"].append({
+            "unit_number": unit.get("unit_number"),
+            "title": unit.get("title"),
+            "topics_count": len(unit.get("topics", [])),
+            "sample_topics": unit.get("topics", [])[:5]
+        })
 
-# =====================================================
-# 3. STUDY CONSTRAINTS
-# =====================================================
+    print(json.dumps(output, indent=4))
 
-hours_per_day = 3
-deadline_days = 7
-
-# =====================================================
-# 4. GENERATE ADAPTIVE STUDY PLAN
-# =====================================================
-
-plan = generate_adaptive_plan(
-    topics=topics,
-    learner_state=learner_state,
-    hours_per_day=hours_per_day,
-    deadline_days=deadline_days
-)
-
-# =====================================================
-# 5. PRINT PLAN (HUMAN READABLE)
-# =====================================================
-
-print("\n📅 ADAPTIVE STUDY PLAN\n")
-
-for day in sorted(plan.keys()):
-    print(f"📌 Day {day}")
-    total_time = 0
-
-    for session in plan[day]:
-        if session["type"] == "study":
-            print(
-                f"   📖 {session['topic']} "
-                f"(complexity={session['complexity']}, "
-                f"time={session['hours']}h)"
-            )
-            total_time += session["hours"]
-
-        elif session["type"] == "revision":
-            print(f"   🔁 Revision Session ({session['hours']}h)")
-            total_time += session["hours"]
-
-        elif session["type"] == "micro_test":
-            print(f"   🧪 Micro Familiarity Test ({session['questions']} questions)")
-
-    print(f"   ⏱ Total Study Time: {round(total_time, 2)}h\n")
-
-print("✅ Simulation complete.")
+print("\n===========================================\n")
