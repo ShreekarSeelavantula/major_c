@@ -17,11 +17,10 @@ def normalize_text(text: str) -> str:
 
 
 def clean_line(line: str) -> str:
-    line = line.strip()
     line = normalize_text(line)
     line = re.sub(r"[•●▪■]", "", line)
     line = re.sub(r"\s+", " ", line)
-    return line
+    return line.strip()
 
 
 # =================================================
@@ -49,13 +48,11 @@ NOISE_KEYWORDS = [
 
 
 def is_metadata(line: str) -> bool:
-    lower = line.lower()
-    return any(k in lower for k in METADATA_KEYWORDS)
+    return any(k in line.lower() for k in METADATA_KEYWORDS)
 
 
 def is_noise(line: str) -> bool:
-    lower = line.lower()
-    return any(k in lower for k in NOISE_KEYWORDS)
+    return any(k in line.lower() for k in NOISE_KEYWORDS)
 
 
 STOP_SECTIONS = [
@@ -67,8 +64,7 @@ STOP_SECTIONS = [
 
 
 def is_stop_section(line: str) -> bool:
-    lower = line.lower()
-    return any(k in lower for k in STOP_SECTIONS)
+    return any(k in line.lower() for k in STOP_SECTIONS)
 
 
 # =================================================
@@ -82,12 +78,7 @@ COURSE_CODE_REGEX = re.compile(
 
 
 def extract_primary_subject_text(text: str) -> str:
-    """
-    Extract text belonging to the first detected subject only.
-    Prevents headers and other subjects from polluting syllabus.
-    """
     lines = normalize_text(text).split("\n")
-
     subject_lines: List[str] = []
     collecting = False
 
@@ -110,17 +101,30 @@ def extract_primary_subject_text(text: str) -> str:
 
 
 # =================================================
-# UNIT & TOPIC PATTERNS
+# UNIT / SUB-UNIT PATTERNS
 # =================================================
 
 UNIT_REGEX = re.compile(
-    r"^\s*UNIT\s*[-:]?\s*(I|II|III|IV|V|VI|VII|VIII|IX|X|\d+)\s*$",
+    r"^\s*UNIT\s*[-:]?\s*(I|II|III|IV|V|VI|VII|VIII|IX|X|\d+)\b",
     re.IGNORECASE
 )
 
 
 def is_unit_heading(line: str) -> bool:
     return bool(UNIT_REGEX.match(line))
+
+
+def is_subunit_heading(line: str) -> bool:
+    """
+    Detects:
+    Security Concepts: ...
+    Cryptography Concepts and Techniques: ...
+    """
+    return (
+        ":" in line
+        and line[0].isupper()
+        and len(line.split(":")[0].split()) <= 7
+    )
 
 
 def looks_like_heading(line: str) -> bool:
@@ -131,33 +135,29 @@ def looks_like_continuation(line: str) -> bool:
     return (
         line[0].islower()
         or line.startswith("(")
-        or line.startswith(",")
         or line.startswith("-")
     )
 
 
-def split_topics(line: str) -> List[str]:
-    parts = [p.strip() for p in line.split(",") if len(p.strip()) > 5]
-    return parts if len(parts) > 1 else [line]
+def split_topics(text: str) -> List[str]:
+    parts = [p.strip() for p in text.split(",") if len(p.strip()) > 4]
+    return parts
 
 
 # =================================================
-# CORE STRUCTURER (FINAL + STABLE)
+# CORE STRUCTURER (UPGRADED)
 # =================================================
 
 def structure_syllabus(text: str) -> List[Unit]:
-    # Step 1: isolate one subject
     text = extract_primary_subject_text(text)
-    lines = text.split("\n")
+    lines = [clean_line(l) for l in text.split("\n")]
 
     units: List[Unit] = []
     current_unit: Unit | None = None
     last_topic: Topic | None = None
     expecting_unit_title = False
 
-    for raw_line in lines:
-        line = clean_line(raw_line)
-
+    for line in lines:
         if not line or len(line) < 4:
             continue
 
@@ -182,17 +182,35 @@ def structure_syllabus(text: str) -> List[Unit]:
             continue
 
         # -------------------------------
-        # UNIT TITLE (NEXT LINE AFTER UNIT)
+        # UNIT TITLE
         # -------------------------------
         if expecting_unit_title:
-            if line.endswith(":"):
-                current_unit.title = line.rstrip(":")
-                expecting_unit_title = False
-                continue
-            else:
-                current_unit.title = line
-                expecting_unit_title = False
-                continue
+            current_unit.title = line.rstrip(":")
+            expecting_unit_title = False
+            continue
+
+        # -------------------------------
+        # STOP AT REFERENCES
+        # -------------------------------
+        if is_stop_section(line):
+            break
+
+        # -------------------------------
+        # SUB-UNIT HANDLING (NEW)
+        # -------------------------------
+        if is_subunit_heading(line):
+            head, rest = line.split(":", 1)
+
+            # store sub-unit name as a topic
+            sub_topic = Topic(title=head.strip())
+            current_unit.topics.append(sub_topic)
+
+            # split remaining description
+            for t in split_topics(rest):
+                current_unit.topics.append(Topic(title=t))
+
+            last_topic = None
+            continue
 
         # -------------------------------
         # IGNORE ADMIN HEADINGS
@@ -200,26 +218,30 @@ def structure_syllabus(text: str) -> List[Unit]:
         if looks_like_heading(line):
             continue
 
-        if len(line) > 220:
+        if len(line) > 240:
             continue
 
         # -------------------------------
-        # CONTINUATION LOGIC
+        # CONTINUATION MERGE
         # -------------------------------
         if last_topic and not last_topic.title.endswith("."):
             last_topic.title += " " + line
             continue
 
         # -------------------------------
-        # TOPIC EXTRACTION
+        # NORMAL TOPIC EXTRACTION
         # -------------------------------
-        for t in split_topics(line):
+        topics = split_topics(line)
+        if not topics:
+            continue
+
+        for t in topics:
             topic = Topic(title=t)
             current_unit.topics.append(topic)
             last_topic = topic
 
     # -------------------------------
-    # SAFETY FALLBACK (RARE)
+    # SAFETY FALLBACK
     # -------------------------------
     if not units:
         units.append(
@@ -227,9 +249,9 @@ def structure_syllabus(text: str) -> List[Unit]:
                 unit_number=1,
                 title="Syllabus Topics",
                 topics=[
-                    Topic(title=clean_line(l))
+                    Topic(title=l)
                     for l in lines
-                    if len(clean_line(l)) > 6
+                    if len(l) > 6
                 ][:30]
             )
         )
