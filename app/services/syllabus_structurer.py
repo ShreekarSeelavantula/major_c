@@ -115,11 +115,6 @@ def is_unit_heading(line: str) -> bool:
 
 
 def is_subunit_heading(line: str) -> bool:
-    """
-    Detects:
-    Security Concepts: ...
-    Cryptography Concepts and Techniques: ...
-    """
     return (
         ":" in line
         and line[0].isupper()
@@ -139,13 +134,45 @@ def looks_like_continuation(line: str) -> bool:
     )
 
 
-def split_topics(text: str) -> List[str]:
-    parts = [p.strip() for p in text.split(",") if len(p.strip()) > 4]
-    return parts
+# =================================================
+# SMART TOPIC SPLITTING (UPGRADED)
+# =================================================
+
+def smart_split_topics(text: str) -> List[str]:
+    """
+    Split comma-separated topics ONLY when they are truly independent.
+    """
+    raw_parts = [p.strip() for p in text.split(",")]
+
+    topics: List[str] = []
+    buffer = ""
+
+    for part in raw_parts:
+        if not part:
+            continue
+
+        # merge short or dependent fragments
+        if (
+            len(part.split()) <= 2
+            or " and " in part.lower()
+            or part.isupper()
+        ):
+            buffer = f"{buffer}, {part}" if buffer else part
+        else:
+            if buffer:
+                topics.append(buffer)
+                buffer = ""
+            topics.append(part)
+
+    if buffer:
+        topics.append(buffer)
+
+    # final cleanup
+    return [t.strip() for t in topics if len(t.strip()) > 4]
 
 
 # =================================================
-# CORE STRUCTURER (UPGRADED)
+# CORE STRUCTURER (FINAL)
 # =================================================
 
 def structure_syllabus(text: str) -> List[Unit]:
@@ -170,7 +197,7 @@ def structure_syllabus(text: str) -> List[Unit]:
         if is_unit_heading(line):
             current_unit = Unit(
                 unit_number=len(units) + 1,
-                title="",
+                title=f"Unit {len(units) + 1}",
                 topics=[]
             )
             units.append(current_unit)
@@ -182,12 +209,16 @@ def structure_syllabus(text: str) -> List[Unit]:
             continue
 
         # -------------------------------
-        # UNIT TITLE
+        # UNIT TITLE LOGIC (SURGICAL FIX)
         # -------------------------------
         if expecting_unit_title:
-            current_unit.title = line.rstrip(":")
-            expecting_unit_title = False
-            continue
+            # if first line has colon → it's sub-unit, not unit title
+            if ":" in line:
+                expecting_unit_title = False
+            else:
+                current_unit.title = line.rstrip(":")
+                expecting_unit_title = False
+                continue
 
         # -------------------------------
         # STOP AT REFERENCES
@@ -196,17 +227,15 @@ def structure_syllabus(text: str) -> List[Unit]:
             break
 
         # -------------------------------
-        # SUB-UNIT HANDLING (NEW)
+        # SUB-UNIT HANDLING
         # -------------------------------
         if is_subunit_heading(line):
             head, rest = line.split(":", 1)
 
-            # store sub-unit name as a topic
-            sub_topic = Topic(title=head.strip())
-            current_unit.topics.append(sub_topic)
+            # store sub-unit as topic
+            current_unit.topics.append(Topic(title=head.strip()))
 
-            # split remaining description
-            for t in split_topics(rest):
+            for t in smart_split_topics(rest):
                 current_unit.topics.append(Topic(title=t))
 
             last_topic = None
@@ -224,14 +253,14 @@ def structure_syllabus(text: str) -> List[Unit]:
         # -------------------------------
         # CONTINUATION MERGE
         # -------------------------------
-        if last_topic and not last_topic.title.endswith("."):
+        if last_topic and looks_like_continuation(line):
             last_topic.title += " " + line
             continue
 
         # -------------------------------
         # NORMAL TOPIC EXTRACTION
         # -------------------------------
-        topics = split_topics(line)
+        topics = smart_split_topics(line)
         if not topics:
             continue
 
