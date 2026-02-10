@@ -9,28 +9,31 @@
     Extracted from <strong>{{ syllabus.filename }}</strong>
 </p>
 
+<!-- RAW TEXT PREVIEW -->
 <div class="card shadow-sm mb-4">
     <div class="card-body">
 
         <h5 class="fw-semibold mb-2">
-            Extracted Text Preview (First 3 Pages)
+            Extracted Text Preview
         </h5>
-
-        <p class="text-muted mb-3">
-            Please verify that the extracted text looks like a syllabus before continuing.
-        </p>
 
         <pre style="
             white-space: pre-wrap;
-            max-height: 400px;
+            max-height: 300px;
             overflow-y: auto;
             background: #f8f9fa;
             padding: 15px;
             border-radius: 6px;
             border: 1px solid #ddd;
         ">
-{{ syllabus.preview_text or "No text could be extracted." }}
+{{ syllabus.preview_text or "No text extracted." }}
         </pre>
+
+        {% if syllabus.error %}
+            <div class="alert alert-danger mt-3">
+                {{ syllabus.error }}
+            </div>
+        {% endif %}
 
         {% if not syllabus.validated %}
             <form method="post"
@@ -40,19 +43,42 @@
                     Validate syllabus →
                 </button>
             </form>
-        {% else %}
-            <div class="alert alert-success mt-4">
-                Syllabus validated successfully. Processing full document…
-            </div>
         {% endif %}
+    </div>
+</div>
+
+<!-- STRUCTURED SYLLABUS -->
+{% if syllabus.validated and syllabus.structured %}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <h4 class="fw-bold mb-3">Structured Syllabus</h4>
+
+        {% for unit in syllabus.structured %}
+            <div class="mb-3">
+                <h6 class="fw-semibold">
+                    {{ unit.title }}
+                </h6>
+                <ul class="mb-2">
+                    {% for topic in unit.topics %}
+                        <li>{{ topic }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+
+        <div class="alert alert-success mt-4">
+            Syllabus validated and structured successfully.
+        </div>
 
     </div>
 </div>
 
-<div class="d-flex justify-content-start">
-    <a href="/upload" class="btn btn-outline-secondary">
-        Re-upload
-    </a>
-</div>
+{% endif %}
+
+<a href="/upload" class="btn btn-outline-secondary">
+    Re-upload
+</a>
 
 {% endblock %}

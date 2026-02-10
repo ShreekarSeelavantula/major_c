@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, UploadFile, File, HTTPException, status, Form
+from fastapi import APIRouter, Request, UploadFile, File, HTTPException, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from bson import ObjectId
@@ -129,6 +129,7 @@ def validate_syllabus(request: Request, syllabus_id: str):
     if not syllabus:
         raise HTTPException(status_code=404, detail="Syllabus not found")
 
+    # ---- VALIDATION (PREVIEW TEXT) ----
     analysis = analyze_syllabus(syllabus["preview_text"])
 
     if not analysis["is_syllabus"]:
@@ -146,7 +147,7 @@ def validate_syllabus(request: Request, syllabus_id: str):
 
 
 # --------------------------------------------------
-# Full Extraction (ALL PAGES)
+# Full Extraction + Structuring (CORE STEP)
 # --------------------------------------------------
 @router.get("/syllabus/extract-full/{syllabus_id}")
 def extract_full_syllabus(request: Request, syllabus_id: str):
@@ -161,16 +162,33 @@ def extract_full_syllabus(request: Request, syllabus_id: str):
     if not syllabus:
         raise HTTPException(status_code=404, detail="Syllabus not found")
 
+    # ---- FULL TEXT EXTRACTION ----
     file_bytes = fs.get(syllabus["file_id"]).read()
-
     full_text = extract_text_from_pdf(file_bytes)
+
+    # ---- STRUCTURE FULL SYLLABUS ----
+    structured_units = structure_syllabus(full_text)
+
+    structured_payload = [
+        {
+            "unit_number": unit.unit_number,
+            "title": unit.title,
+            "topics": [topic.title for topic in unit.topics]
+        }
+        for unit in structured_units
+    ]
 
     syllabus_collection.update_one(
         {"_id": ObjectId(syllabus_id)},
-        {"$set": {"full_text": full_text, "status": "full_extracted"}}
+        {
+            "$set": {
+                "full_text": full_text,
+                "structured_syllabus": structured_payload,
+                "status": "structured"
+            }
+        }
     )
 
-    # NEXT STEP: subject detection (we’ll do next)
     return RedirectResponse(
         url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
