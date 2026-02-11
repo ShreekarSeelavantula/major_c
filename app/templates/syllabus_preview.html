@@ -13,9 +13,7 @@
 <div class="card shadow-sm mb-4">
     <div class="card-body">
 
-        <h5 class="fw-semibold mb-2">
-            Extracted Text Preview
-        </h5>
+        <h5 class="fw-semibold mb-2">Extracted Text Preview</h5>
 
         <pre style="
             white-space: pre-wrap;
@@ -44,23 +42,85 @@
                 </button>
             </form>
         {% endif %}
+
     </div>
 </div>
 
+
+<!-- VALIDATION SUCCESS -->
+{% if syllabus.validated %}
+
+<div class="alert alert-success shadow-sm">
+    ✅ Syllabus validated successfully!
+</div>
+
+{% endif %}
+
+
+<!-- SUBJECT SELECTION -->
+{% if syllabus.validated and syllabus.subjects_detected and not syllabus.structured_syllabus %}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <h4 class="fw-bold mb-3">Select Subject to Generate Study Plan</h4>
+
+        <div class="row">
+
+            {% for subject in syllabus.subjects_detected %}
+            <div class="col-md-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+
+                        <h6 class="fw-bold text-primary">
+                            {{ subject.course_code }}
+                        </h6>
+
+                        <p class="mb-2">
+                            {{ subject.title }}
+                        </p>
+
+                        <form method="post"
+                              action="/syllabus/structure/{{ syllabus._id }}"
+                              class="mt-3">
+
+                            <input type="hidden"
+                                   name="subject_text"
+                                   value="{{ subject.text }}">
+
+                            <button class="btn btn-outline-primary btn-sm w-100">
+                                Generate Plan →
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+
+{% endif %}
+
+
 <!-- STRUCTURED SYLLABUS -->
-{% if syllabus.validated and syllabus.structured %}
+{% if syllabus.structured_syllabus %}
 
 <div class="card shadow-sm mb-4">
     <div class="card-body">
 
         <h4 class="fw-bold mb-3">Structured Syllabus</h4>
 
-        {% for unit in syllabus.structured %}
+        {% for unit in syllabus.structured_syllabus %}
             <div class="mb-3">
                 <h6 class="fw-semibold">
                     {{ unit.title }}
                 </h6>
-                <ul class="mb-2">
+                <ul>
                     {% for topic in unit.topics %}
                         <li>{{ topic }}</li>
                     {% endfor %}
@@ -69,7 +129,7 @@
         {% endfor %}
 
         <div class="alert alert-success mt-4">
-            Syllabus validated and structured successfully.
+            Study plan generated successfully.
         </div>
 
     </div>
