@@ -9,6 +9,10 @@ from app.services.ocr_service import extract_text_with_ocr
 from app.services.syllabus_validator import analyze_syllabus
 from app.services.syllabus_structurer import structure_syllabus
 
+from app.services.subject_detector import detect_subjects
+
+from fastapi import Form
+
 router = APIRouter(tags=["Syllabus"])
 templates = Jinja2Templates(directory="app/templates")
 
@@ -118,6 +122,7 @@ def preview_syllabus(request: Request, syllabus_id: str):
 # --------------------------------------------------
 @router.post("/syllabus/validate/{syllabus_id}")
 def validate_syllabus(request: Request, syllabus_id: str):
+
     if "user_id" not in request.session:
         return RedirectResponse("/login", status_code=303)
 
@@ -129,19 +134,32 @@ def validate_syllabus(request: Request, syllabus_id: str):
     if not syllabus:
         raise HTTPException(status_code=404, detail="Syllabus not found")
 
-    # ---- VALIDATION (PREVIEW TEXT) ----
     analysis = analyze_syllabus(syllabus["preview_text"])
 
     if not analysis["is_syllabus"]:
         raise HTTPException(status_code=400, detail=analysis["reason"])
 
+    # ---- FULL TEXT EXTRACTION ----
+    file_bytes = fs.get(syllabus["file_id"]).read()
+    full_text = extract_text_from_pdf(file_bytes)
+
+    # ---- DETECT SUBJECTS ----
+    subjects = detect_subjects(full_text)
+
     syllabus_collection.update_one(
         {"_id": ObjectId(syllabus_id)},
-        {"$set": {"validated": True, "status": "validated"}}
+        {
+            "$set": {
+                "validated": True,
+                "full_text": full_text,
+                "subjects_detected": subjects,
+                "status": "subjects_detected"
+            }
+        }
     )
 
     return RedirectResponse(
-        url=f"/syllabus/extract-full/{syllabus_id}",
+        url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
     )
 
@@ -183,6 +201,43 @@ def extract_full_syllabus(request: Request, syllabus_id: str):
         {
             "$set": {
                 "full_text": full_text,
+                "structured_syllabus": structured_payload,
+                "status": "structured"
+            }
+        }
+    )
+
+    return RedirectResponse(
+        url=f"/syllabus/preview/{syllabus_id}",
+        status_code=status.HTTP_303_SEE_OTHER
+    )
+    
+
+@router.post("/syllabus/structure/{syllabus_id}")
+def structure_selected_subject(
+    request: Request,
+    syllabus_id: str,
+    subject_text: str = Form(...)
+):
+
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    structured_units = structure_syllabus(subject_text)
+
+    structured_payload = [
+        {
+            "unit_number": unit.unit_number,
+            "title": unit.title,
+            "topics": [topic.title for topic in unit.topics]
+        }
+        for unit in structured_units
+    ]
+
+    syllabus_collection.update_one(
+        {"_id": ObjectId(syllabus_id)},
+        {
+            "$set": {
                 "structured_syllabus": structured_payload,
                 "status": "structured"
             }
