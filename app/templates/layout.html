@@ -84,6 +84,56 @@
         .fade-in {
             animation: fadeInUp 0.6s ease;
         }
+
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Base animated fill */
+        .progress-fill {
+            height: 100%;
+            border-radius: 50px;
+            background: linear-gradient(
+                90deg,
+                #4e73df,
+                #9b59b6,
+                #4e73df
+            );
+            background-size: 200% 100%;
+            animation: flow 2s linear infinite;
+            transition: width 0.8s ease-in-out;
+        }
+
+        /* Step widths */
+        .progress-fill.step-1 { width: 5%; }
+        .progress-fill.step-2 { width: 50%; }
+        .progress-fill.step-3 { width: 100%; }
+
+        /* Flowing river animation */
+        @keyframes flow {
+            0% { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+
+
+        .subject-card {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            background-color: #f8fbff;
+        }
+
     </style>
 </head>
 
@@ -112,6 +162,7 @@
     </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

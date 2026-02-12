@@ -4,6 +4,39 @@
 
 {% block content %}
 
+<!-- Modern Progress Slider -->
+<!-- Amazon Style Flow Progress -->
+<div class="card shadow-sm mb-4 border-0">
+    <div class="card-body">
+
+        {% set step = 1 %}
+        {% if syllabus.status == "subjects_detected" %}
+            {% set step = 2 %}
+        {% elif syllabus.status == "structured" %}
+            {% set step = 3 %}
+        {% endif %}
+
+        <div class="mb-4">
+
+            <!-- Labels -->
+            <div class="d-flex justify-content-between mb-2 fw-semibold small">
+                <span>Preview</span>
+                <span>Subjects</span>
+                <span>Structured</span>
+            </div>
+
+            <!-- Progress Track -->
+            <div class="progress-track">
+                <div class="progress-fill step-{{ step }}"></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
 <h2 class="fw-bold mb-2">Syllabus Preview</h2>
 <p class="text-muted mb-3">
     Extracted from <strong>{{ syllabus.filename }}</strong>
@@ -60,42 +93,58 @@
 <!-- SUBJECT SELECTION -->
 {% if syllabus.validated and syllabus.subjects_detected and not syllabus.structured_syllabus %}
 
-<div class="card shadow-sm mb-4">
+<div class="card shadow-sm mb-4 border-0">
     <div class="card-body">
 
-        <h4 class="fw-bold mb-3">Select Subject to Generate Study Plan</h4>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Select Subject</h4>
+            <span class="text-muted small">
+                {{ syllabus.subjects_detected | length }} subjects detected
+            </span>
+        </div>
 
         <div class="row">
 
             {% for subject in syllabus.subjects_detected %}
-            <div class="col-md-6 mb-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
+            <div class="col-md-6 mb-4">
 
-                        <h6 class="fw-bold text-primary">
-                            {{ subject.course_code }}
-                        </h6>
+                <form method="post"
+                      action="/syllabus/structure/{{ syllabus._id }}"
+                      class="h-100">
 
-                        <p class="mb-2">
-                            {{ subject.title }}
-                        </p>
+                    <input type="hidden"
+                           name="subject_text"
+                           value="{{ subject.text }}">
 
-                        <form method="post"
-                              action="/syllabus/structure/{{ syllabus._id }}"
-                              class="mt-3">
+                    <button type="submit"
+                            class="subject-card w-100 text-start border-0 bg-white shadow-sm rounded p-4">
 
-                            <input type="hidden"
-                                   name="subject_text"
-                                   value="{{ subject.text }}">
+                        <div class="d-flex justify-content-between align-items-start">
 
-                            <button class="btn btn-outline-primary btn-sm w-100">
-                                Generate Plan →
-                            </button>
+                            <div>
+                                <span class="badge bg-primary mb-2">
+                                    {{ subject.course_code }}
+                                </span>
 
-                        </form>
+                                <h6 class="fw-semibold mb-1">
+                                    {{ subject.title }}
+                                </h6>
 
-                    </div>
-                </div>
+                                <small class="text-muted">
+                                    Click to generate structured plan
+                                </small>
+                            </div>
+
+                            <div class="text-primary fs-5">
+                                →
+                            </div>
+
+                        </div>
+
+                    </button>
+
+                </form>
+
             </div>
             {% endfor %}
 
@@ -110,26 +159,72 @@
 <!-- STRUCTURED SYLLABUS -->
 {% if syllabus.structured_syllabus %}
 
-<div class="card shadow-sm mb-4">
+<div class="card shadow-sm mb-4 border-0">
     <div class="card-body">
 
-        <h4 class="fw-bold mb-3">Structured Syllabus</h4>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Structured Syllabus</h4>
+            <span class="badge bg-primary">
+                {{ syllabus.structured_syllabus | length }} Units
+            </span>
+        </div>
 
-        {% for unit in syllabus.structured_syllabus %}
-            <div class="mb-3">
-                <h6 class="fw-semibold">
-                    {{ unit.title }}
-                </h6>
-                <ul>
-                    {% for topic in unit.topics %}
-                        <li>{{ topic }}</li>
-                    {% endfor %}
-                </ul>
+        <div class="accordion" id="syllabusAccordion">
+
+            {% for unit in syllabus.structured_syllabus %}
+            <div class="accordion-item border-0 shadow-sm mb-3 rounded">
+
+                <h2 class="accordion-header" id="heading{{ loop.index }}">
+                    <button class="accordion-button collapsed fw-semibold"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ loop.index }}"
+                            aria-expanded="false"
+                            aria-controls="collapse{{ loop.index }}">
+
+                        <div class="d-flex justify-content-between w-100 me-3">
+                            <span>{{ unit.title }}</span>
+                            <span class="badge bg-light text-dark">
+                                {{ unit.topics | length }} Topics
+                            </span>
+                        </div>
+
+                    </button>
+                </h2>
+
+                <div id="collapse{{ loop.index }}"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="heading{{ loop.index }}"
+                     data-bs-parent="#syllabusAccordion">
+
+                    <div class="accordion-body">
+
+                        <ul class="list-group list-group-flush">
+                            {% for topic in unit.topics %}
+                            <li class="list-group-item">
+                                {{ topic }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </div>
+
             </div>
-        {% endfor %}
+            {% endfor %}
 
-        <div class="alert alert-success mt-4">
-            Study plan generated successfully.
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between">
+            <a href="/syllabus/change-subject/{{ syllabus._id }}"
+               class="btn btn-outline-primary">
+                ← Change Subject
+            </a>
+
+            <a href="/upload"
+               class="btn btn-outline-secondary">
+                Re-upload
+            </a>
         </div>
 
     </div>

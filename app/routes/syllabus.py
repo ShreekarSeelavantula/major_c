@@ -239,6 +239,7 @@ def structure_selected_subject(
         {
             "$set": {
                 "structured_syllabus": structured_payload,
+                "selected_subject": subject_text,
                 "status": "structured"
             }
         }
@@ -248,3 +249,35 @@ def structure_selected_subject(
         url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
     )
+
+
+@router.get("/syllabus/change-subject/{syllabus_id}")
+def change_subject(request: Request, syllabus_id: str):
+
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    syllabus = syllabus_collection.find_one({
+        "_id": ObjectId(syllabus_id),
+        "user_id": ObjectId(request.session["user_id"])
+    })
+
+    if not syllabus:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+
+    syllabus_collection.update_one(
+        {"_id": ObjectId(syllabus_id)},
+        {
+            "$set": {
+                "structured_syllabus": None,
+                "selected_subject": None,
+                "status": "subjects_detected"
+            }
+        }
+    )
+
+    return RedirectResponse(
+        url=f"/syllabus/preview/{syllabus_id}",
+        status_code=status.HTTP_303_SEE_OTHER
+    )
+
