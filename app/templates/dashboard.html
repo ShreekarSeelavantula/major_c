@@ -4,39 +4,51 @@
 
 {% block content %}
 
-<h2 class="fw-bold mb-1">Dashboard</h2>
-<p class="text-muted mb-4">
-    Welcome back {{ user_name }} 👋! You are learning at a <strong>Medium</strong> pace.
-</p>
+<div class="mb-4">
+    <h2 class="fw-bold mb-1">Dashboard</h2>
+    <p class="text-muted">
+        Welcome back {{ user_name }} 👋
+        You're currently learning at a <span class="badge bg-warning text-dark">Medium Pace</span>
+    </p>
+</div>
 
-<!-- Stats Row -->
-<div class="row g-4 mb-4">
+<!-- STATS -->
+<div class="row g-4 mb-5">
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
             <div class="card-body">
-                <h6 class="text-muted">Active Plans</h6>
-                <h2 class="fw-bold">0</h2>
+                <div class="d-flex justify-content-between">
+                    <h6 class="text-muted">Active Plans</h6>
+                    <i class="bi bi-journal-check text-primary"></i>
+                </div>
+                <h2 class="fw-bold mt-2">0</h2>
                 <small class="text-muted">Currently in progress</small>
             </div>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
             <div class="card-body">
-                <h6 class="text-muted">Total Plans Created</h6>
-                <h2 class="fw-bold">0</h2>
-                <small class="text-muted">Lifetime</small>
+                <div class="d-flex justify-content-between">
+                    <h6 class="text-muted">Total Plans</h6>
+                    <i class="bi bi-stack text-success"></i>
+                </div>
+                <h2 class="fw-bold mt-2">0</h2>
+                <small class="text-muted">Lifetime created</small>
             </div>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
             <div class="card-body">
-                <h6 class="text-muted">Study Pace</h6>
-                <h2 class="fw-bold">–</h2>
+                <div class="d-flex justify-content-between">
+                    <h6 class="text-muted">Study Pace</h6>
+                    <i class="bi bi-speedometer2 text-danger"></i>
+                </div>
+                <h2 class="fw-bold mt-2">–</h2>
                 <small class="text-muted">Based on assessment</small>
             </div>
         </div>
@@ -44,32 +56,34 @@
 
 </div>
 
-<!-- Study Plans Section -->
-<div class="card shadow-sm">
-    <div class="card-body">
+<!-- STUDY PLANS -->
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-4">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="fw-bold mb-0">Your Study Plans</h5>
             <a href="/upload" class="btn btn-primary">
                 ➕ Create Plan
             </a>
         </div>
 
-        <!-- Empty State -->
+        <!-- EMPTY STATE -->
         <div class="text-center py-5">
-            <p class="text-muted mb-2">
-                No active plans
-            </p>
+
+            <i class="bi bi-folder-x fs-1 text-muted mb-3"></i>
+
+            <h6 class="fw-semibold">No Study Plans Yet</h6>
             <p class="text-muted">
-                Upload a syllabus to get started.
+                Upload a syllabus and let AI generate your personalized roadmap.
             </p>
 
             <a href="/upload" class="btn btn-outline-primary mt-3">
-                Generate My Plan
+                Generate My First Plan
             </a>
+
         </div>
 
     </div>
-</div>
+</div> 
 
 {% endblock %}
