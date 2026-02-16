@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, UploadFile, File, HTTPException, status
+from fastapi import APIRouter, Request, UploadFile, File, HTTPException, status, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from bson import ObjectId
@@ -8,12 +8,11 @@ from app.services.syllabus_parser import extract_text_from_pdf
 from app.services.ocr_service import extract_text_with_ocr
 from app.services.syllabus_validator import analyze_syllabus
 from app.services.syllabus_structurer import structure_syllabus
-
 from app.services.subject_detector import detect_subjects
-
-from fastapi import Form
-
 from app.services.syllabus_pipeline import process_syllabus
+
+# ✅ NEW
+from app.services.planner_service import PlannerService
 
 
 router = APIRouter(tags=["Syllabus"])
@@ -25,7 +24,7 @@ ALLOWED_TYPES = {
     "image/png"
 }
 
-MAX_SIZE = 10 * 1024 * 1024  # 10 MB
+MAX_SIZE = 10 * 1024 * 1024
 
 
 # --------------------------------------------------
@@ -40,13 +39,10 @@ def upload_page(request: Request):
 
 
 # --------------------------------------------------
-# Upload Handler (PREVIEW ONLY)
+# Upload Handler
 # --------------------------------------------------
 @router.post("/upload")
-async def upload_syllabus(
-    request: Request,
-    file: UploadFile = File(...)
-):
+async def upload_syllabus(request: Request, file: UploadFile = File(...)):
     user_id = request.session.get("user_id")
     if not user_id:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -58,7 +54,6 @@ async def upload_syllabus(
     if len(contents) > MAX_SIZE:
         raise HTTPException(status_code=400, detail="File exceeds 10MB limit")
 
-    # Store file in GridFS
     file_id = fs.put(
         contents,
         filename=file.filename,
@@ -66,7 +61,6 @@ async def upload_syllabus(
         metadata={"user_id": user_id}
     )
 
-    # -------- PREVIEW EXTRACTION (FIRST 3 PAGES ONLY) --------
     preview_text = ""
 
     if file.content_type == "application/pdf":
@@ -86,6 +80,7 @@ async def upload_syllabus(
         "subjects_detected": [],
         "selected_subject": None,
         "structured_syllabus": None,
+        "generated_plan": None,   # ✅ NEW
         "status": "preview"
     }).inserted_id
 
@@ -121,7 +116,7 @@ def preview_syllabus(request: Request, syllabus_id: str):
 
 
 # --------------------------------------------------
-# Validate Syllabus (USER ACTION)
+# Validate
 # --------------------------------------------------
 @router.post("/syllabus/validate/{syllabus_id}")
 def validate_syllabus(request: Request, syllabus_id: str):
@@ -142,11 +137,9 @@ def validate_syllabus(request: Request, syllabus_id: str):
     if not analysis["is_syllabus"]:
         raise HTTPException(status_code=400, detail=analysis["reason"])
 
-    # ---- FULL TEXT EXTRACTION ----
     file_bytes = fs.get(syllabus["file_id"]).read()
     full_text = extract_text_from_pdf(file_bytes)
 
-    # ---- DETECT SUBJECTS ----
     subjects = detect_subjects(full_text)
 
     syllabus_collection.update_one(
@@ -168,54 +161,8 @@ def validate_syllabus(request: Request, syllabus_id: str):
 
 
 # --------------------------------------------------
-# Full Extraction + Structuring (CORE STEP)
+# STRUCTURE + GENERATE PLAN (UPDATED CORE)
 # --------------------------------------------------
-@router.get("/syllabus/extract-full/{syllabus_id}")
-def extract_full_syllabus(request: Request, syllabus_id: str):
-    if "user_id" not in request.session:
-        return RedirectResponse("/login", status_code=303)
-
-    syllabus = syllabus_collection.find_one({
-        "_id": ObjectId(syllabus_id),
-        "user_id": ObjectId(request.session["user_id"])
-    })
-
-    if not syllabus:
-        raise HTTPException(status_code=404, detail="Syllabus not found")
-
-    # ---- FULL TEXT EXTRACTION ----
-    file_bytes = fs.get(syllabus["file_id"]).read()
-    full_text = extract_text_from_pdf(file_bytes)
-
-    # ---- STRUCTURE FULL SYLLABUS ----
-    structured_units = structure_syllabus(full_text)
-
-    structured_payload = [
-        {
-            "unit_number": unit.unit_number,
-            "title": unit.title,
-            "topics": [topic.title for topic in unit.topics]
-        }
-        for unit in structured_units
-    ]
-
-    syllabus_collection.update_one(
-        {"_id": ObjectId(syllabus_id)},
-        {
-            "$set": {
-                "full_text": full_text,
-                "structured_syllabus": structured_payload,
-                "status": "structured"
-            }
-        }
-    )
-
-    return RedirectResponse(
-        url=f"/syllabus/preview/{syllabus_id}",
-        status_code=status.HTTP_303_SEE_OTHER
-    )
-    
-
 @router.post("/syllabus/structure/{syllabus_id}")
 def structure_selected_subject(
     request: Request,
@@ -227,23 +174,23 @@ def structure_selected_subject(
         return RedirectResponse("/login", status_code=303)
 
     structured_units = structure_syllabus(subject_text)
-
-
     enriched_topics = process_syllabus(structured_units)
 
-    # Map enriched data by topic name
-    enriched_map = {
-        t["topic"]: t for t in enriched_topics
-    }
-
+    # -------- STORE STRUCTURED --------
     structured_payload = []
+
+    planner_topics = []
 
     for unit in structured_units:
         unit_topics = []
 
         for topic in unit.topics:
             name = topic.title
-            enriched = enriched_map.get(name)
+
+            enriched = next(
+                (t for t in enriched_topics if t["topic"] == name),
+                None
+            )
 
             if enriched:
                 unit_topics.append({
@@ -254,19 +201,41 @@ def structure_selected_subject(
                     "unit_index": unit.unit_number
                 })
 
+                # ✅ Prepare for planner
+                planner_topics.append({
+                    "topic": name,
+                    "complexity": enriched["complexity"],
+                    "estimated_hours": enriched["estimated_hours"]
+                })
+
         structured_payload.append({
             "unit_number": unit.unit_number,
             "title": unit.title,
             "topics": unit_topics
         })
 
+    # -------- GENERATE PLAN --------
+    learner_state = {
+        "learning_speed": 1.0,
+        "consistency": 1.0,
+        "topic_states": {}
+    }
 
+    generated_plan = PlannerService.create_plan(
+        topics=planner_topics,
+        learner_state=learner_state,
+        hours_per_day=3,
+        deadline_days=7
+    )
+
+    # -------- UPDATE DB --------
     syllabus_collection.update_one(
         {"_id": ObjectId(syllabus_id)},
         {
             "$set": {
                 "structured_syllabus": structured_payload,
                 "selected_subject": subject_text,
+                "generated_plan": generated_plan,   # ✅ STORED
                 "status": "structured"
             }
         }
@@ -277,7 +246,9 @@ def structure_selected_subject(
         status_code=status.HTTP_303_SEE_OTHER
     )
 
-
+# --------------------------------------------------
+# CHANGE SUBJECT
+# --------------------------------------------------
 @router.get("/syllabus/change-subject/{syllabus_id}")
 def change_subject(request: Request, syllabus_id: str):
 
@@ -298,6 +269,7 @@ def change_subject(request: Request, syllabus_id: str):
             "$set": {
                 "structured_syllabus": None,
                 "selected_subject": None,
+                "generated_plan": None,   # ✅ important (new field)
                 "status": "subjects_detected"
             }
         }
@@ -307,4 +279,3 @@ def change_subject(request: Request, syllabus_id: str):
         url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
     )
-
