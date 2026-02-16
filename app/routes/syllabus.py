@@ -13,6 +13,9 @@ from app.services.subject_detector import detect_subjects
 
 from fastapi import Form
 
+from app.services.syllabus_pipeline import process_syllabus
+
+
 router = APIRouter(tags=["Syllabus"])
 templates = Jinja2Templates(directory="app/templates")
 
@@ -225,14 +228,38 @@ def structure_selected_subject(
 
     structured_units = structure_syllabus(subject_text)
 
-    structured_payload = [
-        {
+
+    enriched_topics = process_syllabus(structured_units)
+
+    # Map enriched data by topic name
+    enriched_map = {
+        t["topic"]: t for t in enriched_topics
+    }
+
+    structured_payload = []
+
+    for unit in structured_units:
+        unit_topics = []
+
+        for topic in unit.topics:
+            name = topic.title
+            enriched = enriched_map.get(name)
+
+            if enriched:
+                unit_topics.append({
+                    "name": name,
+                    "complexity": enriched["complexity"],
+                    "score": enriched["score"],
+                    "estimated_hours": enriched["estimated_hours"],
+                    "unit_index": unit.unit_number
+                })
+
+        structured_payload.append({
             "unit_number": unit.unit_number,
             "title": unit.title,
-            "topics": [topic.title for topic in unit.topics]
-        }
-        for unit in structured_units
-    ]
+            "topics": unit_topics
+        })
+
 
     syllabus_collection.update_one(
         {"_id": ObjectId(syllabus_id)},

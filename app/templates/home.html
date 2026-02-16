@@ -4,69 +4,148 @@
     <meta charset="UTF-8">
     <title>Prep Genie | AI Study Planner</title>
 
-    <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Optional icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         body {
-            background: linear-gradient(135deg, #f8f9fa, #eef2ff);
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4e73df, #9b59b6);
+            color: white;
         }
+
+        .navbar {
+            background: rgba(255,255,255,0.1) !important;
+            backdrop-filter: blur(15px);
+        }
+
+        .navbar a {
+            color: white !important;
+        }
+
         .hero {
-            min-height: 85vh;
+            min-height: 90vh;
             display: flex;
             align-items: center;
         }
-        .brand-icon {
-            font-size: 1.5rem;
+
+        .gradient-text {
+            background: linear-gradient(90deg, #ffffff, #dcd6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-btn {
+            padding: 12px 28px;
+            font-weight: 600;
+            border-radius: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffffff, #e4e0ff);
+            color: #4e73df;
+            border: none;
+        }
+
+        .btn-outline-primary {
+            border-color: white;
+            color: white;
+        }
+
+        .btn-outline-primary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .feature-card {
+            border-radius: 20px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(15px);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .feature-card p {
+            color: rgba(255,255,255,0.85);
         }
     </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg py-3">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="/">
-            <i class="bi bi-lightning-charge-fill text-primary brand-icon"></i>
+        <a class="navbar-brand fw-bold fs-5 text-white" href="/">
+            <i class="bi bi-lightning-charge-fill"></i>
             Prep Genie
         </a>
 
         <div class="ms-auto">
             <a href="/login" class="btn btn-outline-primary me-2">Log in</a>
-            <a href="/signup" class="btn btn-primary">Get Started</a>
+            <a href="/signup" class="btn btn-outline-primary me-2">Get Started</a>
         </div>
     </div>
 </nav>
 
-<!-- HERO SECTION -->
 <section class="hero">
     <div class="container text-center">
+
         <h1 class="display-4 fw-bold mb-3">
             AI-Powered Learning <br>
-            <span class="text-primary">Your Personal AI Study Architect</span>
+            <span class="gradient-text">Your Personal Study Architect</span>
         </h1>
 
-        <p class="lead text-muted mb-4">
-            Upload your syllabus, assess your knowledge gaps, and get a
-            <strong>tailored day-by-day study plan</strong> generated instantly by AI.
+        <p class="lead mb-4">
+            Upload your syllabus. Detect subjects automatically.
+            Generate a personalized AI-powered day-by-day study plan.
         </p>
 
-        <p class="text-muted mb-5">
-            Study smarter, not harder. Prep Genie adapts to your pace,
-            strengths, and goals — just like a personal mentor.
-        </p>
-
-        <div>
-            <a href="/signup" class="btn btn-primary btn-lg me-3">
+        <div class="mb-5">
+            <a href="/signup" class="btn btn-primary hero-btn me-3">
                 Get Started
             </a>
-            <a href="/signup" class="btn btn-outline-primary btn-lg">
+            <a href="/signup" class="btn btn-outline-primary hero-btn">
                 Generate My Plan
             </a>
         </div>
+
+        <div class="row g-4 mt-4">
+
+            <div class="col-md-4">
+                <div class="card feature-card p-4">
+                    <i class="bi bi-upload fs-2 mb-3"></i>
+                    <h6 class="fw-bold">Upload Syllabus</h6>
+                    <p class="small">
+                        Automatically extract subjects and structure content.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card p-4">
+                    <i class="bi bi-bar-chart-line fs-2 mb-3"></i>
+                    <h6 class="fw-bold">Analyze Gaps</h6>
+                    <p class="small">
+                        AI evaluates your strengths and weaknesses.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card p-4">
+                    <i class="bi bi-calendar-check fs-2 mb-3"></i>
+                    <h6 class="fw-bold">Generate Plan</h6>
+                    <p class="small">
+                        Get a smart, adaptive study roadmap instantly.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </section>
 

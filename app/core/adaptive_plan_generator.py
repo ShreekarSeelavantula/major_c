@@ -11,9 +11,10 @@ COMPLEXITY_ORDER = {
 
 def compute_priority(topic, learner_state):
     """
-    Higher priority value = scheduled earlier
-    Learner-aware priority computation
+    Deterministic Learner-Aware Priority
+    Higher value = scheduled earlier
     """
+
     topic_name = topic["topic"]
     state = learner_state.get("topic_states", {}).get(topic_name, {})
 
@@ -22,15 +23,18 @@ def compute_priority(topic, learner_state):
     retention = state.get("retention", 1.0)
     revision_due = state.get("revision_due", False)
 
+    normalized_complexity = COMPLEXITY_ORDER.get(
+        topic["complexity"], 2
+    ) / 3.0
+
     priority = (
-        (1 - familiarity) * 3.0          # weak topics first
-        + (1 - confidence) * 2.0          # low certainty
-        + (1 - retention) * 2.5           # decay risk
-        + COMPLEXITY_ORDER[topic["complexity"]] * 0.5
-        + (2.5 if revision_due else 0.0)  # forced revision
+        0.3 * normalized_complexity +
+        0.3 * (1 - familiarity) +
+        0.2 * (1 - retention) +
+        0.2 * (1 if revision_due else 0)
     )
 
-    return round(priority, 2)
+    return round(priority, 4)
 
 
 def generate_adaptive_plan(
@@ -40,47 +44,41 @@ def generate_adaptive_plan(
     deadline_days
 ):
     """
-    Adaptive Plan Generator v2
-    Learner-aware, retention-aware, empathetic pacing
+    Deterministic Adaptive Plan Generator
     """
 
-    # -----------------------------
-    # Learner-level modifiers
-    # -----------------------------
     learning_speed = learner_state.get("learning_speed", 1.0)
     consistency = learner_state.get("consistency", 1.0)
 
     effective_daily_hours = round(
-        hours_per_day * learning_speed * consistency, 2
+        hours_per_day * learning_speed * consistency,
+        2
     )
 
-    # -----------------------------
-    # Track remaining hours per topic
-    # -----------------------------
+    # Adjust topic hours using learning speed
     remaining_hours = {
-        t["topic"]: t["estimated_hours"] for t in topics
+        t["topic"]: round(
+            t["estimated_hours"] / max(0.5, learning_speed),
+            2
+        )
+        for t in topics
     }
 
     plan = defaultdict(list)
-
     total_days = deadline_days
+
     early_phase_days = math.ceil(total_days * 0.4)
 
-    # -----------------------------
-    # Day-wise scheduling
-    # -----------------------------
     for day in range(1, total_days + 1):
+
         remaining_day_hours = effective_daily_hours
 
-        # Phase-based complexity allowance
         if day <= early_phase_days:
-            max_complexity = 2  # Easy + Medium
+            max_complexity = 2
         else:
-            max_complexity = 3  # All
+            max_complexity = 3
 
-        # -----------------------------
         # Build candidate pool
-        # -----------------------------
         candidates = []
         for t in topics:
             if remaining_hours[t["topic"]] > 0:
@@ -88,7 +86,6 @@ def generate_adaptive_plan(
                 t_copy["priority"] = compute_priority(t, learner_state)
                 candidates.append(t_copy)
 
-        # Sort by priority (DESC = more urgent first)
         candidates.sort(
             key=lambda t: (
                 -t["priority"],
@@ -97,17 +94,15 @@ def generate_adaptive_plan(
             )
         )
 
-        # -----------------------------
-        # Allocate study time
-        # -----------------------------
+        # Allocate Study
         for topic in candidates:
+
             if remaining_day_hours <= 0:
                 break
 
             topic_name = topic["topic"]
             topic_complexity = COMPLEXITY_ORDER[topic["complexity"]]
 
-            # Skip hard topics early unless unavoidable
             if topic_complexity > max_complexity:
                 continue
 
@@ -118,10 +113,14 @@ def generate_adaptive_plan(
             allocated = min(
                 available,
                 remaining_day_hours,
-                max(0.5, available * 0.4)  # avoid micro-fragmentation
+                max(0.5, available * 0.4)
             )
 
             allocated = round(allocated, 2)
+
+            if allocated <= 0:
+                continue
+
 
             plan[day].append({
                 "type": "study",
@@ -133,25 +132,35 @@ def generate_adaptive_plan(
             remaining_hours[topic_name] -= allocated
             remaining_day_hours -= allocated
 
-        # -----------------------------
-        # Revision slot (retention-aware)
-        # -----------------------------
-        for topic_name, state in learner_state.get("topic_states", {}).items():
-            if (
-                state.get("retention", 1.0) < 0.6
-                and remaining_day_hours >= 0.3
-            ):
+        # Revision slot
+        # -----------------------------------------
+        # Revision Allocation (Balanced Model A)
+        # -----------------------------------------
+
+        revision_candidates = [
+            topic_name
+            for topic_name, state in learner_state.get("topic_states", {}).items()
+            if state.get("revision_due", False)
+        ]
+
+        if revision_candidates:
+
+            revision_budget = round(effective_daily_hours * 0.1, 2)
+
+            if remaining_day_hours >= revision_budget:
+
+                topic_name = revision_candidates[0]
+
                 plan[day].append({
                     "type": "revision",
                     "topic": topic_name,
-                    "hours": 0.3
+                    "hours": revision_budget
                 })
-                remaining_day_hours -= 0.3
-                break
 
-        # -----------------------------
-        # Adaptive micro familiarity test
-        # -----------------------------
+                remaining_day_hours -= revision_budget
+
+
+        # Micro test
         base_questions = 5
 
         if consistency < 0.7:
