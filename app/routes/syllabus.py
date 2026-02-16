@@ -14,6 +14,9 @@ from app.services.syllabus_pipeline import process_syllabus
 # ✅ NEW
 from app.services.planner_service import PlannerService
 
+from app.services.topic_complexity_engine import evaluate_topic
+
+
 
 router = APIRouter(tags=["Syllabus"])
 templates = Jinja2Templates(directory="app/templates")
@@ -174,39 +177,48 @@ def structure_selected_subject(
         return RedirectResponse("/login", status_code=303)
 
     structured_units = structure_syllabus(subject_text)
-    enriched_topics = process_syllabus(structured_units)
 
     # -------- STORE STRUCTURED --------
     structured_payload = []
-
     planner_topics = []
 
     for unit in structured_units:
         unit_topics = []
 
-        for topic in unit.topics:
+        for index, topic in enumerate(unit.topics):
             name = topic.title
 
-            enriched = next(
-                (t for t in enriched_topics if t["topic"] == name),
-                None
+            # Extract subtopics if available
+            subtopics = []
+            if hasattr(topic, "subtopics"):
+                subtopics = topic.subtopics
+
+            # 🔥 Evaluate Complexity (Single Source of Truth)
+            complexity_data = evaluate_topic(
+                topic_title=name,
+                subtopics=subtopics,
+                topic_index=index
             )
 
-            if enriched:
-                unit_topics.append({
-                    "name": name,
-                    "complexity": enriched["complexity"],
-                    "score": enriched["score"],
-                    "estimated_hours": enriched["estimated_hours"],
-                    "unit_index": unit.unit_number
-                })
+            # Simple estimated hours formula
+            estimated_hours = max(1, complexity_data["total_score"] // 2)
 
-                # ✅ Prepare for planner
-                planner_topics.append({
-                    "topic": name,
-                    "complexity": enriched["complexity"],
-                    "estimated_hours": enriched["estimated_hours"]
-                })
+            # -------- STRUCTURED PAYLOAD --------
+            unit_topics.append({
+                "name": name,
+                "subtopics": subtopics,
+                "complexity": complexity_data,
+                "score": complexity_data["total_score"],
+                "estimated_hours": estimated_hours,
+                "unit_index": unit.unit_number
+            })
+
+            # -------- PLANNER INPUT --------
+            planner_topics.append({
+                "topic": name,
+                "complexity": complexity_data["difficulty"],
+                "estimated_hours": estimated_hours
+            })
 
         structured_payload.append({
             "unit_number": unit.unit_number,
@@ -235,7 +247,7 @@ def structure_selected_subject(
             "$set": {
                 "structured_syllabus": structured_payload,
                 "selected_subject": subject_text,
-                "generated_plan": generated_plan,   # ✅ STORED
+                "generated_plan": generated_plan,
                 "status": "structured"
             }
         }
@@ -245,6 +257,7 @@ def structure_selected_subject(
         url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
     )
+
 
 # --------------------------------------------------
 # CHANGE SUBJECT
