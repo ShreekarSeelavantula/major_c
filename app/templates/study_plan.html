@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block title %}Study Plan | Prep Genie{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">📅 Your Personalized Study Plan</h2>
+
+<div class="row">
+
+{% for day, tasks in generated_plan.items() %}
+<div class="col-md-6 mb-4">
+    <div class="card shadow-sm border-0 h-100">
+
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Day {{ day }}</h5>
+        </div>
+
+        <div class="card-body">
+
+            <ul class="list-group list-group-flush">
+
+                {% for task in tasks %}
+
+                    {% if task.type == "study" %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <strong>{{ task.topic }}</strong>
+                            <br>
+                            <small class="text-muted">
+                                {{ task.complexity }} level
+                            </small>
+                        </div>
+
+                        <span class="badge bg-success">
+                            <span class="badge bg-success px-3 py-2">
+                                ⏱ {{ format_time(task.hours) }}
+                            </span>
+                        </span>
+
+                    </li>
+
+                    {% elif task.type == "micro_test" %}
+                    <li class="list-group-item bg-light text-center">
+
+                        📝 Micro Test ({{ task.questions }} questions)
+
+                    </li>
+                    {% endif %}
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+{% endfor %}
+
+</div>
+
+
+<div class="mt-4 d-flex justify-content-between">
+    <a href="/syllabus/preview/{{ syllabus._id }}"
+       class="btn btn-outline-primary">
+        ← Back to Syllabus
+    </a>
+
+    <a href="/upload"
+       class="btn btn-outline-secondary">
+        Upload New
+    </a>
+</div>
+
+{% endblock %}
