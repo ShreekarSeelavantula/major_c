@@ -292,3 +292,55 @@ def change_subject(request: Request, syllabus_id: str):
         url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
     )
+
+
+# --------------------------------------------------
+# STUDY PLAN PAGE
+# --------------------------------------------------
+@router.get("/syllabus/plan/{syllabus_id}", response_class=HTMLResponse)
+def view_study_plan(request: Request, syllabus_id: str):
+
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    syllabus = syllabus_collection.find_one({
+        "_id": ObjectId(syllabus_id),
+        "user_id": ObjectId(request.session["user_id"])
+    })
+
+    if not syllabus:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+
+    if not syllabus.get("generated_plan"):
+        raise HTTPException(status_code=400, detail="Study plan not generated yet")
+
+    print("Generated Plan Data:", syllabus.get("generated_plan"))
+
+    return templates.TemplateResponse(
+        "study_plan.html",
+        {
+            "request": request,
+            "syllabus": syllabus,
+            "generated_plan": syllabus.get("generated_plan"),
+            "format_time": format_time   # 👈 THIS LINE ADDED
+        }
+    )
+
+
+
+# --------------------------------------------------
+# TIME FORMATTER FUNCTION
+# --------------------------------------------------
+def format_time(hours):
+    total_minutes = int(round(hours * 60))
+
+    h = total_minutes // 60
+    m = total_minutes % 60
+
+    if h == 0:
+        return f"{m} minutes"
+    elif m == 0:
+        return f"{h} hour{'s' if h > 1 else ''}"
+    else:
+        return f"{h} hour{'s' if h > 1 else ''} {m} minutes"
+    
