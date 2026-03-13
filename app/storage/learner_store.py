@@ -1,7 +1,22 @@
 import json
 import os
+from app.database import db
 
 BASE_PATH = "data/learners"
+
+
+
+class LearnerStore:
+
+    def save_learner_state(self, user_id, syllabus_id, topic_scores):
+
+        document = {
+            "user_id": user_id,
+            "syllabus_id": syllabus_id,
+            "topics": topic_scores
+        }
+
+        db.learner_state.insert_one(document)
 
 
 def _ensure_dir():

@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}Familiarity Test{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">🧠 Familiarity Test</h2>
+
+{% if error_message %}
+
+<div class="alert alert-danger">
+
+<strong>AI Error:</strong> {{ error_message }}
+
+<br><br>
+
+<a href="/settings/api" class="btn btn-warning">
+Update API Key
+</a>
+
+<a href="/familiarity/local/{{ syllabus_id }}" class="btn btn-secondary">
+Use Local Questions
+</a>
+
+</div>
+
+{% endif %}
+
+<form method="post" action="/familiarity/submit">
+
+<input type="hidden" name="syllabus_id" value="{{ syllabus_id }}">
+
+{% for topic, qs in questions.items() %}
+
+<div class="card mb-4">
+
+<div class="card-header fw-bold">
+{{ topic }}
+</div>
+
+<div class="card-body">
+
+{% for q in qs %}
+
+{% set q_index = loop.index0 %}
+
+<p><strong>{{ q.question }}</strong></p>
+
+{% for option in q.options %}
+
+<div class="form-check">
+
+<input class="form-check-input"
+       type="radio"
+       name="{{ topic }}_{{ q_index }}"
+       value="{{ option }}"
+       required>
+
+<label class="form-check-label">
+{{ option }}
+</label>
+
+</div>
+
+{% endfor %}
+
+<hr>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endfor %}
+
+<button class="btn btn-success btn-lg">
+Submit Test
+</button>
+
+</form>
+
+{% endblock %}

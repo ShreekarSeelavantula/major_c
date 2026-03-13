@@ -15,6 +15,7 @@ from app.services.syllabus_pipeline import process_syllabus
 from app.services.planner_service import PlannerService
 
 from app.services.topic_complexity_engine import evaluate_topic
+from app.services.topic_cleaner import TopicCleaner
 
 
 
@@ -178,32 +179,30 @@ def structure_selected_subject(
 
     structured_units = structure_syllabus(subject_text)
 
-    # -------- STORE STRUCTURED --------
     structured_payload = []
-    planner_topics = []
 
+    # -------------------------------
+    # BUILD STRUCTURED SYLLABUS
+    # -------------------------------
     for unit in structured_units:
         unit_topics = []
 
         for index, topic in enumerate(unit.topics):
+
             name = topic.title
 
-            # Extract subtopics if available
             subtopics = []
             if hasattr(topic, "subtopics"):
                 subtopics = topic.subtopics
 
-            # 🔥 Evaluate Complexity (Single Source of Truth)
             complexity_data = evaluate_topic(
                 topic_title=name,
                 subtopics=subtopics,
                 topic_index=index
             )
 
-            # Simple estimated hours formula
             estimated_hours = max(1, complexity_data["total_score"] // 2)
 
-            # -------- STRUCTURED PAYLOAD --------
             unit_topics.append({
                 "name": name,
                 "subtopics": subtopics,
@@ -213,20 +212,45 @@ def structure_selected_subject(
                 "unit_index": unit.unit_number
             })
 
-            # -------- PLANNER INPUT --------
-            planner_topics.append({
-                "topic": name,
-                "complexity": complexity_data["difficulty"],
-                "estimated_hours": estimated_hours
-            })
-
         structured_payload.append({
             "unit_number": unit.unit_number,
             "title": unit.title,
             "topics": unit_topics
         })
 
-    # -------- GENERATE PLAN --------
+    # -----------------------------------------
+    # AI TOPIC CLEANUP
+    # -----------------------------------------
+    print("STRUCTURED PAYLOAD BEFORE CLEANING:")
+    print(structured_payload)
+
+    try:
+        cleaned_payload = TopicCleaner.clean_topics(structured_payload)
+
+        print("CLEANED PAYLOAD FROM AI:")
+        print(cleaned_payload)
+
+    except Exception as e:
+        print("AI topic cleanup failed:", e)
+        cleaned_payload = structured_payload
+
+    # -----------------------------------------
+    # REBUILD PLANNER TOPICS FROM CLEANED DATA
+    # -----------------------------------------
+    planner_topics = []
+
+    for unit in cleaned_payload:
+        for topic in unit["topics"]:
+
+            planner_topics.append({
+                "topic": topic["name"],
+                "complexity": topic["complexity"]["difficulty"],
+                "estimated_hours": topic["estimated_hours"]
+            })
+
+    # -----------------------------------------
+    # GENERATE STUDY PLAN
+    # -----------------------------------------
     learner_state = {
         "learning_speed": 1.0,
         "consistency": 1.0,
@@ -240,12 +264,14 @@ def structure_selected_subject(
         deadline_days=7
     )
 
-    # -------- UPDATE DB --------
+    # -----------------------------------------
+    # UPDATE DATABASE
+    # -----------------------------------------
     syllabus_collection.update_one(
         {"_id": ObjectId(syllabus_id)},
         {
             "$set": {
-                "structured_syllabus": structured_payload,
+                "structured_syllabus": cleaned_payload,
                 "selected_subject": subject_text,
                 "generated_plan": generated_plan,
                 "status": "structured"
@@ -257,7 +283,6 @@ def structure_selected_subject(
         url=f"/syllabus/preview/{syllabus_id}",
         status_code=status.HTTP_303_SEE_OTHER
     )
-
 
 # --------------------------------------------------
 # CHANGE SUBJECT
@@ -344,3 +369,46 @@ def format_time(hours):
     else:
         return f"{h} hour{'s' if h > 1 else ''} {m} minutes"
     
+
+
+# --------------------------------------------------
+# AI TOPIC CLEANER
+# --------------------------------------------------
+@router.get("/syllabus/clean-topics/{syllabus_id}")
+def clean_topics_with_ai(request: Request, syllabus_id: str):
+
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    syllabus = syllabus_collection.find_one({
+        "_id": ObjectId(syllabus_id),
+        "user_id": ObjectId(request.session["user_id"])
+    })
+
+    if not syllabus:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+
+    structured = syllabus.get("structured_syllabus")
+
+    if not structured:
+        raise HTTPException(status_code=400, detail="Syllabus not structured yet")
+
+    try:
+        cleaned = TopicCleaner.clean_topics(structured)
+
+        syllabus_collection.update_one(
+            {"_id": ObjectId(syllabus_id)},
+            {
+                "$set": {
+                    "structured_syllabus": cleaned
+                }
+            }
+        )
+
+    except Exception as e:
+        print("AI cleaning failed:", e)
+
+    return RedirectResponse(
+        url=f"/syllabus/preview/{syllabus_id}",
+        status_code=status.HTTP_303_SEE_OTHER
+    )

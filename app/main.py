@@ -3,7 +3,9 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.routes import auth, pages, syllabus
-from app.routes import planner  # ✅ NEW
+from app.routes import planner
+from app.routes import familiarity_test
+
 
 # ✅ 1. Create app FIRST
 app = FastAPI(title="AI Study Planner")
@@ -29,3 +31,7 @@ app.include_router(syllabus.router)
 
 # 🧠 7. Planner routes (NEW)
 app.include_router(planner.router)
+
+
+# 🧠 Familiarity Test routes
+app.include_router(familiarity_test.router)
