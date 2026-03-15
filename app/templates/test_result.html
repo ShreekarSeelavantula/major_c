@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}Test Result{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📊 Familiarity Test Result</h2>
+
+<div class="card mb-4 shadow-sm">
+<div class="card-body">
+
+<h4>
+Overall Familiarity Score:
+<span class="badge bg-primary">
+{{ (result.overall_score * 100)|round(2) }} %
+</span>
+</h4>
+
+</div>
+</div>
+
+<div class="card shadow-sm">
+<div class="card-header fw-bold">
+Topic Wise Performance
+</div>
+
+<div class="card-body">
+
+<table class="table">
+
+<thead>
+<tr>
+<th>Topic</th>
+<th>Familiarity</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for topic, score in result.topic_scores.items() %}
+
+<tr>
+<td>{{ topic }}</td>
+
+<td>
+{{ (score * 100)|round(2) }} %
+</td>
+
+<td>
+
+{% if score < 0.4 %} <span class="badge bg-danger">Weak</span>
+{% elif score < 0.7 %} <span class="badge bg-warning text-dark">Moderate</span>
+{% else %} <span class="badge bg-success">Strong</span>
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+<div class="mt-4 text-center">
+
+<a href="/dashboard" class="btn btn-secondary">
+Go Dashboard
+</a>
+
+</div>
+
+{% endblock %}

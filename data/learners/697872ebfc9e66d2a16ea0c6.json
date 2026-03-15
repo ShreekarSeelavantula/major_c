@@ -1,0 +1,44 @@
+{
+  "topic_states": {
+    "Organizational Behavior": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 0.991,
+      "attempts": 7,
+      "revision_due": true,
+      "last_updated": 1773572397.399191
+    },
+    "Definition": {
+      "familiarity": 0.4,
+      "confidence": 0.2,
+      "retention": 0.991,
+      "attempts": 7,
+      "revision_due": true,
+      "last_updated": 1773572397.3991988
+    },
+    "Need and Importance of Organizational Behavior": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 0.991,
+      "attempts": 7,
+      "revision_due": true,
+      "last_updated": 1773572397.3992023
+    },
+    "Nature and Scope of Organizational Behavior": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 0.991,
+      "attempts": 7,
+      "revision_due": true,
+      "last_updated": 1773572397.3992045
+    },
+    "Framework": {
+      "familiarity": 0.202,
+      "confidence": 0.117,
+      "retention": 0.991,
+      "attempts": 7,
+      "revision_due": true,
+      "last_updated": 1773572397.399207
+    }
+  }
+}

@@ -70,6 +70,12 @@ def generate_plan(
             detail="Syllabus has no structured content"
         )
 
+    # store last config for adaptive regeneration
+    request.session["last_plan_config"] = {
+        "syllabus_id": syllabus_id,
+        "hours_per_day": hours_per_day,
+        "deadline_days": deadline_days
+    }
     result = build_adaptive_plan(
         user_id=user_id,
         structured_syllabus=structured_syllabus,

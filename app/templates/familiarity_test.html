@@ -6,55 +6,55 @@
 
 <h2 class="mb-4">🧠 Familiarity Test</h2>
 
+<p class="text-muted">
+Answer all questions. This helps AI understand your familiarity level.
+</p>
+
 {% if error_message %}
 
 <div class="alert alert-danger">
-
 <strong>AI Error:</strong> {{ error_message }}
-
 <br><br>
-
-<a href="/settings/api" class="btn btn-warning">
-Update API Key
-</a>
-
 <a href="/familiarity/local/{{ syllabus_id }}" class="btn btn-secondary">
 Use Local Questions
 </a>
-
 </div>
-
 {% endif %}
 
-<form method="post" action="/familiarity/submit">
+<form action="/familiarity/submit" method="post">
+    
+    <!-- ⭐ VERY IMPORTANT (Stateless Test Safety) -->
 
+<input type="hidden" name="questions_json" value='{{ questions | tojson }}'>
+<input type="hidden" name="topic_map_json" value='{{ topic_map | tojson }}'>
 <input type="hidden" name="syllabus_id" value="{{ syllabus_id }}">
 
-{% for topic, qs in questions.items() %}
+{% for topic_id, qs in questions.items() %}
 
-<div class="card mb-4">
+<div class="card mb-4 shadow-sm">
 
-<div class="card-header fw-bold">
-{{ topic }}
+<div class="card-header fw-bold bg-light">
+{{ topic_map[topic_id] }}
 </div>
 
 <div class="card-body">
 
 {% for q in qs %}
-
 {% set q_index = loop.index0 %}
 
-<p><strong>{{ q.question }}</strong></p>
+<p class="fw-bold">
+Q{{ loop.index }}. {{ q.question }}
+</p>
 
 {% for option in q.options %}
 
-<div class="form-check">
+<div class="form-check mb-1">
 
 <input class="form-check-input"
-       type="radio"
-       name="{{ topic }}_{{ q_index }}"
-       value="{{ option }}"
-       required>
+    type="radio"
+    name="{{ topic_id }}_{{ q_index }}"
+    value="{{ option }}"
+    required>
 
 <label class="form-check-label">
 {{ option }}
@@ -69,14 +69,15 @@ Use Local Questions
 {% endfor %}
 
 </div>
-
 </div>
 
 {% endfor %}
 
-<button class="btn btn-success btn-lg">
+<div class="text-center mt-4">
+<button class="btn btn-success btn-lg px-5">
 Submit Test
 </button>
+</div>
 
 </form>
 
