@@ -294,28 +294,20 @@ async def submit_familiarity_test(request: Request):
     learner_state = update_familiarity(learner_state, topic_scores)
     save_learner_state(user_id, learner_state)
 
-    request.session["last_test_result"] = {
-        "topic_scores": topic_scores,
-        "overall_score": overall_score
-    }
-
     test_type = request.session.get("test_type", "")
     syllabus_id = request.session.get("test_syllabus_id", "")
 
     # --------------------------------------------------
     # MICRO TEST → redirect back to Today's page
-    # Mark micro test as completed so Today UI updates
     # --------------------------------------------------
     if test_type == "micro" and syllabus_id:
 
-        # Store micro test result for Today's page to display
         request.session["micro_test_done_today"] = {
             "syllabus_id": syllabus_id,
             "score": round(overall_score * 100, 1),
             "topics_tested": len(topic_scores)
         }
 
-        # Clean up test session keys
         for key in ["test_questions", "test_topic_map",
                     "test_syllabus_id", "test_type"]:
             request.session.pop(key, None)
@@ -327,10 +319,15 @@ async def submit_familiarity_test(request: Request):
 
     # --------------------------------------------------
     # INITIAL TEST → go to result page
-    # Show "Rate Remaining Units" button
+    # ⭐ FIX: store syllabus_id INSIDE the result dict
+    # so it survives the redirect regardless of session state
     # --------------------------------------------------
-    if test_type == "initial" and syllabus_id:
-        request.session["pending_self_rating_syllabus_id"] = syllabus_id
+    request.session["last_test_result"] = {
+        "topic_scores": topic_scores,
+        "overall_score": overall_score,
+        "syllabus_id": syllabus_id,        # ⭐ stored here
+        "test_type": test_type             # ⭐ stored here too
+    }
 
     return RedirectResponse(url="/familiarity/result", status_code=303)
 
@@ -346,21 +343,29 @@ async def familiarity_result(request: Request):
     if not result:
         return RedirectResponse("/dashboard", status_code=303)
 
-    syllabus_id = request.session.get("pending_self_rating_syllabus_id")
+    # ⭐ FIX: read syllabus_id from result dict — not from session
+    # This survives Codespaces redirect session drops
+    syllabus_id = result.get("syllabus_id", "")
+    test_type = result.get("test_type", "")
+
+    # Build clean result for template (without internal fields)
+    clean_result = {
+        "topic_scores": result.get("topic_scores", {}),
+        "overall_score": result.get("overall_score", 0)
+    }
 
     response = templates.TemplateResponse(
         "test_result.html",
         {
             "request": request,
-            "result": result,
-            # ⭐ Pass syllabus_id so result page can show
-            # "Continue to self-rating" button if needed
-            "syllabus_id": syllabus_id
+            "result": clean_result,
+            "syllabus_id": syllabus_id if test_type == "initial" else None
         }
     )
 
+    # Clean up session after rendering
     for key in ["last_test_result", "test_questions", "test_topic_map",
-                "test_syllabus_id", "test_type"]:
+                "test_syllabus_id", "test_type", "pending_self_rating_syllabus_id"]:
         request.session.pop(key, None)
 
     return response
@@ -512,15 +517,19 @@ async def submit_self_rating(request: Request):
     # Clear pending flag
     request.session.pop("pending_self_rating_syllabus_id", None)
 
-    # ⭐ Regenerate plan now that all units have familiarity data
-    # Self-rating just filled in Units 2-5 — plan should reflect this
+    # ⭐ Regenerate plan with full familiarity data
     from app.services.plan_orchestrator import build_adaptive_plan
     from app.storage.plan_store import load_plan
+
+    print(f"Self-rating submit → syllabus_id={syllabus_id}, user_id={user_id}")
+    print(f"Structured syllabus units: {len(structured)}")
 
     try:
         plan_doc = load_plan(user_id)
         hours_per_day = plan_doc.get("hours_per_day", 3) if plan_doc else 3
         deadline_days = plan_doc.get("deadline_days", 30) if plan_doc else 30
+
+        print(f"Generating plan → hours={hours_per_day}, days={deadline_days}")
 
         result = build_adaptive_plan(
             user_id=user_id,
@@ -529,7 +538,8 @@ async def submit_self_rating(request: Request):
             deadline_days=deadline_days
         )
 
-        # ⭐ Go straight to plan — user wants to see their plan immediately
+        print(f"Plan generated → plan_id={result['plan_id']}")
+
         return RedirectResponse(
             url=f"/plan/view/{result['plan_id']}",
             status_code=303
@@ -537,5 +547,6 @@ async def submit_self_rating(request: Request):
 
     except Exception as e:
         print(f"Plan regeneration after self-rating failed: {e}")
-        # Fallback to dashboard if plan generation fails
+        import traceback
+        traceback.print_exc()
         return RedirectResponse("/dashboard", status_code=303)

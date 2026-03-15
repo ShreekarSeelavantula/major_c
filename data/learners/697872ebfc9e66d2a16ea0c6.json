@@ -17,20 +17,20 @@
       "last_updated": 1773581907.452203
     },
     "Need and Importance of Organizational Behavior": {
-      "familiarity": 0.045,
-      "confidence": 0.083,
-      "retention": 0.975,
-      "attempts": 11,
+      "familiarity": 0.018,
+      "confidence": 0.058,
+      "retention": 0.968,
+      "attempts": 12,
       "revision_due": true,
-      "last_updated": 1773581907.4522088
+      "last_updated": 1773585916.6737926
     },
     "Nature and Scope of Organizational Behavior": {
-      "familiarity": 0.173,
-      "confidence": 0.174,
-      "retention": 0.975,
-      "attempts": 11,
+      "familiarity": 0.069,
+      "confidence": 0.122,
+      "retention": 0.968,
+      "attempts": 12,
       "revision_due": true,
-      "last_updated": 1773581907.4522126
+      "last_updated": 1773586032.7551548
     },
     "Framework": {
       "familiarity": 0.823,
@@ -148,40 +148,44 @@
       "complexity": "Medium"
     },
     "Emotions": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773585916.6738002
     },
     "Emotional Intelligence": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773585916.6738079
     },
     "Labor": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773586032.7551327
     },
     "Emotional": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773586032.755135
     },
     "Intelligence": {
       "familiarity": 0.0,
@@ -205,10 +209,11 @@
       "familiarity": 0.0,
       "confidence": 0.0,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
-      "revision_due": false,
-      "complexity": "Medium"
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1773585916.6738036
     },
     "Characteristics and Components of Formation": {
       "familiarity": 0.0,
@@ -220,13 +225,14 @@
       "complexity": "Medium"
     },
     "Measurement of Values and Perceptions": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Easy"
+      "complexity": "Easy",
+      "last_updated": 1773586032.7551441
     },
     "Importance and Factors Influencing Perception": {
       "familiarity": 0.0,
@@ -247,13 +253,14 @@
       "complexity": "Easy"
     },
     "Motivation and Importance": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 2,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773586032.7559595
     },
     "Types of Motivation": {
       "familiarity": 0.0,
@@ -274,22 +281,24 @@
       "complexity": "Medium"
     },
     "Group Behavior": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Easy"
+      "complexity": "Easy",
+      "last_updated": 1773585916.6738093
     },
     "Organization Structure and Formation": {
       "familiarity": 0.0,
       "confidence": 0.0,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
-      "revision_due": false,
-      "complexity": "Medium"
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1773585916.673802
     },
     "Groups in Organizations": {
       "familiarity": 0.0,
@@ -301,13 +310,14 @@
       "complexity": "Medium"
     },
     "Influence and Group Dynamics": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773586032.75513
     },
     "Emergence of Informal Leaders and Working Norms": {
       "familiarity": 0.0,
@@ -328,13 +338,14 @@
       "complexity": "Easy"
     },
     "Team Building and Interpersonal Relations": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Easy"
+      "complexity": "Easy",
+      "last_updated": 1773586032.7551396
     },
     "Communication and Control": {
       "familiarity": 0.0,
@@ -355,13 +366,14 @@
       "complexity": "Medium"
     },
     "Meaning and Importance of Leadership": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773586032.7551372
     },
     "Leadership Styles": {
       "familiarity": 0.0,
@@ -391,31 +403,34 @@
       "complexity": "Medium"
     },
     "Sources of Power": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773585916.6738067
     },
     "Power Centers and Power and Politics": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773586032.755142
     },
     "Dynamics of Organizational Behavior": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773585916.6737976
     },
     "Organizational Culture and Climate": {
       "familiarity": 0.0,
@@ -427,22 +442,24 @@
       "complexity": "Medium"
     },
     "Factors Affecting Organizational Climate": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773586032.7551262
     },
     "Importance and Job Satisfaction": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
+      "familiarity": 0.6,
+      "confidence": 0.3,
       "retention": 1.0,
-      "attempts": 0,
+      "attempts": 1,
       "last_studied": null,
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1773585916.6738107
     },
     "Determinants and Measurements": {
       "familiarity": 0.0,
@@ -454,7 +471,13 @@
       "complexity": "Medium"
     }
   },
-  "learning_speed": 1.0,
+  "learning_speed": 1.03,
   "consistency": 1.0,
-  "history": []
+  "history": [
+    {
+      "date": "2026-03-15",
+      "actual_hours": 3.5,
+      "expected_hours": 3.0
+    }
+  ]
 }

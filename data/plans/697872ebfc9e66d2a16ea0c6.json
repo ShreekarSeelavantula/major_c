@@ -6,20 +6,20 @@
       "1": [
         {
           "type": "study",
+          "topic": "Need and Importance of Organizational Behavior",
+          "hours": 1.18,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
           "topic": "Individual Behavior",
-          "hours": 0.81,
+          "hours": 0.79,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Personality Types",
-          "hours": 1.22,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Factors Influencing Personality",
-          "hours": 0.97,
+          "hours": 1.12,
           "complexity": "Easy"
         },
         {
@@ -30,6 +30,12 @@
       "2": [
         {
           "type": "study",
+          "topic": "Need and Importance of Organizational Behavior",
+          "hours": 0.65,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
           "topic": "Individual Behavior",
           "hours": 0.5,
           "complexity": "Easy"
@@ -37,19 +43,91 @@
         {
           "type": "study",
           "topic": "Personality Types",
-          "hours": 0.67,
+          "hours": 0.68,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Factors Influencing Personality",
-          "hours": 0.78,
+          "hours": 1.18,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Measurement of Values and Perceptions",
-          "hours": 0.81,
+          "hours": 0.08,
+          "complexity": "Easy"
+        },
+        {
+          "type": "micro_test",
+          "questions": 10
+        }
+      ],
+      "3": [
+        {
+          "type": "study",
+          "topic": "Need and Importance of Organizational Behavior",
+          "hours": 0.5,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Individual Behavior",
+          "hours": 0.46,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Personality Types",
+          "hours": 0.5,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Factors Influencing Personality",
+          "hours": 0.65,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Measurement of Values and Perceptions",
+          "hours": 0.75,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Importance and Factors Influencing Perception",
+          "hours": 0.23,
+          "complexity": "Easy"
+        },
+        {
+          "type": "micro_test",
+          "questions": 10
+        }
+      ],
+      "4": [
+        {
+          "type": "study",
+          "topic": "Need and Importance of Organizational Behavior",
+          "hours": 0.29,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Personality Types",
+          "hours": 0.32,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Factors Influencing Personality",
+          "hours": 0.5,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Measurement of Values and Perceptions",
+          "hours": 0.5,
           "complexity": "Easy"
         },
         {
@@ -63,95 +141,35 @@
           "questions": 10
         }
       ],
-      "3": [
-        {
-          "type": "study",
-          "topic": "Individual Behavior",
-          "hours": 0.49,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Personality Types",
-          "hours": 0.5,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Factors Influencing Personality",
-          "hours": 0.5,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Measurement of Values and Perceptions",
-          "hours": 0.5,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Importance and Factors Influencing Perception",
-          "hours": 1.01,
-          "complexity": "Easy"
-        },
-        {
-          "type": "micro_test",
-          "questions": 10
-        }
-      ],
-      "4": [
-        {
-          "type": "study",
-          "topic": "Personality Types",
-          "hours": 0.31,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Factors Influencing Personality",
-          "hours": 0.45,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Measurement of Values and Perceptions",
-          "hours": 0.49,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Importance and Factors Influencing Perception",
-          "hours": 0.55,
-          "complexity": "Easy"
-        },
-        {
-          "type": "micro_test",
-          "questions": 10
-        }
-      ],
       "5": [
         {
           "type": "study",
+          "topic": "Factors Influencing Personality",
+          "hours": 0.29,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Measurement of Values and Perceptions",
+          "hours": 0.42,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
           "topic": "Importance and Factors Influencing Perception",
-          "hours": 0.5,
+          "hours": 0.97,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Interpersonal Perception and Impression Management",
-          "hours": 1.22,
+          "hours": 1.18,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Types of Motivation",
-          "hours": 0.81,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Group Behavior",
-          "hours": 0.47,
+          "hours": 0.23,
           "complexity": "Easy"
         },
         {
@@ -163,31 +181,31 @@
         {
           "type": "study",
           "topic": "Importance and Factors Influencing Perception",
-          "hours": 0.4,
+          "hours": 0.53,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Interpersonal Perception and Impression Management",
-          "hours": 0.67,
+          "hours": 0.65,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Types of Motivation",
-          "hours": 0.5,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Group Behavior",
-          "hours": 1.0,
+          "hours": 0.68,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Emergence of Informal Leaders and Working Norms",
-          "hours": 0.43,
+          "hours": 0.79,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Group Decision Making Techniques",
+          "hours": 0.44,
           "complexity": "Easy"
         },
         {
@@ -198,6 +216,12 @@
       "7": [
         {
           "type": "study",
+          "topic": "Importance and Factors Influencing Perception",
+          "hours": 0.5,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
           "topic": "Interpersonal Perception and Impression Management",
           "hours": 0.5,
           "complexity": "Easy"
@@ -205,25 +229,25 @@
         {
           "type": "study",
           "topic": "Types of Motivation",
-          "hours": 0.49,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Group Behavior",
-          "hours": 0.55,
+          "hours": 0.5,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Emergence of Informal Leaders and Working Norms",
-          "hours": 0.62,
+          "hours": 0.5,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Group Decision Making Techniques",
-          "hours": 0.84,
+          "hours": 0.98,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Team Building and Interpersonal Relations",
+          "hours": 0.11,
           "complexity": "Easy"
         },
         {
@@ -234,26 +258,38 @@
       "8": [
         {
           "type": "study",
-          "topic": "Interpersonal Perception and Impression Management",
-          "hours": 0.31,
+          "topic": "Importance and Factors Influencing Perception",
+          "hours": 0.15,
           "complexity": "Easy"
         },
         {
           "type": "study",
-          "topic": "Group Behavior",
-          "hours": 0.5,
+          "topic": "Interpersonal Perception and Impression Management",
+          "hours": 0.29,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Types of Motivation",
+          "hours": 0.34,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Emergence of Informal Leaders and Working Norms",
-          "hours": 0.5,
+          "hours": 0.46,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Group Decision Making Techniques",
-          "hours": 0.49,
+          "hours": 0.54,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Team Building and Interpersonal Relations",
+          "hours": 0.07,
           "complexity": "Easy"
         },
         {
@@ -264,32 +300,26 @@
       "9": [
         {
           "type": "study",
-          "topic": "Group Behavior",
-          "hours": 0.18,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Emergence of Informal Leaders and Working Norms",
-          "hours": 0.25,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
           "topic": "Group Decision Making Techniques",
-          "hours": 0.62,
+          "hours": 0.5,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Team Building and Interpersonal Relations",
-          "hours": 1.22,
+          "hours": 1.1,
           "complexity": "Easy"
         },
         {
           "type": "study",
-          "topic": "Need and Importance of Organizational Behavior",
-          "hours": 0.73,
+          "topic": "Organizational Behavior",
+          "hours": 0.79,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Group Behavior",
+          "hours": 0.7,
           "complexity": "Easy"
         },
         {
@@ -301,31 +331,31 @@
         {
           "type": "study",
           "topic": "Group Decision Making Techniques",
-          "hours": 0.5,
+          "hours": 0.16,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Team Building and Interpersonal Relations",
-          "hours": 0.67,
-          "complexity": "Easy"
-        },
-        {
-          "type": "study",
-          "topic": "Need and Importance of Organizational Behavior",
-          "hours": 0.89,
+          "hours": 0.6,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Organizational Behavior",
-          "hours": 0.81,
+          "hours": 0.5,
+          "complexity": "Easy"
+        },
+        {
+          "type": "study",
+          "topic": "Group Behavior",
+          "hours": 0.86,
           "complexity": "Easy"
         },
         {
           "type": "study",
           "topic": "Definition",
-          "hours": 0.13,
+          "hours": 0.97,
           "complexity": "Easy"
         },
         {
@@ -334,7 +364,7 @@
         }
       ]
     },
-    "confidence": 0.438,
+    "confidence": 0.48,
     "profile_used": {
       "topic_order": "easy_first",
       "year_pace_multiplier": 0.9
@@ -342,5 +372,5 @@
   },
   "hours_per_day": 3.0,
   "deadline_days": 10,
-  "created_at": "2026-03-15T14:18:11.124776"
+  "created_at": "2026-03-15T14:46:25.016210"
 }
