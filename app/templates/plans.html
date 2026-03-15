@@ -4,51 +4,142 @@
 
 {% block content %}
 
-<h2 class="fw-bold mb-2">📅 Your Adaptive Study Plan</h2>
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h2 class="fw-bold mb-0">📅 Your Adaptive Study Plan</h2>
 
+    {% if confidence %}
+    <span class="badge
+        {% if confidence >= 0.7 %}bg-success
+        {% elif confidence >= 0.4 %}bg-warning text-dark
+        {% else %}bg-danger
+        {% endif %}
+        fs-6">
+        Plan Confidence: {{ (confidence * 100) | round(1) }}%
+    </span>
+    {% endif %}
+</div>
+
+{% if meta %}
 <p class="text-muted mb-4">
-    Daily Hours: <strong>{{ meta.hours_per_day }}</strong> |
+    Daily Hours: <strong>{{ meta.hours_per_day }}</strong> &nbsp;|&nbsp;
     Deadline: <strong>{{ meta.deadline_days }} days</strong>
+    {% if meta.created_at %}
+    &nbsp;|&nbsp; Generated: <strong>{{ meta.created_at }}</strong>
+    {% endif %}
 </p>
+{% endif %}
 
-<hr>
+{% if confidence and confidence >= 0.6 %}
+<div class="alert alert-success mb-4">
+    ✅ Your plan is personalized using your familiarity test results
+    and self-rating scores. Topics you know well are fast-tracked.
+    Weak topics get more time.
+</div>
+{% elif confidence and confidence >= 0.4 %}
+<div class="alert alert-warning mb-4">
+    🟡 Plan confidence is moderate — based partly on self-rating.
+    Take more
+    <a href="/familiarity/micro/{{ syllabus_id }}" class="alert-link">
+        micro tests
+    </a>
+    to improve accuracy.
+</div>
+{% else %}
+<div class="alert alert-info mb-4">
+    ℹ️ This is your initial plan.
+    <a href="/familiarity/micro/{{ syllabus_id }}" class="alert-link">
+        Take a micro test
+    </a>
+    to personalize it further.
+</div>
+{% endif %}
 
-{% for day, tasks in plan.items() %}
-<div class="card shadow-sm mb-4">
-    <div class="card-body">
+<hr class="mb-4">
 
-        <h5 class="fw-bold mb-3">Day {{ day }}</h5>
+{% if schedule %}
 
-        <ul class="list-group list-group-flush">
-            {% for task in tasks %}
+<div class="row">
 
-                {% if task.type == "study" %}
-                <li class="list-group-item">
-                    📘 <strong>{{ task.topic }}</strong>
-                    — {{ task.hours }} hrs
-                    <span class="badge bg-secondary ms-2">
-                        {{ task.complexity }}
-                    </span>
-                </li>
+{% for day, tasks in schedule.items() %}
 
-                {% elif task.type == "revision" %}
-                <li class="list-group-item">
-                    🔁 <strong>Revision:</strong>
-                    {{ task.topic }} — {{ task.hours }} hrs
-                </li>
+<div class="col-md-6 mb-4">
+    <div class="card shadow-sm border-0 h-100">
 
-                {% elif task.type == "micro_test" %}
-                <li class="list-group-item">
-                    🧪 Micro Test — {{ task.questions }} questions
-                </li>
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Day {{ day }}</h5>
+        </div>
 
-                {% endif %}
+        <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
 
-            {% endfor %}
-        </ul>
+                {% for task in tasks %}
+
+                    {% if task.type == "study" %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="me-2">📘</span>
+                            <strong>{{ task.topic }}</strong>
+                            <br>
+                            <small class="text-muted ms-4">
+                                {{ task.complexity }} level
+                            </small>
+                        </div>
+                        <span class="badge bg-success px-3 py-2">
+                            ⏱ {{ task.hours }} hrs
+                        </span>
+                    </li>
+
+                    {% elif task.type == "revision" %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                        <div>
+                            <span class="me-2">🔁</span>
+                            <strong>Revision:</strong> {{ task.topic }}
+                        </div>
+                        <span class="badge bg-warning text-dark px-3 py-2">
+                            ⏱ {{ task.hours }} hrs
+                        </span>
+                    </li>
+
+                    {% elif task.type == "micro_test" %}
+                    <li class="list-group-item text-center bg-light">
+                        🧪 <strong>Micro Test</strong>
+                        — {{ task.questions }} questions
+                    </li>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </ul>
+        </div>
 
     </div>
 </div>
+
 {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="text-center py-5">
+    <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
+    <h6 class="fw-semibold">No plan data found</h6>
+    <p class="text-muted">Please generate a plan first.</p>
+    <a href="/dashboard" class="btn btn-outline-primary mt-2">
+        Go to Dashboard
+    </a>
+</div>
+
+{% endif %}
+
+<div class="mt-4 d-flex justify-content-between">
+    <a href="/dashboard" class="btn btn-outline-secondary">
+        ← Dashboard
+    </a>
+    <a href="/upload" class="btn btn-outline-primary">
+        Upload New Syllabus
+    </a>
+</div>
 
 {% endblock %}

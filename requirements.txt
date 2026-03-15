@@ -1,10 +1,39 @@
-fastapi
-uvicorn
-pymongo
-python-jose
-passlib[bcrypt]
-jinja2
-python-multipart
-pytesseract
-Pillow
-pdfplumber
+# ─────────────────────────────────────────────
+# Prep Genie — requirements.txt
+# ─────────────────────────────────────────────
+
+# Web framework
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+
+# Session middleware
+starlette==0.37.2
+itsdangerous==2.2.0
+
+# Templates
+jinja2==3.1.4
+
+# Forms / multipart
+python-multipart==0.0.9
+
+# MongoDB
+pymongo==4.7.2
+motor==3.4.0
+
+# PDF parsing
+pymupdf==1.24.3
+
+# OCR
+pdf2image==1.17.0
+pytesseract==0.3.10
+Pillow==10.3.0
+
+# AI / Groq API
+requests==2.31.0
+python-dotenv==1.0.1
+
+# Data validation
+pydantic[email]==2.7.1
+
+# Utilities
+bson==0.5.10

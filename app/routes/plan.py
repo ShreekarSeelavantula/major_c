@@ -5,7 +5,7 @@ from bson import ObjectId
 
 from app.database import syllabus_collection
 from app.services.plan_orchestrator import build_adaptive_plan
-from app.storage.plan_store import get_study_plan
+from app.storage.plan_store import get_study_plan, load_plan
 
 router = APIRouter(tags=["Study Plan"])
 templates = Jinja2Templates(directory="app/templates")
@@ -15,10 +15,8 @@ templates = Jinja2Templates(directory="app/templates")
 # Plan configuration page
 # -----------------------------
 @router.get("/plan/configure/{syllabus_id}", response_class=HTMLResponse)
-def configure_plan(
-    request: Request,
-    syllabus_id: str
-):
+def configure_plan(request: Request, syllabus_id: str):
+
     if "user_id" not in request.session:
         return RedirectResponse("/login", status_code=303)
 
@@ -29,6 +27,12 @@ def configure_plan(
 
     if not syllabus:
         raise HTTPException(status_code=404, detail="Syllabus not found")
+
+    if not syllabus.get("structured_syllabus"):
+        raise HTTPException(
+            status_code=400,
+            detail="Syllabus not structured yet"
+        )
 
     return templates.TemplateResponse(
         "plan_configure.html",
@@ -50,6 +54,7 @@ def generate_plan(
     hours_per_day: float = Form(...),
     deadline_days: int = Form(...)
 ):
+
     if "user_id" not in request.session:
         return RedirectResponse("/login", status_code=303)
 
@@ -64,18 +69,20 @@ def generate_plan(
         raise HTTPException(status_code=404, detail="Syllabus not found")
 
     structured_syllabus = syllabus.get("structured_syllabus")
+
     if not structured_syllabus:
         raise HTTPException(
             status_code=400,
             detail="Syllabus has no structured content"
         )
 
-    # store last config for adaptive regeneration
+    # Store config for later re-generation
     request.session["last_plan_config"] = {
         "syllabus_id": syllabus_id,
         "hours_per_day": hours_per_day,
         "deadline_days": deadline_days
     }
+
     result = build_adaptive_plan(
         user_id=user_id,
         structured_syllabus=structured_syllabus,
@@ -83,7 +90,6 @@ def generate_plan(
         deadline_days=deadline_days
     )
 
-    # result MUST contain plan_id
     return RedirectResponse(
         url=f"/plan/view/{result['plan_id']}",
         status_code=303
@@ -91,13 +97,11 @@ def generate_plan(
 
 
 # -----------------------------
-# Plan view page (NEW)
+# Plan view page
 # -----------------------------
 @router.get("/plan/view/{plan_id}", response_class=HTMLResponse)
-def view_plan(
-    request: Request,
-    plan_id: str
-):
+def view_plan(request: Request, plan_id: str):
+
     if "user_id" not in request.session:
         return RedirectResponse("/login", status_code=303)
 
@@ -111,15 +115,56 @@ def view_plan(
     if not plan_doc:
         raise HTTPException(status_code=404, detail="Plan not found")
 
+    # plan_doc["plan"] has keys: "schedule" and "confidence"
+    schedule = plan_doc["plan"].get("schedule", {})
+    confidence = plan_doc["plan"].get("confidence", 0.5)
+
     return templates.TemplateResponse(
         "plans.html",
         {
             "request": request,
-            "plan": plan_doc["plan"],
+            "active_page": "plan_latest",
+            "schedule": schedule,
+            "confidence": confidence,
             "meta": {
-                "hours_per_day": plan_doc["hours_per_day"],
-                "deadline_days": plan_doc["deadline_days"],
-                "created_at": plan_doc["created_at"]
+                "hours_per_day": plan_doc.get("hours_per_day"),
+                "deadline_days": plan_doc.get("deadline_days"),
+                "created_at": plan_doc.get("created_at")
+            }
+        }
+    )
+
+
+# -----------------------------
+# View latest plan for user
+# -----------------------------
+@router.get("/plan/latest", response_class=HTMLResponse)
+def view_latest_plan(request: Request):
+
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    user_id = request.session["user_id"]
+
+    plan_doc = load_plan(user_id)
+
+    if not plan_doc:
+        return RedirectResponse("/dashboard", status_code=303)
+
+    schedule = plan_doc["plan"].get("schedule", {})
+    confidence = plan_doc["plan"].get("confidence", 0.5)
+
+    return templates.TemplateResponse(
+        "plans.html",
+        {
+            "request": request,
+            "active_page": "plan_latest",
+            "schedule": schedule,
+            "confidence": confidence,
+            "meta": {
+                "hours_per_day": plan_doc.get("hours_per_day"),
+                "deadline_days": plan_doc.get("deadline_days"),
+                "created_at": plan_doc.get("created_at")
             }
         }
     )

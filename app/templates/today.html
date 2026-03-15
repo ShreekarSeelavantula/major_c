@@ -1,0 +1,249 @@
+{% extends "layout.html" %}
+
+{% block title %}Today's Study | Prep Genie{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        <h2 class="fw-bold mb-0">📅 Today's Study</h2>
+        <p class="text-muted mb-0">
+            Day {{ day_number }} of {{ deadline_days }}
+        </p>
+    </div>
+    <div class="text-end">
+        <span class="badge bg-primary fs-6">
+            Planned: {{ planned_hours }} hrs
+        </span>
+    </div>
+</div>
+
+<!-- Success message -->
+{% if request.session.get("progress_message") %}
+<div class="alert alert-success mt-3">
+    {{ request.session.get("progress_message") }}
+</div>
+{% endif %}
+
+<!-- Micro test completed banner -->
+{% if request.session.get("micro_test_done_today") %}
+{% set mt = request.session.get("micro_test_done_today") %}
+<div class="alert alert-info mt-3 d-flex justify-content-between align-items-center">
+    <div>
+        🧪 <strong>Micro test completed!</strong>
+        Score: <strong>{{ mt.score }}%</strong>
+        across {{ mt.topics_tested }} topics.
+        Your familiarity scores have been updated.
+    </div>
+    <span class="badge bg-success fs-6">✅ Done</span>
+</div>
+{% endif %}
+
+<hr class="mb-4">
+
+<form method="post" action="/progress/submit/{{ syllabus_id }}">
+
+    <!-- Hidden fields -->
+    <input type="hidden" name="expected_hours" value="{{ planned_hours }}">
+
+    <!-- ------------------------------------------------ -->
+    <!-- STUDY TASKS -->
+    <!-- ------------------------------------------------ -->
+    {% if study_tasks %}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header fw-bold bg-primary text-white">
+            📘 Study Topics
+        </div>
+        <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+
+                {% for task in study_tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Checkbox -->
+                        <input class="form-check-input mt-0"
+                               type="checkbox"
+                               name="done__{{ task.topic }}"
+                               value="on"
+                               id="task_{{ loop.index }}">
+
+                        <label for="task_{{ loop.index }}" class="mb-0">
+                            <strong>{{ task.topic }}</strong>
+                            <br>
+                            <small class="text-muted">
+                                {{ task.complexity }} level
+                            </small>
+                        </label>
+                    </div>
+
+                    <span class="badge bg-success px-3 py-2">
+                        ⏱ {{ task.hours }} hrs
+                    </span>
+
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ------------------------------------------------ -->
+    <!-- REVISION TASKS -->
+    <!-- ------------------------------------------------ -->
+    {% if revision_tasks %}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header fw-bold bg-warning text-dark">
+            🔁 Revision Topics
+        </div>
+        <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+
+                {% for task in revision_tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+
+                    <div class="d-flex align-items-center gap-3">
+                        <input class="form-check-input mt-0"
+                               type="checkbox"
+                               name="done__{{ task.topic }}"
+                               value="on"
+                               id="rev_{{ loop.index }}">
+
+                        <label for="rev_{{ loop.index }}" class="mb-0">
+                            <strong>{{ task.topic }}</strong>
+                            <br>
+                            <small class="text-muted">Revision</small>
+                        </label>
+                    </div>
+
+                    <span class="badge bg-warning text-dark px-3 py-2">
+                        ⏱ {{ task.hours }} hrs
+                    </span>
+
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ------------------------------------------------ -->
+    <!-- MICRO TEST -->
+    <!-- ------------------------------------------------ -->
+    {% if micro_test %}
+    <div class="card shadow-sm border-0 mb-4">
+
+        {% if request.session.get("micro_test_done_today") %}
+        <!-- Already completed today -->
+        <div class="card-header fw-bold bg-success text-white">
+            🧪 Micro Test — ✅ Completed
+        </div>
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <p class="mb-1">
+                    <strong>Score: {{ request.session.get("micro_test_done_today").score }}%</strong>
+                    — {{ request.session.get("micro_test_done_today").topics_tested }} topics tested
+                </p>
+                <small class="text-muted">
+                    Familiarity scores updated. Plan adjusted.
+                </small>
+            </div>
+            <span class="badge bg-success px-3 py-2 fs-6">Done ✅</span>
+        </div>
+
+        {% else %}
+        <!-- Not yet done -->
+        <div class="card-header fw-bold bg-info text-white">
+            🧪 Micro Test
+        </div>
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <p class="mb-1">
+                    <strong>{{ micro_test.questions }} question test</strong>
+                    — tests your weak topics
+                </p>
+                <small class="text-muted">
+                    Takes about 5 minutes. Updates your familiarity
+                    scores and adjusts your plan automatically.
+                </small>
+            </div>
+            <a href="/familiarity/micro/{{ syllabus_id }}"
+               class="btn btn-info text-white px-4">
+                Start Test →
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
+    <!-- ------------------------------------------------ -->
+    <!-- ACTUAL HOURS INPUT -->
+    <!-- ------------------------------------------------ -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <label class="form-label fw-semibold">
+                ⏱ How many hours did you actually study today?
+            </label>
+
+            <div class="d-flex align-items-center gap-3">
+                <input type="number"
+                       name="actual_hours"
+                       class="form-control"
+                       style="max-width: 150px;"
+                       min="0"
+                       max="24"
+                       step="0.25"
+                       placeholder="e.g. 2.5"
+                       required>
+                <span class="text-muted">
+                    Planned: <strong>{{ planned_hours }} hrs</strong>
+                </span>
+            </div>
+
+            <small class="text-muted mt-2 d-block">
+                This helps the system learn your study pace
+                and adjust future days automatically.
+            </small>
+
+        </div>
+    </div>
+
+    <!-- ------------------------------------------------ -->
+    <!-- SUBMIT -->
+    <!-- ------------------------------------------------ -->
+    <div class="d-flex justify-content-between align-items-center mt-2">
+
+        <a href="/plan/latest" class="btn btn-outline-secondary">
+            ← View Full Plan
+        </a>
+
+        <button type="submit" class="btn btn-primary btn-lg px-5">
+            Save Progress & Update Plan ✅
+        </button>
+
+    </div>
+
+</form>
+
+<script>
+    // Strike-through completed tasks visually
+    document.querySelectorAll('.form-check-input').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const label = this.nextElementSibling;
+            if (this.checked) {
+                label.style.textDecoration = 'line-through';
+                label.style.opacity = '0.5';
+            } else {
+                label.style.textDecoration = 'none';
+                label.style.opacity = '1';
+            }
+        });
+    });
+</script>
+
+{% endblock %}

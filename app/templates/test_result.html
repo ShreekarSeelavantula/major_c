@@ -7,71 +7,82 @@
 <h2 class="mb-4">📊 Familiarity Test Result</h2>
 
 <div class="card mb-4 shadow-sm">
-<div class="card-body">
+    <div class="card-body">
+        <h4>
+            Overall Familiarity Score:
+            <span class="badge bg-primary">
+                {{ (result.overall_score * 100) | round(2) }} %
+            </span>
+        </h4>
 
-<h4>
-Overall Familiarity Score:
-<span class="badge bg-primary">
-{{ (result.overall_score * 100)|round(2) }} %
-</span>
-</h4>
+        {% if result.overall_score < 0.4 %}
+        <p class="text-danger mt-2 mb-0">
+            🔴 You have low familiarity with these topics.
+            Your plan will allocate more time here.
+        </p>
+        {% elif result.overall_score < 0.7 %}
+        <p class="text-warning mt-2 mb-0">
+            🟡 Moderate familiarity detected.
+            Your plan will balance learning and revision.
+        </p>
+        {% else %}
+        <p class="text-success mt-2 mb-0">
+            🟢 Strong familiarity detected.
+            Your plan will fast-track these topics.
+        </p>
+        {% endif %}
 
-</div>
-</div>
-
-<div class="card shadow-sm">
-<div class="card-header fw-bold">
-Topic Wise Performance
-</div>
-
-<div class="card-body">
-
-<table class="table">
-
-<thead>
-<tr>
-<th>Topic</th>
-<th>Familiarity</th>
-<th>Status</th>
-</tr>
-</thead>
-
-<tbody>
-
-{% for topic, score in result.topic_scores.items() %}
-
-<tr>
-<td>{{ topic }}</td>
-
-<td>
-{{ (score * 100)|round(2) }} %
-</td>
-
-<td>
-
-{% if score < 0.4 %} <span class="badge bg-danger">Weak</span>
-{% elif score < 0.7 %} <span class="badge bg-warning text-dark">Moderate</span>
-{% else %} <span class="badge bg-success">Strong</span>
-{% endif %}
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
+    </div>
 </div>
 
-<div class="mt-4 text-center">
+<div class="card shadow-sm mb-4">
+    <div class="card-header fw-bold">
+        Topic-wise Performance
+    </div>
 
-<a href="/dashboard" class="btn btn-secondary">
-Go Dashboard
-</a>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Topic</th>
+                    <th>Familiarity</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for topic, score in result.topic_scores.items() %}
+                <tr>
+                    <td>{{ topic }}</td>
+                    <td>{{ (score * 100) | round(2) }} %</td>
+                    <td>
+                        {% if score < 0.4 %}
+                            <span class="badge bg-danger">Weak</span>
+                        {% elif score < 0.7 %}
+                            <span class="badge bg-warning text-dark">Moderate</span>
+                        {% else %}
+                            <span class="badge bg-success">Strong</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mt-4 d-flex justify-content-between align-items-center">
+
+    <a href="/dashboard" class="btn btn-outline-secondary">
+        Go to Dashboard
+    </a>
+
+    {% if syllabus_id %}
+    <!-- ⭐ After Unit-1 test, prompt user to self-rate remaining units -->
+    <a href="/familiarity/self-rating/{{ syllabus_id }}"
+       class="btn btn-primary btn-lg">
+        Rate Remaining Units →
+    </a>
+    {% endif %}
 
 </div>
 

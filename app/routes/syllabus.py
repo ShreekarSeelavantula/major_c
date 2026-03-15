@@ -10,13 +10,10 @@ from app.services.syllabus_validator import analyze_syllabus
 from app.services.syllabus_structurer import structure_syllabus
 from app.services.subject_detector import detect_subjects
 from app.services.syllabus_pipeline import process_syllabus
-
-# ✅ NEW
 from app.services.planner_service import PlannerService
-
 from app.services.topic_complexity_engine import evaluate_topic
 from app.services.topic_cleaner import TopicCleaner
-
+from app.storage.learner_store import get_learner_state
 
 
 router = APIRouter(tags=["Syllabus"])
@@ -84,7 +81,7 @@ async def upload_syllabus(request: Request, file: UploadFile = File(...)):
         "subjects_detected": [],
         "selected_subject": None,
         "structured_syllabus": None,
-        "generated_plan": None,   # ✅ NEW
+        "generated_plan": None,
         "status": "preview"
     }).inserted_id
 
@@ -165,7 +162,7 @@ def validate_syllabus(request: Request, syllabus_id: str):
 
 
 # --------------------------------------------------
-# STRUCTURE + GENERATE PLAN (UPDATED CORE)
+# STRUCTURE + GENERATE PLAN
 # --------------------------------------------------
 @router.post("/syllabus/structure/{syllabus_id}")
 def structure_selected_subject(
@@ -181,9 +178,6 @@ def structure_selected_subject(
 
     structured_payload = []
 
-    # -------------------------------
-    # BUILD STRUCTURED SYLLABUS
-    # -------------------------------
     for unit in structured_units:
         unit_topics = []
 
@@ -206,7 +200,13 @@ def structure_selected_subject(
             unit_topics.append({
                 "name": name,
                 "subtopics": subtopics,
+
+                # ⭐ FIX: store full complexity dict for display purposes
                 "complexity": complexity_data,
+
+                # ⭐ FIX: store difficulty string separately for planner use
+                "difficulty": complexity_data["difficulty"],
+
                 "score": complexity_data["total_score"],
                 "estimated_hours": estimated_hours,
                 "unit_index": unit.unit_number
@@ -226,7 +226,6 @@ def structure_selected_subject(
 
     try:
         cleaned_payload = TopicCleaner.clean_topics(structured_payload)
-
         print("CLEANED PAYLOAD FROM AI:")
         print(cleaned_payload)
 
@@ -236,26 +235,40 @@ def structure_selected_subject(
 
     # -----------------------------------------
     # REBUILD PLANNER TOPICS FROM CLEANED DATA
+    # ⭐ FIX: use "difficulty" string, not "complexity" dict
     # -----------------------------------------
     planner_topics = []
 
     for unit in cleaned_payload:
         for topic in unit["topics"]:
-
             planner_topics.append({
                 "topic": topic["name"],
-                "complexity": topic["complexity"]["difficulty"],
+                "complexity": topic["difficulty"],        # ✅ plain string "Easy"/"Medium"/"Hard"
                 "estimated_hours": topic["estimated_hours"]
             })
 
     # -----------------------------------------
     # GENERATE STUDY PLAN
+    # ⭐ FIX: load real learner state so familiarity
+    # scores from tests are used in plan generation
     # -----------------------------------------
-    learner_state = {
+    user_id = request.session["user_id"]
+    learner_state = get_learner_state(user_id) or {
         "learning_speed": 1.0,
         "consistency": 1.0,
         "topic_states": {}
     }
+
+    # Ensure all topics exist in learner state
+    for t in planner_topics:
+        learner_state["topic_states"].setdefault(t["topic"], {
+            "familiarity": 0.0,
+            "confidence": 0.0,
+            "retention": 1.0,
+            "attempts": 0,
+            "last_studied": None,
+            "revision_due": False
+        })
 
     generated_plan = PlannerService.create_plan(
         topics=planner_topics,
@@ -284,6 +297,7 @@ def structure_selected_subject(
         status_code=status.HTTP_303_SEE_OTHER
     )
 
+
 # --------------------------------------------------
 # CHANGE SUBJECT
 # --------------------------------------------------
@@ -307,7 +321,7 @@ def change_subject(request: Request, syllabus_id: str):
             "$set": {
                 "structured_syllabus": None,
                 "selected_subject": None,
-                "generated_plan": None,   # ✅ important (new field)
+                "generated_plan": None,
                 "status": "subjects_detected"
             }
         }
@@ -339,26 +353,22 @@ def view_study_plan(request: Request, syllabus_id: str):
     if not syllabus.get("generated_plan"):
         raise HTTPException(status_code=400, detail="Study plan not generated yet")
 
-    print("Generated Plan Data:", syllabus.get("generated_plan"))
-
     return templates.TemplateResponse(
         "study_plan.html",
         {
             "request": request,
             "syllabus": syllabus,
             "generated_plan": syllabus.get("generated_plan"),
-            "format_time": format_time   # 👈 THIS LINE ADDED
+            "format_time": format_time
         }
     )
 
 
-
 # --------------------------------------------------
-# TIME FORMATTER FUNCTION
+# TIME FORMATTER
 # --------------------------------------------------
 def format_time(hours):
     total_minutes = int(round(hours * 60))
-
     h = total_minutes // 60
     m = total_minutes % 60
 
@@ -368,11 +378,10 @@ def format_time(hours):
         return f"{h} hour{'s' if h > 1 else ''}"
     else:
         return f"{h} hour{'s' if h > 1 else ''} {m} minutes"
-    
 
 
 # --------------------------------------------------
-# AI TOPIC CLEANER
+# AI TOPIC CLEANER (manual trigger)
 # --------------------------------------------------
 @router.get("/syllabus/clean-topics/{syllabus_id}")
 def clean_topics_with_ai(request: Request, syllabus_id: str):
@@ -398,11 +407,7 @@ def clean_topics_with_ai(request: Request, syllabus_id: str):
 
         syllabus_collection.update_one(
             {"_id": ObjectId(syllabus_id)},
-            {
-                "$set": {
-                    "structured_syllabus": cleaned
-                }
-            }
+            {"$set": {"structured_syllabus": cleaned}}
         )
 
     except Exception as e:

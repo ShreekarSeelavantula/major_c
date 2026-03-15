@@ -1,0 +1,614 @@
+{
+  "Organizational Behavior": [
+    {
+      "question": "What is the primary focus of Organizational Behavior?",
+      "options": [
+        "The study of individual behavior within organizations",
+        "The study of organizational structure and design",
+        "The study of organizational culture and climate",
+        "The study of organizational change and development"
+      ],
+      "answer": "The study of individual behavior within organizations"
+    }
+  ],
+  "Definition": [
+    {
+      "question": "What is the definition of Organizational Behavior?",
+      "options": [
+        "The study of how individuals and groups interact within organizations",
+        "The study of the structure and design of organizations",
+        "The study of the culture and climate of organizations",
+        "The study of the behavior of individuals within organizations"
+      ],
+      "answer": "The study of how individuals and groups interact within organizations"
+    }
+  ],
+  "Need and Importance of Organizational Behavior": [
+    {
+      "question": "Why is Organizational Behavior important?",
+      "options": [
+        "To understand organizational structure and design",
+        "To improve organizational culture and climate",
+        "To enhance individual and group performance",
+        "To increase organizational effectiveness"
+      ],
+      "answer": "To enhance individual and group performance"
+    }
+  ],
+  "Nature and Scope of Organizational Behavior": [
+    {
+      "question": "What is the scope of Organizational Behavior?",
+      "options": [
+        "It studies only individual behavior within organizations",
+        "It studies only organizational culture and climate",
+        "It studies the interaction between individuals and groups within organizations",
+        "It studies the behavior of organizations as a whole"
+      ],
+      "answer": "It studies the interaction between individuals and groups within organizations"
+    }
+  ],
+  "Framework": [
+    {
+      "question": "What is the framework of Organizational Behavior?",
+      "options": [
+        "A set of principles and concepts that guide the study of organizational behavior",
+        "A set of theories and models that explain organizational behavior",
+        "A set of practices and techniques that improve organizational performance",
+        "A set of tools and methods that analyze organizational data"
+      ],
+      "answer": "A set of principles and concepts that guide the study of organizational behavior"
+    }
+  ],
+  "Organizational Behavior Models": [
+    {
+      "question": "What are Organizational Behavior Models?",
+      "options": [
+        "Theories and frameworks that explain organizational behavior",
+        "Practices and techniques that improve organizational performance",
+        "Tools and methods that analyze organizational data",
+        "Concepts and principles that guide the study of organizational behavior"
+      ],
+      "answer": "Theories and frameworks that explain organizational behavior"
+    }
+  ],
+  "Individual Behavior": [
+    {
+      "question": "What is Individual Behavior in Organizational Behavior?",
+      "options": [
+        "The behavior of groups within organizations",
+        "The behavior of individuals within organizations",
+        "The behavior of organizations as a whole",
+        "The behavior of external stakeholders"
+      ],
+      "answer": "The behavior of individuals within organizations"
+    }
+  ],
+  "Personality Types": [
+    {
+      "question": "What are Personality Types?",
+      "options": [
+        "Different categories of personality traits",
+        "Different types of leadership styles",
+        "Different levels of motivation",
+        "Different types of organizational culture"
+      ],
+      "answer": "Different categories of personality traits"
+    }
+  ],
+  "Factors Influencing Personality": [
+    {
+      "question": "What are Factors Influencing Personality?",
+      "options": [
+        "Genetics, environment, and experience",
+        "Age, gender, and culture",
+        "Education, occupation, and income",
+        "Family, friends, and social media"
+      ],
+      "answer": "Genetics, environment, and experience"
+    }
+  ],
+  "Learning Theories": [
+    {
+      "question": "What are Learning Theories?",
+      "options": [
+        "Theories that explain how individuals learn",
+        "Theories that explain how organizations change",
+        "Theories that explain how groups interact",
+        "Theories that explain how leaders motivate"
+      ],
+      "answer": "Theories that explain how individuals learn"
+    }
+  ],
+  "Types of Learners": [
+    {
+      "question": "What are Types of Learners?",
+      "options": [
+        "Visual, auditory, and kinesthetic learners",
+        "Experiential, social, and independent learners",
+        "Analytical, creative, and practical learners",
+        "Theoretical, empirical, and applied learners"
+      ],
+      "answer": "Visual, auditory, and kinesthetic learners"
+    }
+  ],
+  "The Learning Process": [
+    {
+      "question": "What is The Learning Process?",
+      "options": [
+        "The process of acquiring new knowledge and skills",
+        "The process of changing behavior and attitudes",
+        "The process of developing new habits and routines",
+        "The process of improving performance and productivity"
+      ],
+      "answer": "The process of acquiring new knowledge and skills"
+    }
+  ],
+  "Organizational Behavior Modification": [
+    {
+      "question": "What is Organizational Behavior Modification?",
+      "options": [
+        "The process of changing individual behavior within organizations",
+        "The process of changing organizational culture and climate",
+        "The process of changing group dynamics and interactions",
+        "The process of changing leadership styles and practices"
+      ],
+      "answer": "The process of changing individual behavior within organizations"
+    }
+  ],
+  "Misbehavior": [
+    {
+      "question": "What is Misbehavior?",
+      "options": [
+        "Behavior that is not in line with organizational norms and expectations",
+        "Behavior that is not in line with individual values and goals",
+        "Behavior that is not in line with social norms and expectations",
+        "Behavior that is not in line with cultural norms and expectations"
+      ],
+      "answer": "Behavior that is not in line with organizational norms and expectations"
+    }
+  ],
+  "Types": [
+    {
+      "question": "What are Types of Misbehavior?",
+      "options": [
+        "Absence, tardiness, and turnover",
+        "Sabotage, gossip, and theft",
+        "Neglect, procrastination, and lack of motivation",
+        "Conflict, aggression, and violence"
+      ],
+      "answer": "Absence, tardiness, and turnover"
+    }
+  ],
+  "Management": [
+    {
+      "question": "What is Management?",
+      "options": [
+        "The process of planning, organizing, and controlling",
+        "The process of leading, motivating, and developing",
+        "The process of communicating, coordinating, and controlling",
+        "The process of innovating, improvising, and adjusting"
+      ],
+      "answer": "The process of planning, organizing, and controlling"
+    }
+  ],
+  "Intervention": [
+    {
+      "question": "What is Intervention?",
+      "options": [
+        "A process of changing individual behavior",
+        "A process of changing organizational culture and climate",
+        "A process of changing group dynamics and interactions",
+        "A process of changing leadership styles and practices"
+      ],
+      "answer": "A process of changing individual behavior"
+    }
+  ],
+  "Emotions": [
+    {
+      "question": "What are Emotions?",
+      "options": [
+        "Feelings and moods that affect behavior and performance",
+        "Thoughts and attitudes that affect behavior and performance",
+        "Values and goals that affect behavior and performance",
+        "Skills and abilities that affect behavior and performance"
+      ],
+      "answer": "Feelings and moods that affect behavior and performance"
+    }
+  ],
+  "Emotional Intelligence": [
+    {
+      "question": "What is Emotional Intelligence?",
+      "options": [
+        "The ability to recognize and understand emotions",
+        "The ability to manage and regulate emotions",
+        "The ability to motivate and inspire others",
+        "The ability to analyze and solve problems"
+      ],
+      "answer": "The ability to recognize and understand emotions"
+    }
+  ],
+  "Labor": [
+    {
+      "question": "What is Labor?",
+      "options": [
+        "The process of working and producing",
+        "The process of managing and controlling",
+        "The process of leading and motivating",
+        "The process of innovating and improvising"
+      ],
+      "answer": "The process of working and producing"
+    }
+  ],
+  "Emotional": [
+    {
+      "question": "What is Emotional?",
+      "options": [
+        "Related to feelings and moods",
+        "Related to thoughts and attitudes",
+        "Related to values and goals",
+        "Related to skills and abilities"
+      ],
+      "answer": "Related to feelings and moods"
+    }
+  ],
+  "Intelligence": [
+    {
+      "question": "What is Intelligence?",
+      "options": [
+        "The ability to recognize and understand emotions",
+        "The ability to manage and regulate emotions",
+        "The ability to motivate and inspire others",
+        "The ability to analyze and solve problems"
+      ],
+      "answer": "The ability to analyze and solve problems"
+    }
+  ],
+  "Theories": [
+    {
+      "question": "What are Theories?",
+      "options": [
+        "Explanations and frameworks that guide research and practice",
+        "Models and frameworks that explain behavior and performance",
+        "Practices and techniques that improve performance and productivity",
+        "Tools and methods that analyze and solve problems"
+      ],
+      "answer": "Explanations and frameworks that guide research and practice"
+    }
+  ],
+  "Attitudes": [
+    {
+      "question": "What are Attitudes?",
+      "options": [
+        "Feelings and moods that affect behavior and performance",
+        "Thoughts and attitudes that affect behavior and performance",
+        "Values and goals that affect behavior and performance",
+        "Skills and abilities that affect behavior and performance"
+      ],
+      "answer": "Thoughts and attitudes that affect behavior and performance"
+    }
+  ],
+  "Characteristics and Components of Formation": [
+    {
+      "question": "What are Characteristics and Components of Formation?",
+      "options": [
+        "The process of creating and developing attitudes",
+        "The process of changing and modifying attitudes",
+        "The process of measuring and assessing attitudes",
+        "The process of understanding and explaining attitudes"
+      ],
+      "answer": "The process of understanding and explaining attitudes"
+    }
+  ],
+  "Measurement of Values and Perceptions": [
+    {
+      "question": "What is Measurement of Values and Perceptions?",
+      "options": [
+        "The process of assessing and evaluating values and perceptions",
+        "The process of creating and developing values and perceptions",
+        "The process of changing and modifying values and perceptions",
+        "The process of understanding and explaining values and perceptions"
+      ],
+      "answer": "The process of assessing and evaluating values and perceptions"
+    }
+  ],
+  "Importance and Factors Influencing Perception": [
+    {
+      "question": "What is Importance and Factors Influencing Perception?",
+      "options": [
+        "The process of understanding and explaining perception",
+        "The process of creating and developing perception",
+        "The process of changing and modifying perception",
+        "The process of assessing and evaluating perception"
+      ],
+      "answer": "The process of understanding and explaining perception"
+    }
+  ],
+  "Interpersonal Perception and Impression Management": [
+    {
+      "question": "What is Interpersonal Perception and Impression Management?",
+      "options": [
+        "The process of creating and developing impressions",
+        "The process of changing and modifying impressions",
+        "The process of assessing and evaluating impressions",
+        "The process of understanding and explaining impressions"
+      ],
+      "answer": "The process of creating and developing impressions"
+    }
+  ],
+  "Motivation and Importance": [
+    {
+      "question": "What is Motivation and Importance?",
+      "options": [
+        "The process of understanding and explaining motivation",
+        "The process of creating and developing motivation",
+        "The process of changing and modifying motivation",
+        "The process of assessing and evaluating motivation"
+      ],
+      "answer": "The process of understanding and explaining motivation"
+    }
+  ],
+  "Types of Motivation": [
+    {
+      "question": "What are Types of Motivation?",
+      "options": [
+        "Intrinsic, extrinsic, and social motivation",
+        "Achievement, affiliation, and power motivation",
+        "Incentive, reinforcement, and punishment motivation",
+        "Intrinsic, extrinsic, and internal motivation"
+      ],
+      "answer": "Intrinsic, extrinsic, and social motivation"
+    }
+  ],
+  "Effects on Work Behavior": [
+    {
+      "question": "What are Effects on Work Behavior?",
+      "options": [
+        "The process of understanding and explaining work behavior",
+        "The process of creating and developing work behavior",
+        "The process of changing and modifying work behavior",
+        "The process of assessing and evaluating work behavior"
+      ],
+      "answer": "The process of understanding and explaining work behavior"
+    }
+  ],
+  "Group Behavior": [
+    {
+      "question": "What is Group Behavior?",
+      "options": [
+        "The behavior of individuals within groups",
+        "The behavior of groups within organizations",
+        "The behavior of organizations as a whole",
+        "The behavior of external stakeholders"
+      ],
+      "answer": "The behavior of individuals within groups"
+    }
+  ],
+  "Organization Structure and Formation": [
+    {
+      "question": "What is Organization Structure and Formation?",
+      "options": [
+        "The process of creating and developing organizational structure",
+        "The process of changing and modifying organizational structure",
+        "The process of assessing and evaluating organizational structure",
+        "The process of understanding and explaining organizational structure"
+      ],
+      "answer": "The process of creating and developing organizational structure"
+    }
+  ],
+  "Groups in Organizations": [
+    {
+      "question": "What are Groups in Organizations?",
+      "options": [
+        "Formal and informal groups within organizations",
+        "Task and social groups within organizations",
+        "Primary and secondary groups within organizations",
+        "Organizational and interorganizational groups"
+      ],
+      "answer": "Formal and informal groups within organizations"
+    }
+  ],
+  "Influence and Group Dynamics": [
+    {
+      "question": "What is Influence and Group Dynamics?",
+      "options": [
+        "The process of understanding and explaining group dynamics",
+        "The process of creating and developing group dynamics",
+        "The process of changing and modifying group dynamics",
+        "The process of assessing and evaluating group dynamics"
+      ],
+      "answer": "The process of understanding and explaining group dynamics"
+    }
+  ],
+  "Emergence of Informal Leaders and Working Norms": [
+    {
+      "question": "What is Emergence of Informal Leaders and Working Norms?",
+      "options": [
+        "The process of creating and developing informal leaders",
+        "The process of changing and modifying informal leaders",
+        "The process of assessing and evaluating informal leaders",
+        "The process of understanding and explaining informal leaders"
+      ],
+      "answer": "The process of creating and developing informal leaders"
+    }
+  ],
+  "Group Decision Making Techniques": [
+    {
+      "question": "What are Group Decision Making Techniques?",
+      "options": [
+        "Consensus, majority, and minority decision making",
+        "Delegation, empowerment, and participation decision making",
+        "Analytical, creative, and practical decision making",
+        "Theoretical, empirical, and applied decision making"
+      ],
+      "answer": "Consensus, majority, and minority decision making"
+    }
+  ],
+  "Team Building and Interpersonal Relations": [
+    {
+      "question": "What is Team Building and Interpersonal Relations?",
+      "options": [
+        "The process of creating and developing team building",
+        "The process of changing and modifying team building",
+        "The process of assessing and evaluating team building",
+        "The process of understanding and explaining team building"
+      ],
+      "answer": "The process of creating and developing team building"
+    }
+  ],
+  "Communication and Control": [
+    {
+      "question": "What is Communication and Control?",
+      "options": [
+        "The process of understanding and explaining communication",
+        "The process of creating and developing communication",
+        "The process of changing and modifying communication",
+        "The process of assessing and evaluating communication"
+      ],
+      "answer": "The process of understanding and explaining communication"
+    }
+  ],
+  "Leadership and Power": [
+    {
+      "question": "What is Leadership and Power?",
+      "options": [
+        "The process of understanding and explaining leadership",
+        "The process of creating and developing leadership",
+        "The process of changing and modifying leadership",
+        "The process of assessing and evaluating leadership"
+      ],
+      "answer": "The process of understanding and explaining leadership"
+    }
+  ],
+  "Meaning and Importance of Leadership": [
+    {
+      "question": "What is Meaning and Importance of Leadership?",
+      "options": [
+        "The process of understanding and explaining leadership",
+        "The process of creating and developing leadership",
+        "The process of changing and modifying leadership",
+        "The process of assessing and evaluating leadership"
+      ],
+      "answer": "The process of understanding and explaining leadership"
+    }
+  ],
+  "Leadership Styles": [
+    {
+      "question": "What are Leadership Styles?",
+      "options": [
+        "Autocratic, democratic, and laissez-faire leadership",
+        "Transformational, transactional, and contingent leadership",
+        "Servant, situational, and task-oriented leadership",
+        "Transformational, transactional, and charismatic leadership"
+      ],
+      "answer": "Autocratic, democratic, and laissez-faire leadership"
+    }
+  ],
+  "Theories of Leadership": [
+    {
+      "question": "What are Theories of Leadership?",
+      "options": [
+        "Trait, behavioral, and contingency theories",
+        "Situational, transformational, and transactional theories",
+        "Servant, situational, and task-oriented theories",
+        "Trait, behavioral, and situational theories"
+      ],
+      "answer": "Trait, behavioral, and contingency theories"
+    }
+  ],
+  "Leaders vs Managers": [
+    {
+      "question": "What are Leaders vs Managers?",
+      "options": [
+        "Leaders are more focused on strategy, while managers are more focused on operations",
+        "Leaders are more focused on people, while managers are more focused on processes",
+        "Leaders are more focused on innovation, while managers are more focused on efficiency",
+        "Leaders are more focused on change, while managers are more focused on stability"
+      ],
+      "answer": "Leaders are more focused on people, while managers are more focused on processes"
+    }
+  ],
+  "Sources of Power": [
+    {
+      "question": "What are Sources of Power?",
+      "options": [
+        "Legitimate, coercive, and expert power",
+        "Referent, informational, and inspirational power",
+        "Reward, punishment, and legitimate power",
+        "Expert, referent, and informational power"
+      ],
+      "answer": "Legitimate, coercive, and expert power"
+    }
+  ],
+  "Power Centers and Power and Politics": [
+    {
+      "question": "What is Power Centers and Power and Politics?",
+      "options": [
+        "The process of understanding and explaining power and politics",
+        "The process of creating and developing power and politics",
+        "The process of changing and modifying power and politics",
+        "The process of assessing and evaluating power and politics"
+      ],
+      "answer": "The process of understanding and explaining power and politics"
+    }
+  ],
+  "Dynamics of Organizational Behavior": [
+    {
+      "question": "What is Dynamics of Organizational Behavior?",
+      "options": [
+        "The process of understanding and explaining organizational behavior",
+        "The process of creating and developing organizational behavior",
+        "The process of changing and modifying organizational behavior",
+        "The process of assessing and evaluating organizational behavior"
+      ],
+      "answer": "The process of understanding and explaining organizational behavior"
+    }
+  ],
+  "Organizational Culture and Climate": [
+    {
+      "question": "What is Organizational Culture and Climate?",
+      "options": [
+        "The process of understanding and explaining organizational culture and climate",
+        "The process of creating and developing organizational culture and climate",
+        "The process of changing and modifying organizational culture and climate",
+        "The process of assessing and evaluating organizational culture and climate"
+      ],
+      "answer": "The process of understanding and explaining organizational culture and climate"
+    }
+  ],
+  "Factors Affecting Organizational Climate": [
+    {
+      "question": "What are Factors Affecting Organizational Climate?",
+      "options": [
+        "Leadership style, organizational structure, and communication",
+        "Organizational culture, job design, and work environment",
+        "Employee attitudes, motivation, and satisfaction",
+        "Organizational change, technology, and globalization"
+      ],
+      "answer": "Leadership style, organizational structure, and communication"
+    }
+  ],
+  "Importance and Job Satisfaction": [
+    {
+      "question": "What is Importance and Job Satisfaction?",
+      "options": [
+        "The process of understanding and explaining job satisfaction",
+        "The process of creating and developing job satisfaction",
+        "The process of changing and modifying job satisfaction",
+        "The process of assessing and evaluating job satisfaction"
+      ],
+      "answer": "The process of understanding and explaining job satisfaction"
+    }
+  ],
+  "Determinants and Measurements": [
+    {
+      "question": "What are Determinants and Measurements?",
+      "options": [
+        "The process of understanding and explaining job satisfaction",
+        "The process of creating and developing job satisfaction",
+        "The process of changing and modifying job satisfaction",
+        "The process of assessing and evaluating job satisfaction"
+      ],
+      "answer": "The process of understanding and explaining job satisfaction"
+    }
+  ]
+}

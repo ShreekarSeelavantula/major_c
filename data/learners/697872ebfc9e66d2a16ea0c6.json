@@ -1,44 +1,460 @@
 {
   "topic_states": {
     "Organizational Behavior": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
-      "retention": 0.989,
-      "attempts": 9,
-      "revision_due": true,
-      "last_updated": 1773573934.3940127
+      "familiarity": 0.6,
+      "confidence": 0.3,
+      "retention": 0.975,
+      "attempts": 11,
+      "revision_due": false,
+      "last_updated": 1773581907.4522214
     },
     "Definition": {
-      "familiarity": 0.344,
-      "confidence": 0.268,
-      "retention": 0.989,
-      "attempts": 9,
-      "revision_due": true,
-      "last_updated": 1773573934.39402
+      "familiarity": 0.655,
+      "confidence": 0.432,
+      "retention": 0.975,
+      "attempts": 11,
+      "revision_due": false,
+      "last_updated": 1773581907.452203
     },
     "Need and Importance of Organizational Behavior": {
-      "familiarity": 0.28,
-      "confidence": 0.17,
-      "retention": 0.989,
-      "attempts": 9,
+      "familiarity": 0.045,
+      "confidence": 0.083,
+      "retention": 0.975,
+      "attempts": 11,
       "revision_due": true,
-      "last_updated": 1773573934.394024
+      "last_updated": 1773581907.4522088
     },
     "Nature and Scope of Organizational Behavior": {
-      "familiarity": 0.08,
-      "confidence": 0.07,
-      "retention": 0.989,
-      "attempts": 9,
+      "familiarity": 0.173,
+      "confidence": 0.174,
+      "retention": 0.975,
+      "attempts": 11,
       "revision_due": true,
-      "last_updated": 1773573934.3940265
+      "last_updated": 1773581907.4522126
     },
     "Framework": {
-      "familiarity": 0.392,
-      "confidence": 0.297,
-      "retention": 0.989,
-      "attempts": 9,
-      "revision_due": true,
-      "last_updated": 1773573934.3940294
+      "familiarity": 0.823,
+      "confidence": 0.586,
+      "retention": 0.975,
+      "attempts": 11,
+      "revision_due": false,
+      "last_updated": 1773581907.452193
+    },
+    "Organizational Behavior Models": {
+      "familiarity": 1.0,
+      "confidence": 1.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1773581907.4522152
+    },
+    "Individual Behavior": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Personality Types": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Factors Influencing Personality": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Learning Theories": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Types of Learners": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "The Learning Process": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Organizational Behavior Modification": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Misbehavior": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Types": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Management": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Intervention": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Emotions": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Emotional Intelligence": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Labor": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Emotional": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Intelligence": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Theories": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Attitudes": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Characteristics and Components of Formation": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Measurement of Values and Perceptions": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Importance and Factors Influencing Perception": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Interpersonal Perception and Impression Management": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Motivation and Importance": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Types of Motivation": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Effects on Work Behavior": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Group Behavior": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Organization Structure and Formation": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Groups in Organizations": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Influence and Group Dynamics": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Emergence of Informal Leaders and Working Norms": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Group Decision Making Techniques": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Team Building and Interpersonal Relations": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Communication and Control": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Leadership and Power": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Meaning and Importance of Leadership": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Leadership Styles": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Theories of Leadership": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Leaders vs Managers": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Sources of Power": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Power Centers and Power and Politics": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Dynamics of Organizational Behavior": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Organizational Culture and Climate": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Factors Affecting Organizational Climate": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Importance and Job Satisfaction": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Determinants and Measurements": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
     }
-  }
+  },
+  "learning_speed": 1.0,
+  "consistency": 1.0,
+  "history": []
 }

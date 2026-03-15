@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}Configure Study Plan | Prep Genie{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-2">⚙️ Configure Your Study Plan</h2>
+<p class="text-muted mb-4">
+    Set your study preferences for
+    <strong>{{ filename }}</strong>
+</p>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <form method="post" action="/plan/generate">
+
+            <input type="hidden" name="syllabus_id" value="{{ syllabus_id }}">
+
+            <!-- Hours per day -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    How many hours can you study per day?
+                </label>
+                <input type="number"
+                       name="hours_per_day"
+                       class="form-control"
+                       min="0.5"
+                       max="12"
+                       step="0.5"
+                       value="3"
+                       required>
+                <small class="text-muted">
+                    Recommended: 2–4 hours for sustainable learning
+                </small>
+            </div>
+
+            <!-- Deadline -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    How many days until your exam?
+                </label>
+                <input type="number"
+                       name="deadline_days"
+                       class="form-control"
+                       min="1"
+                       max="365"
+                       value="30"
+                       required>
+                <small class="text-muted">
+                    The plan will fit all topics within this deadline.
+                </small>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a href="/dashboard" class="btn btn-outline-secondary">
+                    ← Back
+                </a>
+                <button type="submit" class="btn btn-primary btn-lg px-5">
+                    Generate My Plan →
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

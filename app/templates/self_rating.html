@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block title %}Rate Your Familiarity | Prep Genie{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-2">📋 Rate Your Familiarity</h2>
+<p class="text-muted mb-4">
+    You just completed the Unit-1 diagnostic test. <br>
+    Now quickly rate how well you know the remaining units.
+    This helps us generate a better study plan immediately.
+</p>
+
+<form method="post" action="/familiarity/self-rating/submit">
+
+    <input type="hidden" name="syllabus_id" value="{{ syllabus_id }}">
+
+    {% for unit in units %}
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-1">{{ unit.title }}</h5>
+
+            <p class="text-muted small mb-3">
+                {{ unit.topics | length }} topics —
+                e.g.
+                {% for topic in unit.topics[:3] %}
+                    <em>{{ topic.name }}</em>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+                {% if unit.topics | length > 3 %}
+                    and {{ unit.topics | length - 3 }} more...
+                {% endif %}
+            </p>
+
+            <p class="fw-semibold mb-2">
+                How familiar are you with this unit?
+            </p>
+
+            <div class="d-flex gap-3 flex-wrap">
+
+                <label class="btn btn-outline-danger">
+                    <input type="radio"
+                           name="unit_{{ unit.unit_number }}"
+                           value="0"
+                           class="d-none"
+                           required>
+                    😶 Never studied
+                </label>
+
+                <label class="btn btn-outline-warning">
+                    <input type="radio"
+                           name="unit_{{ unit.unit_number }}"
+                           value="0.25"
+                           class="d-none">
+                    🙁 Heard of it
+                </label>
+
+                <label class="btn btn-outline-info">
+                    <input type="radio"
+                           name="unit_{{ unit.unit_number }}"
+                           value="0.5"
+                           class="d-none">
+                    😐 Somewhat familiar
+                </label>
+
+                <label class="btn btn-outline-primary">
+                    <input type="radio"
+                           name="unit_{{ unit.unit_number }}"
+                           value="0.75"
+                           class="d-none">
+                    🙂 Know it well
+                </label>
+
+                <label class="btn btn-outline-success">
+                    <input type="radio"
+                           name="unit_{{ unit.unit_number }}"
+                           value="1.0"
+                           class="d-none">
+                    😎 Very confident
+                </label>
+
+            </div>
+
+        </div>
+    </div>
+
+    {% endfor %}
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary btn-lg px-5">
+            Save & Generate My Plan →
+        </button>
+    </div>
+
+</form>
+
+<script>
+    // Highlight selected button visually
+    document.querySelectorAll('.btn-outline-danger, .btn-outline-warning, .btn-outline-info, .btn-outline-primary, .btn-outline-success').forEach(label => {
+        label.addEventListener('click', function () {
+            // Deselect siblings in same group
+            const radio = this.querySelector('input[type="radio"]');
+            const name = radio.name;
+            document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+                r.closest('label').classList.remove('active');
+            });
+            this.classList.add('active');
+        });
+    });
+</script>
+
+{% endblock %}

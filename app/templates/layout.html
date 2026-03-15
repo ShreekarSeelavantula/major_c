@@ -6,8 +6,9 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Animate.css for smooth effects -->
+    <!-- Animate.css -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
@@ -17,33 +18,49 @@
             background: linear-gradient(135deg, #f8f9fa, #eef2f7);
         }
 
+        /* ---- Sidebar ---- */
         .sidebar {
             width: 240px;
             min-height: 100vh;
             background: #ffffff;
             border-right: 1px solid #dee2e6;
             box-shadow: 4px 0 10px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
 
-        .sidebar a {
+        .sidebar a.nav-link {
             text-decoration: none;
-            color: #333;
+            color: #444;
             padding: 10px 15px;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             border-radius: 8px;
             transition: all 0.2s ease;
+            font-size: 0.95rem;
         }
 
-        .sidebar a:hover {
+        .sidebar a.nav-link:hover {
             background-color: #f1f3f5;
             transform: translateX(4px);
+            color: #0d6efd;
         }
 
-        .sidebar .active {
+        /* ⭐ Active link styling */
+        .sidebar a.nav-link.active {
             background-color: #0d6efd;
-            color: white;
+            color: white !important;
+            font-weight: 600;
         }
 
+        .sidebar a.nav-link.active:hover {
+            background-color: #0b5ed7;
+            transform: none;
+        }
+
+        /* ---- Cards ---- */
         .card {
             border-radius: 16px;
             border: none;
@@ -63,6 +80,34 @@
             transform: translateY(-2px);
         }
 
+        /* ---- Progress bar ---- */
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #4e73df, #9b59b6, #4e73df);
+            background-size: 200% 100%;
+            animation: flow 2s linear infinite;
+            transition: width 0.8s ease-in-out;
+        }
+
+        .progress-fill.step-1 { width: 5%; }
+        .progress-fill.step-2 { width: 50%; }
+        .progress-fill.step-3 { width: 100%; }
+
+        @keyframes flow {
+            0%   { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* ---- Subject card ---- */
         .subject-card {
             cursor: pointer;
             border: 1px solid #dee2e6;
@@ -80,91 +125,69 @@
             border: 2px solid #0d6efd;
             background: #f0f6ff;
         }
-
-        .fade-in {
-            animation: fadeInUp 0.6s ease;
-        }
-
-
-        .progress-track {
-            width: 100%;
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 50px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Base animated fill */
-        .progress-fill {
-            height: 100%;
-            border-radius: 50px;
-            background: linear-gradient(
-                90deg,
-                #4e73df,
-                #9b59b6,
-                #4e73df
-            );
-            background-size: 200% 100%;
-            animation: flow 2s linear infinite;
-            transition: width 0.8s ease-in-out;
-        }
-
-        /* Step widths */
-        .progress-fill.step-1 { width: 5%; }
-        .progress-fill.step-2 { width: 50%; }
-        .progress-fill.step-3 { width: 100%; }
-
-        /* Flowing river animation */
-        @keyframes flow {
-            0% { background-position: 0% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-
-
-        .subject-card {
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-        }
-
-        .subject-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            background-color: #f8fbff;
-        }
-
-
-
-        
     </style>
 </head>
 
 <body>
 <div class="d-flex">
 
-    <!-- Sidebar -->
+    <!-- ============ SIDEBAR ============ -->
     <div class="sidebar p-3 d-flex flex-column">
-        <h4 class="mb-4 text-primary fw-bold">🧞 Prep Genie</h4>
 
-        <a href="/dashboard">📊 Dashboard</a>
-        <a href="/plans">📚 Study Plans</a>
-        <a href="/profile">👤 Profile</a>
+        <h4 class="mb-4 text-primary fw-bold px-2">
+            🧞 Prep Genie
+        </h4>
 
-        <div class="mt-auto px-3">
+        <nav class="d-flex flex-column gap-1">
+
+            <a href="/dashboard"
+               class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+                <i class="bi bi-speedometer2"></i>
+                Dashboard
+            </a>
+
+            <a href="/plans"
+               class="nav-link {% if active_page == 'plans' %}active{% endif %}">
+                <i class="bi bi-journal-check"></i>
+                Study Plans
+            </a>
+
+            <a href="/plan/latest"
+               class="nav-link {% if active_page == 'plan_latest' %}active{% endif %}">
+                <i class="bi bi-calendar-week"></i>
+                Full Plan
+            </a>
+
+            <a href="/upload"
+               class="nav-link {% if active_page == 'upload' %}active{% endif %}">
+                <i class="bi bi-upload"></i>
+                Upload Syllabus
+            </a>
+
+            <a href="/profile"
+               class="nav-link {% if active_page == 'profile' %}active{% endif %}">
+                <i class="bi bi-person-circle"></i>
+                Profile
+            </a>
+
+        </nav>
+
+        <div class="mt-auto px-1">
             <a href="/auth/logout" class="btn btn-outline-danger w-100">
-                Logout
+                <i class="bi bi-box-arrow-right"></i> Logout
             </a>
         </div>
+
     </div>
 
-    <!-- Main Content -->
-    <div class="flex-grow-1 p-4">
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="flex-grow-1 p-4" style="min-width: 0;">
         {% block content %}
         {% endblock %}
     </div>
 
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
