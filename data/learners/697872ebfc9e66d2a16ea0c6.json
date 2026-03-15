@@ -3,42 +3,42 @@
     "Organizational Behavior": {
       "familiarity": 0.0,
       "confidence": 0.0,
-      "retention": 0.991,
-      "attempts": 7,
+      "retention": 0.989,
+      "attempts": 9,
       "revision_due": true,
-      "last_updated": 1773572397.399191
+      "last_updated": 1773573934.3940127
     },
     "Definition": {
-      "familiarity": 0.4,
-      "confidence": 0.2,
-      "retention": 0.991,
-      "attempts": 7,
+      "familiarity": 0.344,
+      "confidence": 0.268,
+      "retention": 0.989,
+      "attempts": 9,
       "revision_due": true,
-      "last_updated": 1773572397.3991988
+      "last_updated": 1773573934.39402
     },
     "Need and Importance of Organizational Behavior": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
-      "retention": 0.991,
-      "attempts": 7,
+      "familiarity": 0.28,
+      "confidence": 0.17,
+      "retention": 0.989,
+      "attempts": 9,
       "revision_due": true,
-      "last_updated": 1773572397.3992023
+      "last_updated": 1773573934.394024
     },
     "Nature and Scope of Organizational Behavior": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
-      "retention": 0.991,
-      "attempts": 7,
+      "familiarity": 0.08,
+      "confidence": 0.07,
+      "retention": 0.989,
+      "attempts": 9,
       "revision_due": true,
-      "last_updated": 1773572397.3992045
+      "last_updated": 1773573934.3940265
     },
     "Framework": {
-      "familiarity": 0.202,
-      "confidence": 0.117,
-      "retention": 0.991,
-      "attempts": 7,
+      "familiarity": 0.392,
+      "confidence": 0.297,
+      "retention": 0.989,
+      "attempts": 9,
       "revision_due": true,
-      "last_updated": 1773572397.399207
+      "last_updated": 1773573934.3940294
     }
   }
 }

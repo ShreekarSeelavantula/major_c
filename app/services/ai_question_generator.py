@@ -32,29 +32,69 @@ class AIQuestionGenerator:
         return json.loads(json_text)
 
     @staticmethod
-    def generate_mcqs(topic, num_questions=3):
+    def _resolve_answer(answer, options):
+        """
+        Ensure the answer is always the full option text.
+
+        Handles two cases the AI might return:
+          - A single letter:  "A", "B", "C", "D"
+          - Full option text: "Employee well-being and productivity"
+        """
+
+        answer = answer.strip()
+
+        # ⭐ FIX: use `in list` not `in string` to avoid substring false-positives.
+        # "AB" in "ABCD"  → True  (WRONG — substring match)
+        # "AB" in ["A","B","C","D"] → False (CORRECT — membership check)
+        is_letter = len(answer) == 1 and answer.upper() in ["A", "B", "C", "D"]
+
+        if is_letter:
+            idx = ord(answer.upper()) - ord("A")
+            if 0 <= idx < len(options):
+                return options[idx].strip()
+
+        return answer
+
+    @staticmethod
+    def generate_mcqs(topic, num_questions=3, domain=""):
+        """
+        Generate MCQs for a given topic.
+
+        Args:
+            topic:         The specific topic name
+            num_questions: How many questions to generate
+            domain:        Subject/course name for context
+                           (e.g. "Organizational Behaviour").
+                           Prevents AI from generating off-topic questions.
+        """
+
+        domain_context = (
+            f"This topic belongs to the subject: {domain}.\n"
+            if domain else ""
+        )
 
         prompt = f"""
 You are an exam question generator.
 
-Generate {num_questions} multiple choice questions about:
+{domain_context}Generate {num_questions} multiple choice questions about:
 
 TOPIC: {topic}
 
 Rules:
-- 4 options per question
+- Questions must be specifically about {topic} in the context of {domain or "the subject"}
+- 4 options per question (plain text, NO letter prefixes like A) B) etc.)
 - Only one correct answer
-- Answer must exactly match one option
+- The "answer" field must be the EXACT full text of the correct option
 - No explanations
-- Return ONLY JSON array
+- Return ONLY a JSON array, no markdown, no extra text
 
 Format:
 
 [
  {{
-  "question": "text",
-  "options": ["A","B","C","D"],
-  "answer": "A"
+  "question": "Question text here?",
+  "options": ["Option one", "Option two", "Option three", "Option four"],
+  "answer": "Option one"
  }}
 ]
 """
@@ -97,6 +137,13 @@ Format:
 
             if not isinstance(questions, list):
                 raise Exception("AI response is not a list")
+
+            # Normalise every question's answer to full option text
+            for q in questions:
+                q["answer"] = AIQuestionGenerator._resolve_answer(
+                    q.get("answer", ""),
+                    q.get("options", [])
+                )
 
             return questions
 

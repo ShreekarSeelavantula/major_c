@@ -43,6 +43,9 @@ async def start_familiarity_test(request: Request, syllabus_id: str):
     if not structured:
         raise HTTPException(status_code=400, detail="Structured syllabus missing")
 
+    # ⭐ FIX 1: Grab subject/title so AI generates domain-relevant questions
+    syllabus_title = syllabus.get("title", "") or syllabus.get("subject", "") or ""
+
     topics = []
     for unit in structured:
         for topic in unit["topics"]:
@@ -52,30 +55,24 @@ async def start_familiarity_test(request: Request, syllabus_id: str):
 
     questions = {}
     topic_map = {}
-
     error_message = None
 
-    # ⭐ FIXED: try inside loop (partial fallback safe)
     for t_index, topic in enumerate(topics):
         topic_id = f"t{t_index}"
 
         try:
             mcqs = AIQuestionGenerator.generate_mcqs(
                 topic,
-                num_questions=3
+                num_questions=3,
+                domain=syllabus_title      # ⭐ domain context added
             )
         except Exception as e:
             error_message = "Some AI questions failed. Local fallback used."
             mcqs = [
                 {
                     "question": f"Basic concept of {topic}?",
-                    "options": [
-                        "Concept",
-                        "Hardware",
-                        "Networking",
-                        "Database"
-                    ],
-                    "answer": "Concept"
+                    "options": ["Option A", "Option B", "Option C", "Option D"],
+                    "answer": "Option A"
                 }
             ]
 
@@ -106,7 +103,6 @@ async def start_familiarity_test(request: Request, syllabus_id: str):
 async def local_familiarity_test(request: Request, syllabus_id: str):
 
     local_questions = {
-
         "t0": [
             {
                 "question": "What is Python?",
@@ -114,7 +110,6 @@ async def local_familiarity_test(request: Request, syllabus_id: str):
                 "answer": "Language"
             }
         ],
-
         "t1": [
             {
                 "question": "Which structure uses FIFO?",
@@ -129,7 +124,6 @@ async def local_familiarity_test(request: Request, syllabus_id: str):
         "t1": "Data Structures"
     }
 
-    # ⭐ FIXED: store dict (NOT json)
     request.session["test_questions"] = local_questions
     request.session["test_topic_map"] = topic_map
     request.session["test_syllabus_id"] = syllabus_id
@@ -155,24 +149,17 @@ async def micro_familiarity_test(request: Request, syllabus_id: str):
     if "user_id" not in request.session:
         return RedirectResponse("/login", status_code=303)
 
-    learner_state = load_learner_state(
-        request.session["user_id"]
-    )
+    learner_state = load_learner_state(request.session["user_id"])
 
-    syllabus = syllabus_collection.find_one({
-        "_id": ObjectId(syllabus_id)
-    })
+    syllabus = syllabus_collection.find_one({"_id": ObjectId(syllabus_id)})
 
     if not syllabus:
         raise HTTPException(status_code=404)
 
     structured = syllabus.get("structured_syllabus")
+    syllabus_title = syllabus.get("title", "") or syllabus.get("subject", "") or ""
 
-    topics = sample_micro_topics(
-        structured,
-        learner_state,
-        n=5
-    )
+    topics = sample_micro_topics(structured, learner_state, n=5)
 
     questions = {}
     topic_map = {}
@@ -183,19 +170,15 @@ async def micro_familiarity_test(request: Request, syllabus_id: str):
         try:
             mcqs = AIQuestionGenerator.generate_mcqs(
                 topic,
-                num_questions=1
+                num_questions=1,
+                domain=syllabus_title      # ⭐ domain context added
             )
         except:
             mcqs = [
                 {
                     "question": f"Basic idea of {topic}?",
-                    "options": [
-                        "Concept",
-                        "Hardware",
-                        "Networking",
-                        "Database"
-                    ],
-                    "answer": "Concept"
+                    "options": ["Option A", "Option B", "Option C", "Option D"],
+                    "answer": "Option A"
                 }
             ]
 
@@ -206,8 +189,6 @@ async def micro_familiarity_test(request: Request, syllabus_id: str):
     request.session["test_topic_map"] = topic_map
     request.session["test_syllabus_id"] = syllabus_id
     request.session["test_type"] = "micro"
-
-    print("SESSION DATA:", request.session)
 
     return templates.TemplateResponse(
         "familiarity_test.html",
@@ -236,7 +217,7 @@ async def submit_familiarity_test(request: Request):
     questions = request.session.get("test_questions")
     topic_map = request.session.get("test_topic_map")
 
-    # ⭐ Stateless fallback (IMPORTANT for Codespaces)
+    # Stateless fallback (important for Codespaces where session may drop)
     if not questions or not topic_map:
         try:
             questions = json.loads(form.get("questions_json"))
@@ -248,14 +229,12 @@ async def submit_familiarity_test(request: Request):
             )
 
     topic_scores = {}
-
     total_q = 0
     total_correct = 0
 
     for topic_id, qs in questions.items():
 
         real_topic = topic_map.get(topic_id, topic_id)
-
         correct_count = 0
 
         for i, q in enumerate(qs):
@@ -263,89 +242,98 @@ async def submit_familiarity_test(request: Request):
             key = f"{topic_id}_{i}"
             total_q += 1
 
+            # ⭐ FIX 2: The HTML radio button value is the raw option text
+            # (e.g. "Employee well-being and productivity").
+            # We just need to compare lowercased strings directly.
+            # The old code tried to re-resolve the option letter AFTER the
+            # user already submitted the full option text — that caused 0 matches.
             user_answer = answers.get(key, "").strip().lower()
+
             ai_answer = q.get("answer", "")
+            options = q.get("options", [])
 
-            # -------- Normalize AI Answer --------
-            if isinstance(ai_answer, str):
+            # Resolve what the correct option TEXT is
+            # CASE 1: AI returned a letter like "A", "B", "C", "D"
+            if (
+                isinstance(ai_answer, str)
+                and len(ai_answer.strip()) == 1
+                and ai_answer.strip().upper() in "ABCD"
+            ):
+                option_index = ord(ai_answer.strip().upper()) - ord("A")
 
-                ai_answer = ai_answer.strip()
-
-                # CASE 1 → AI returned option letter
-                if len(ai_answer) == 1 and ai_answer.isalpha():
-
-                    option_index = ord(ai_answer.lower()) - ord("a")
-
-                    if 0 <= option_index < len(q.get("options", [])):
-                        correct_text = q["options"][option_index].strip().lower()
-                    else:
-                        correct_text = ai_answer.lower()
-
-                # CASE 2 → AI returned full text
+                if 0 <= option_index < len(options):
+                    correct_text = options[option_index].strip().lower()
                 else:
-                    correct_text = ai_answer.lower()
+                    correct_text = ai_answer.strip().lower()
 
+            # CASE 2: AI returned full option text already
             else:
-                correct_text = ""
+                correct_text = ai_answer.strip().lower()
 
-            # -------- Debug Logs --------
-            print("Q:", key)
-            print("USER:", user_answer)
-            print("AI RAW:", ai_answer)
-            print("MATCH TEXT:", correct_text)
+            # Debug
+            print(f"Q         : {key}")
+            print(f"User ans  : '{user_answer}'")
+            print(f"AI raw    : '{ai_answer}'")
+            print(f"Correct   : '{correct_text}'")
+            print(f"Match     : {user_answer == correct_text}")
+            print("---")
 
-            # -------- Score --------
             if user_answer == correct_text:
                 correct_count += 1
                 total_correct += 1
 
         topic_scores[real_topic] = (
-            correct_count / len(qs)
-            if qs else 0
+            correct_count / len(qs) if qs else 0
         )
 
     overall_score = total_correct / total_q if total_q else 0
 
     user_id = request.session["user_id"]
-
     learner_state = load_learner_state(user_id)
 
     if not learner_state:
         learner_state = {"topic_states": {}}
 
-    learner_state = update_familiarity(
-        learner_state,
-        topic_scores
-    )
+    learner_state = update_familiarity(learner_state, topic_scores)
+    save_learner_state(user_id, learner_state)
 
-    save_learner_state(
-        user_id,
-        learner_state
-    )
-
+    # ⭐ FIX 3: Store result in session BEFORE redirect
     request.session["last_test_result"] = {
         "topic_scores": topic_scores,
         "overall_score": overall_score
     }
 
-    return RedirectResponse(
-        url="/familiarity/result",
-        status_code=303
-    )
+    print("SAVED TO SESSION:", request.session.get("last_test_result"))
+
+    return RedirectResponse(url="/familiarity/result", status_code=303)
 
 
+# ---------------------------------------------------
+# RESULT PAGE
+# ---------------------------------------------------
 @router.get("/familiarity/result", response_class=HTMLResponse, name="familiarity_result")
 async def familiarity_result(request: Request):
 
     result = request.session.get("last_test_result")
 
+    print("RESULT FROM SESSION:", result)
+
     if not result:
         return RedirectResponse("/dashboard", status_code=303)
 
-    return templates.TemplateResponse(
+    # ⭐ FIX 4: Build response first, THEN clear session keys.
+    # If you clear before rendering, the template gets nothing.
+    response = templates.TemplateResponse(
         "test_result.html",
         {
             "request": request,
             "result": result
         }
     )
+
+    # Clean up test-related session keys after rendering
+    for key in ["last_test_result", "test_questions", "test_topic_map",
+                "test_syllabus_id", "test_type"]:
+        request.session.pop(key, None)
+
+    return response
