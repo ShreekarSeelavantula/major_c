@@ -11,10 +11,10 @@
     </p>
 </div>
 
-<!-- STATS -->
+<!-- STATS — 4 cards in one row -->
 <div class="row g-4 mb-5">
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -62,7 +62,36 @@
                         —
                     {% endif %}
                 </h2>
-                <small class="text-muted">Based on your progress</small>
+                <small class="text-muted">
+                    {% if consistency_pct %}
+                        {{ consistency_pct }}% consistency
+                    {% else %}
+                        Based on your progress
+                    {% endif %}
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Study Streak + Retention Health -->
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h6 class="text-muted">Study Streak</h6>
+                    <i class="bi bi-fire text-warning"></i>
+                </div>
+                <h2 class="fw-bold mt-2">
+                    {{ streak_days }} day{{ "s" if streak_days != 1 else "" }}
+                </h2>
+                <small class="
+                    {% if at_risk_count > 0 %}text-danger{% else %}text-muted{% endif %}">
+                    {% if at_risk_count > 0 %}
+                        ⚠️ {{ at_risk_count }} topic{{ "s" if at_risk_count != 1 else "" }} fading
+                    {% else %}
+                        ✅ All topics healthy
+                    {% endif %}
+                </small>
             </div>
         </div>
     </div>
@@ -85,6 +114,23 @@
            class="btn btn-light fw-bold px-4">
             Start Today →
         </a>
+    </div>
+</div>
+{% endif %}
+
+<!-- RETENTION WARNING BANNER — only shown when topics are fading -->
+{% if at_risk_count > 0 %}
+<div class="alert border-0 shadow-sm rounded-4 mb-4"
+     style="background: #fff8f0; border-left: 4px solid #fd7e14 !important;"
+     role="alert">
+    <div class="d-flex align-items-center gap-3">
+        <span style="font-size: 1.5rem;">🧠</span>
+        <div>
+            <strong>{{ at_risk_count }} topic{{ "s are" if at_risk_count != 1 else " is" }} fading from memory.</strong>
+            <span class="text-muted ms-1">
+                Your plan has scheduled revision to fix this automatically.
+            </span>
+        </div>
     </div>
 </div>
 {% endif %}
@@ -116,10 +162,12 @@
                         {% else %}
                             Not yet assessed
                         {% endif %}
+                        {% if streak_days > 0 %}
+                            &nbsp;·&nbsp; 🔥 {{ streak_days }}-day streak
+                        {% endif %}
                     </small>
                 </div>
 
-                <!-- ⭐ Three clean buttons — no Quick Test -->
                 <div class="d-flex gap-2">
                     <a href="/progress/today/{{ syllabus_id }}"
                        class="btn btn-sm btn-primary">
