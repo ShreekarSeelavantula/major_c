@@ -495,12 +495,13 @@
       "last_updated": 1773587170.566755
     },
     "Principles of Security": {
-      "familiarity": 0.4,
-      "confidence": 0.7,
-      "retention": 0.177,
-      "attempts": 3,
-      "revision_due": true,
-      "last_updated": 1774589194.0341809
+      "familiarity": 0.45,
+      "confidence": 0.45,
+      "retention": 1.0,
+      "attempts": 4,
+      "revision_due": false,
+      "last_updated": 1774589194.0341809,
+      "last_studied": "2026-03-27"
     },
     "The Need for Security": {
       "familiarity": 0.24,
@@ -511,12 +512,13 @@
       "last_updated": 1774589194.0341856
     },
     "Substitution Techniques": {
-      "familiarity": 0.4,
-      "confidence": 0.7,
-      "retention": 0.177,
-      "attempts": 3,
-      "revision_due": true,
-      "last_updated": 1774589194.0341685
+      "familiarity": 0.5,
+      "confidence": 0.5,
+      "retention": 1.0,
+      "attempts": 4,
+      "revision_due": false,
+      "last_updated": 1774589194.0341685,
+      "last_studied": "2026-03-27"
     },
     "Introduction": {
       "familiarity": 0.84,
@@ -551,20 +553,22 @@
       "last_updated": 1774589194.0341904
     },
     "Encryption and Decryption Techniques": {
-      "familiarity": 0.4,
-      "confidence": 0.7,
-      "retention": 0.177,
-      "attempts": 3,
-      "revision_due": true,
-      "last_updated": 1774589194.0341578
+      "familiarity": 0.45,
+      "confidence": 0.45,
+      "retention": 1.0,
+      "attempts": 4,
+      "revision_due": false,
+      "last_updated": 1774589194.0341578,
+      "last_studied": "2026-03-27"
     },
     "Cryptography Concepts and Techniques": {
-      "familiarity": 0.4,
-      "confidence": 0.7,
-      "retention": 0.177,
-      "attempts": 3,
-      "revision_due": true,
-      "last_updated": 1774589194.0341763
+      "familiarity": 0.45,
+      "confidence": 0.45,
+      "retention": 1.0,
+      "attempts": 4,
+      "revision_due": false,
+      "last_updated": 1774589194.0341763,
+      "last_studied": "2026-03-27"
     },
     "Symmetric Key Ciphers": {
       "familiarity": 1.0,
@@ -583,12 +587,13 @@
       "last_updated": 1774589194.034171
     },
     "Plain Text and Cipher Text": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
-      "retention": 0.177,
-      "attempts": 3,
-      "revision_due": true,
-      "last_updated": 1774589194.0341785
+      "familiarity": 0.1,
+      "confidence": 0.06,
+      "retention": 1.0,
+      "attempts": 5,
+      "revision_due": false,
+      "last_updated": 1774589194.0341785,
+      "last_studied": "2026-03-27"
     },
     "Symmetric and Asymmetric Key Cryptography, Steganography, Key Range and Key Size, Possible Types of Attacks": {
       "familiarity": 1.0,
@@ -607,20 +612,22 @@
       "last_updated": 1774589194.0341947
     },
     "Types of Security Attacks": {
-      "familiarity": 0.4,
-      "confidence": 0.7,
-      "retention": 0.177,
-      "attempts": 3,
-      "revision_due": true,
-      "last_updated": 1774589194.034197
+      "familiarity": 0.45,
+      "confidence": 0.45,
+      "retention": 1.0,
+      "attempts": 4,
+      "revision_due": false,
+      "last_updated": 1774589194.034197,
+      "last_studied": "2026-03-27"
     },
     "Security Services": {
-      "familiarity": 0.4,
-      "confidence": 0.7,
-      "retention": 0.177,
-      "attempts": 3,
-      "revision_due": true,
-      "last_updated": 1774589194.0341737
+      "familiarity": 0.45,
+      "confidence": 0.45,
+      "retention": 1.0,
+      "attempts": 4,
+      "revision_due": false,
+      "last_updated": 1774589194.0341737,
+      "last_studied": "2026-03-27"
     },
     "Power Centers and Power Politics": {
       "familiarity": 0.07500000000000001,
@@ -1172,10 +1179,127 @@
       "revision_due": true,
       "complexity": "Medium",
       "last_updated": 1774592495.0807576
+    },
+    "Frame work": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Types of Management": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Labour": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Theories.": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Characteristics, Components, Formation": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Hard"
+    },
+    "Attitude Theories": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Characteristics of Attitudes": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Hard"
+    },
+    "Formation of Attitudes": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Importance of Perception": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Factors Influencing Perception": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Power Centers and Politics": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Importance of Job Satisfaction": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Determinants of Job Satisfaction": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Hard"
     }
   },
-  "learning_speed": 0.75,
-  "consistency": 0.6699999999999998,
+  "learning_speed": 0.7,
+  "consistency": 0.5,
   "history": [
     {
       "date": "2026-03-15",
@@ -1331,6 +1455,46 @@
       "date": "2026-03-27",
       "actual_hours": 1.25,
       "expected_hours": 1.38
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.51
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.51
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.2
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.09
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.05
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.05
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 1.0,
+      "expected_hours": 1.05
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.17
     }
   ],
   "tested_units": [

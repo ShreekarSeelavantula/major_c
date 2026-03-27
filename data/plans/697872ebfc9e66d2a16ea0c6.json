@@ -6,9 +6,9 @@
       "1": [
         {
           "type": "study",
-          "topic": "Plain Text and Cipher Text",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Characteristics, Components, Formation",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -18,9 +18,9 @@
       "2": [
         {
           "type": "study",
-          "topic": "Plain Text and Cipher Text",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Characteristics, Components, Formation",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -30,15 +30,9 @@
       "3": [
         {
           "type": "study",
-          "topic": "Plain Text and Cipher Text",
-          "hours": 0.58,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Principles of Security",
-          "hours": 0.93,
-          "complexity": "Medium"
+          "topic": "Characteristics, Components, Formation",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -48,9 +42,9 @@
       "4": [
         {
           "type": "study",
-          "topic": "Principles of Security",
-          "hours": 0.91,
-          "complexity": "Medium"
+          "topic": "Characteristics, Components, Formation",
+          "hours": 0.63,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -60,9 +54,9 @@
       "5": [
         {
           "type": "study",
-          "topic": "Principles of Security",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Characteristics, Components, Formation",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -72,15 +66,9 @@
       "6": [
         {
           "type": "study",
-          "topic": "Principles of Security",
-          "hours": 0.25,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Types of Security Attacks",
-          "hours": 1.26,
-          "complexity": "Medium"
+          "topic": "Characteristics, Components, Formation",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -90,9 +78,15 @@
       "7": [
         {
           "type": "study",
-          "topic": "Types of Security Attacks",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Characteristics, Components, Formation",
+          "hours": 0.55,
+          "complexity": "Hard"
+        },
+        {
+          "type": "study",
+          "topic": "Characteristics of Attitudes",
+          "hours": 0.5,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -102,15 +96,9 @@
       "8": [
         {
           "type": "study",
-          "topic": "Types of Security Attacks",
-          "hours": 0.83,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Security Services",
-          "hours": 3.6,
-          "complexity": "Medium"
+          "topic": "Characteristics of Attitudes",
+          "hours": 0.63,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -120,9 +108,9 @@
       "9": [
         {
           "type": "study",
-          "topic": "Cryptography Concepts and Techniques",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Characteristics of Attitudes",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -132,9 +120,9 @@
       "10": [
         {
           "type": "study",
-          "topic": "Cryptography Concepts and Techniques",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Characteristics of Attitudes",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -144,15 +132,9 @@
       "11": [
         {
           "type": "study",
-          "topic": "Cryptography Concepts and Techniques",
-          "hours": 0.58,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Substitution Techniques",
-          "hours": 0.93,
-          "complexity": "Medium"
+          "topic": "Characteristics of Attitudes",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -162,9 +144,9 @@
       "12": [
         {
           "type": "study",
-          "topic": "Substitution Techniques",
-          "hours": 0.91,
-          "complexity": "Medium"
+          "topic": "Characteristics of Attitudes",
+          "hours": 0.63,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -174,9 +156,9 @@
       "13": [
         {
           "type": "study",
-          "topic": "Substitution Techniques",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Characteristics of Attitudes",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -186,15 +168,9 @@
       "14": [
         {
           "type": "study",
-          "topic": "Substitution Techniques",
-          "hours": 0.25,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Encryption and Decryption Techniques",
-          "hours": 1.26,
-          "complexity": "Medium"
+          "topic": "Characteristics of Attitudes",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -204,9 +180,21 @@
       "15": [
         {
           "type": "study",
-          "topic": "Encryption and Decryption Techniques",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Characteristics of Attitudes",
+          "hours": 0.7,
+          "complexity": "Hard"
+        },
+        {
+          "type": "study",
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 0.35,
+          "complexity": "Hard"
+        },
+        {
+          "type": "study",
+          "topic": "Leadership Styles",
+          "hours": 6.43,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -216,15 +204,9 @@
       "16": [
         {
           "type": "study",
-          "topic": "Encryption and Decryption Techniques",
-          "hours": 0.83,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Introduction to Cryptography",
-          "hours": 3.6,
-          "complexity": "Medium"
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 0.63,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -234,9 +216,9 @@
       "17": [
         {
           "type": "study",
-          "topic": "RC5",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -246,9 +228,9 @@
       "18": [
         {
           "type": "study",
-          "topic": "RC5",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -258,15 +240,9 @@
       "19": [
         {
           "type": "study",
-          "topic": "RC5",
-          "hours": 0.58,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "IDEA",
-          "hours": 0.93,
-          "complexity": "Medium"
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -276,9 +252,9 @@
       "20": [
         {
           "type": "study",
-          "topic": "IDEA",
-          "hours": 0.91,
-          "complexity": "Medium"
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 0.63,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -288,9 +264,9 @@
       "21": [
         {
           "type": "study",
-          "topic": "IDEA",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -300,15 +276,9 @@
       "22": [
         {
           "type": "study",
-          "topic": "IDEA",
-          "hours": 0.25,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "RC4",
-          "hours": 1.26,
-          "complexity": "Medium"
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -318,9 +288,21 @@
       "23": [
         {
           "type": "study",
-          "topic": "RC4",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Determinants of Job Satisfaction",
+          "hours": 0.85,
+          "complexity": "Hard"
+        },
+        {
+          "type": "study",
+          "topic": "Leadership and Power",
+          "hours": 0.2,
+          "complexity": "Hard"
+        },
+        {
+          "type": "study",
+          "topic": "Learning Theories",
+          "hours": 6.43,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -330,15 +312,9 @@
       "24": [
         {
           "type": "study",
-          "topic": "RC4",
-          "hours": 0.83,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Asymmetric Key Ciphers",
-          "hours": 3.6,
-          "complexity": "Medium"
+          "topic": "Leadership and Power",
+          "hours": 0.63,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -348,9 +324,9 @@
       "25": [
         {
           "type": "study",
-          "topic": "Principles of Public Key Cryptosystems",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Leadership and Power",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -360,9 +336,9 @@
       "26": [
         {
           "type": "study",
-          "topic": "Principles of Public Key Cryptosystems",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Leadership and Power",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -372,15 +348,9 @@
       "27": [
         {
           "type": "study",
-          "topic": "Principles of Public Key Cryptosystems",
-          "hours": 0.58,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "RSA Algorithm, Elgamal",
-          "hours": 0.93,
-          "complexity": "Medium"
+          "topic": "Leadership and Power",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -390,9 +360,9 @@
       "28": [
         {
           "type": "study",
-          "topic": "RSA Algorithm, Elgamal",
-          "hours": 0.91,
-          "complexity": "Medium"
+          "topic": "Leadership and Power",
+          "hours": 0.63,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -402,9 +372,9 @@
       "29": [
         {
           "type": "study",
-          "topic": "RSA Algorithm, Elgamal",
-          "hours": 1.51,
-          "complexity": "Medium"
+          "topic": "Leadership and Power",
+          "hours": 1.05,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -414,15 +384,15 @@
       "30": [
         {
           "type": "study",
-          "topic": "RSA Algorithm, Elgamal",
-          "hours": 0.25,
-          "complexity": "Medium"
+          "topic": "Leadership and Power",
+          "hours": 0.77,
+          "complexity": "Hard"
         },
         {
           "type": "study",
-          "topic": "Cryptography Overview",
-          "hours": 1.26,
-          "complexity": "Medium"
+          "topic": "The Learning Process",
+          "hours": 0.28,
+          "complexity": "Hard"
         },
         {
           "type": "micro_test",
@@ -430,7 +400,7 @@
         }
       ]
     },
-    "confidence": 0.52,
+    "confidence": 0.528,
     "profile_used": {
       "topic_order": "hard_first",
       "year_pace_multiplier": 0.9
@@ -438,5 +408,5 @@
   },
   "hours_per_day": 3.0,
   "deadline_days": 30,
-  "created_at": "2026-03-27T06:21:35.115699"
+  "created_at": "2026-03-27T11:42:05.589860"
 }

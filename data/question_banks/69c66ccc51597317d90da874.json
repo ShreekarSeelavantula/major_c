@@ -1,0 +1,614 @@
+{
+  "Organizational Behavior": [
+    {
+      "question": "What is the primary focus of Organizational Behavior?",
+      "options": [
+        "The study of individual behavior within organizations",
+        "The study of organizational structure and design",
+        "The study of organizational change and development",
+        "The study of organizational performance and effectiveness"
+      ],
+      "answer": "The study of individual behavior within organizations"
+    }
+  ],
+  "Definition": [
+    {
+      "question": "What is the definition of Organizational Behavior?",
+      "options": [
+        "The study of how individuals and groups interact within organizations",
+        "The study of organizational structure and design",
+        "The study of organizational change and development",
+        "The study of organizational performance and effectiveness"
+      ],
+      "answer": "The study of how individuals and groups interact within organizations"
+    }
+  ],
+  "Need and Importance of Organizational Behavior": [
+    {
+      "question": "Why is Organizational Behavior important in today's business world?",
+      "options": [
+        "It helps organizations to achieve their goals and objectives",
+        "It improves employee productivity and job satisfaction",
+        "It enhances organizational performance and effectiveness",
+        "It helps organizations to adapt to changing environments"
+      ],
+      "answer": "It helps organizations to adapt to changing environments"
+    }
+  ],
+  "Nature and Scope of Organizational Behavior": [
+    {
+      "question": "What is the scope of Organizational Behavior?",
+      "options": [
+        "It is limited to the study of individual behavior within organizations",
+        "It is limited to the study of organizational structure and design",
+        "It encompasses the study of individual, group, and organizational behavior",
+        "It is limited to the study of organizational change and development"
+      ],
+      "answer": "It encompasses the study of individual, group, and organizational behavior"
+    }
+  ],
+  "Frame work": [
+    {
+      "question": "What is the framework of Organizational Behavior?",
+      "options": [
+        "It is a set of principles and concepts that guide organizational behavior",
+        "It is a set of tools and techniques used to analyze organizational behavior",
+        "It is a set of models and theories that explain organizational behavior",
+        "It is a set of policies and procedures that govern organizational behavior"
+      ],
+      "answer": "It is a set of principles and concepts that guide organizational behavior"
+    }
+  ],
+  "Organizational Behavior Models": [
+    {
+      "question": "What is the primary purpose of Organizational Behavior models?",
+      "options": [
+        "To predict organizational behavior",
+        "To explain organizational behavior",
+        "To prescribe organizational behavior",
+        "To describe organizational behavior"
+      ],
+      "answer": "To explain organizational behavior"
+    }
+  ],
+  "Individual Behavior": [
+    {
+      "question": "What is the focus of Individual Behavior in Organizational Behavior?",
+      "options": [
+        "The study of group behavior within organizations",
+        "The study of organizational structure and design",
+        "The study of individual attitudes, perceptions, and behaviors",
+        "The study of organizational change and development"
+      ],
+      "answer": "The study of individual attitudes, perceptions, and behaviors"
+    }
+  ],
+  "Personality Types": [
+    {
+      "question": "What are the main personality types according to the Big Five personality traits?",
+      "options": [
+        "Extraversion, Agreeableness, Conscientiousness, Neuroticism, Openness to Experience",
+        "Extraversion, Agreeableness, Conscientiousness, Emotional Stability, Openness to Experience",
+        "Extraversion, Agreeableness, Conscientiousness, Neuroticism, Emotional Stability",
+        "Extraversion, Agreeableness, Conscientiousness, Openness to Experience, Emotional Stability"
+      ],
+      "answer": "Extraversion, Agreeableness, Conscientiousness, Neuroticism, Openness to Experience"
+    }
+  ],
+  "Factors Influencing Personality": [
+    {
+      "question": "What are the main factors that influence personality?",
+      "options": [
+        "Genetics, Environment, Culture, Social Learning",
+        "Genetics, Environment, Culture, Temperament",
+        "Genetics, Environment, Culture, Social Learning, Temperament",
+        "Genetics, Environment, Culture, Family, Social Learning"
+      ],
+      "answer": "Genetics, Environment, Culture, Social Learning"
+    }
+  ],
+  "Learning Theories": [
+    {
+      "question": "What are the main learning theories?",
+      "options": [
+        "Behaviorist, Cognitive, Humanistic",
+        "Behaviorist, Cognitive, Social Learning",
+        "Behaviorist, Humanistic, Social Learning",
+        "Cognitive, Humanistic, Social Learning"
+      ],
+      "answer": "Behaviorist, Cognitive, Humanistic"
+    }
+  ],
+  "Types of Learners": [
+    {
+      "question": "What are the main types of learners?",
+      "options": [
+        "Visual, Auditory, Kinesthetic",
+        "Visual, Auditory, Verbal",
+        "Visual, Kinesthetic, Verbal",
+        "Auditory, Kinesthetic, Verbal"
+      ],
+      "answer": "Visual, Auditory, Kinesthetic"
+    }
+  ],
+  "The Learning Process": [
+    {
+      "question": "What are the main stages of the learning process?",
+      "options": [
+        "Attention, Perception, Retention, Recall",
+        "Attention, Perception, Learning, Recall",
+        "Perception, Learning, Retention, Recall",
+        "Attention, Learning, Retention, Recall"
+      ],
+      "answer": "Attention, Perception, Retention, Recall"
+    }
+  ],
+  "Organizational Behavior Modification": [
+    {
+      "question": "What is the primary goal of Organizational Behavior Modification?",
+      "options": [
+        "To change individual behavior within organizations",
+        "To improve organizational performance and effectiveness",
+        "To enhance employee productivity and job satisfaction",
+        "To improve organizational structure and design"
+      ],
+      "answer": "To change individual behavior within organizations"
+    }
+  ],
+  "Misbehavior": [
+    {
+      "question": "What is the primary cause of misbehavior in organizations?",
+      "options": [
+        "Lack of clear policies and procedures",
+        "Poor leadership and management",
+        "Inadequate training and development",
+        "Lack of employee motivation and engagement"
+      ],
+      "answer": "Lack of employee motivation and engagement"
+    }
+  ],
+  "Types of Management": [
+    {
+      "question": "What are the main types of management?",
+      "options": [
+        "Functional, Divisional, Matrix, Contingency",
+        "Functional, Divisional, Line, Staff",
+        "Functional, Divisional, Matrix, Line",
+        "Divisional, Matrix, Contingency, Line"
+      ],
+      "answer": "Functional, Divisional, Matrix, Contingency"
+    }
+  ],
+  "Labour": [
+    {
+      "question": "What is the primary focus of Labour management?",
+      "options": [
+        "The recruitment and selection of employees",
+        "The training and development of employees",
+        "The motivation and engagement of employees",
+        "The management of employee relations"
+      ],
+      "answer": "The management of employee relations"
+    }
+  ],
+  "Emotions": [
+    {
+      "question": "What are the main types of emotions?",
+      "options": [
+        "Positive, Negative, Neutral",
+        "Positive, Negative, Emotional",
+        "Positive, Negative, Affective",
+        "Negative, Emotional, Affective"
+      ],
+      "answer": "Positive, Negative, Neutral"
+    }
+  ],
+  "Intelligence": [
+    {
+      "question": "What are the main types of intelligence?",
+      "options": [
+        "Verbal, Spatial, Bodily-Kinesthetic, Interpersonal",
+        "Verbal, Spatial, Bodily-Kinesthetic, Logical-Mathematical",
+        "Verbal, Spatial, Bodily-Kinesthetic, Interpersonal, Logical-Mathematical",
+        "Spatial, Bodily-Kinesthetic, Interpersonal, Logical-Mathematical"
+      ],
+      "answer": "Verbal, Spatial, Bodily-Kinesthetic, Interpersonal"
+    }
+  ],
+  "Theories": [
+    {
+      "question": "What are the main types of organizational theories?",
+      "options": [
+        "Contingency, Systems, Learning, Organizational Change",
+        "Contingency, Systems, Human Resource, Organizational Change",
+        "Contingency, Systems, Learning, Human Resource",
+        "Systems, Learning, Human Resource, Organizational Change"
+      ],
+      "answer": "Contingency, Systems, Learning, Organizational Change"
+    }
+  ],
+  "Attitudes": [
+    {
+      "question": "What are the main components of attitudes?",
+      "options": [
+        "Cognitive, Affective, Behavioral",
+        "Cognitive, Affective, Conative",
+        "Cognitive, Behavioral, Conative",
+        "Affective, Behavioral, Conative"
+      ],
+      "answer": "Cognitive, Affective, Behavioral"
+    }
+  ],
+  "Characteristics, Components, Formation": [
+    {
+      "question": "What are the main characteristics of attitudes?",
+      "options": [
+        "Positive, Negative, Neutral",
+        "Cognitive, Affective, Behavioral",
+        "Cognitive, Affective, Conative",
+        "Affective, Behavioral, Conative"
+      ],
+      "answer": "Cognitive, Affective, Behavioral"
+    }
+  ],
+  "Attitude Theories": [
+    {
+      "question": "What are the main attitude theories?",
+      "options": [
+        "Cognitive Dissonance, Social Learning, Self-Efficacy",
+        "Cognitive Dissonance, Social Learning, Attitude Formation",
+        "Social Learning, Self-Efficacy, Attitude Formation",
+        "Cognitive Dissonance, Self-Efficacy, Attitude Formation"
+      ],
+      "answer": "Cognitive Dissonance, Social Learning, Self-Efficacy"
+    }
+  ],
+  "Characteristics of Attitudes": [
+    {
+      "question": "What are the main characteristics of attitudes?",
+      "options": [
+        "Cognitive, Affective, Behavioral",
+        "Cognitive, Affective, Conative",
+        "Cognitive, Behavioral, Conative",
+        "Affective, Behavioral, Conative"
+      ],
+      "answer": "Cognitive, Affective, Behavioral"
+    }
+  ],
+  "Formation of Attitudes": [
+    {
+      "question": "What are the main factors that influence attitude formation?",
+      "options": [
+        "Cognitive, Affective, Behavioral",
+        "Cognitive, Affective, Conative",
+        "Cognitive, Behavioral, Conative",
+        "Affective, Behavioral, Conative"
+      ],
+      "answer": "Cognitive, Affective, Behavioral"
+    }
+  ],
+  "Measurement of Values and Perceptions": [
+    {
+      "question": "What are the main methods used to measure values and perceptions?",
+      "options": [
+        "Surveys, Interviews, Focus Groups, Questionnaires",
+        "Surveys, Interviews, Focus Groups, Rating Scales",
+        "Surveys, Rating Scales, Focus Groups, Questionnaires",
+        "Interviews, Focus Groups, Rating Scales, Questionnaires"
+      ],
+      "answer": "Surveys, Interviews, Focus Groups, Questionnaires"
+    }
+  ],
+  "Importance of Perception": [
+    {
+      "question": "Why is perception important in organizational behavior?",
+      "options": [
+        "It affects employee motivation and engagement",
+        "It influences employee behavior and performance",
+        "It impacts employee job satisfaction and well-being",
+        "It affects employee relationships and communication"
+      ],
+      "answer": "It influences employee behavior and performance"
+    }
+  ],
+  "Factors Influencing Perception": [
+    {
+      "question": "What are the main factors that influence perception?",
+      "options": [
+        "Cognitive, Affective, Behavioral",
+        "Cognitive, Affective, Conative",
+        "Cognitive, Behavioral, Conative",
+        "Affective, Behavioral, Conative"
+      ],
+      "answer": "Cognitive, Affective, Behavioral"
+    }
+  ],
+  "Interpersonal Perception and Impression Management": [
+    {
+      "question": "What is the primary goal of impression management?",
+      "options": [
+        "To create a positive impression of oneself",
+        "To create a negative impression of oneself",
+        "To create a neutral impression of oneself",
+        "To create an impression of oneself that is consistent with one's self-image"
+      ],
+      "answer": "To create a positive impression of oneself"
+    }
+  ],
+  "Motivation and Importance": [
+    {
+      "question": "Why is motivation important in organizational behavior?",
+      "options": [
+        "It affects employee job satisfaction and well-being",
+        "It influences employee behavior and performance",
+        "It impacts employee motivation and engagement",
+        "It affects employee relationships and communication"
+      ],
+      "answer": "It influences employee behavior and performance"
+    }
+  ],
+  "Types of Motivation": [
+    {
+      "question": "What are the main types of motivation?",
+      "options": [
+        "Intrinsic, Extrinsic, Social, Self-Directed",
+        "Intrinsic, Extrinsic, Social, Task-Oriented",
+        "Intrinsic, Extrinsic, Task-Oriented, Self-Directed",
+        "Extrinsic, Social, Task-Oriented, Self-Directed"
+      ],
+      "answer": "Intrinsic, Extrinsic, Social, Self-Directed"
+    }
+  ],
+  "Effects on Work Behavior": [
+    {
+      "question": "What are the main effects of motivation on work behavior?",
+      "options": [
+        "Increased job satisfaction and well-being",
+        "Improved employee behavior and performance",
+        "Enhanced employee motivation and engagement",
+        "Better employee relationships and communication"
+      ],
+      "answer": "Improved employee behavior and performance"
+    }
+  ],
+  "Group Behavior": [
+    {
+      "question": "What are the main characteristics of group behavior?",
+      "options": [
+        "Cooperation, Competition, Conflict, Conformity",
+        "Cooperation, Competition, Cooperation, Conformity",
+        "Competition, Conflict, Conformity, Cooperation",
+        "Conflict, Conformity, Cooperation, Competition"
+      ],
+      "answer": "Cooperation, Competition, Conflict, Conformity"
+    }
+  ],
+  "Organization Structure and Formation": [
+    {
+      "question": "What are the main factors that influence organizational structure and formation?",
+      "options": [
+        "Size, Technology, Environment, Culture",
+        "Size, Technology, Environment, Leadership",
+        "Size, Environment, Culture, Leadership",
+        "Technology, Environment, Culture, Leadership"
+      ],
+      "answer": "Size, Technology, Environment, Culture"
+    }
+  ],
+  "Groups in Organizations": [
+    {
+      "question": "What are the main types of groups in organizations?",
+      "options": [
+        "Formal, Informal, Task, Maintenance",
+        "Formal, Informal, Functional, Social",
+        "Formal, Task, Maintenance, Functional",
+        "Informal, Task, Maintenance, Functional"
+      ],
+      "answer": "Formal, Informal, Task, Maintenance"
+    }
+  ],
+  "Influence and Group Dynamics": [
+    {
+      "question": "What are the main factors that influence group dynamics?",
+      "options": [
+        "Size, Technology, Environment, Culture",
+        "Size, Technology, Environment, Leadership",
+        "Size, Environment, Culture, Leadership",
+        "Technology, Environment, Culture, Leadership"
+      ],
+      "answer": "Size, Technology, Environment, Culture"
+    }
+  ],
+  "Emergence of Informal Leaders and Working Norms": [
+    {
+      "question": "What are the main characteristics of informal leaders?",
+      "options": [
+        "Charisma, Expertise, Leadership Style, Communication Skills",
+        "Charisma, Expertise, Leadership Style, Interpersonal Skills",
+        "Charisma, Leadership Style, Communication Skills, Interpersonal Skills",
+        "Expertise, Leadership Style, Communication Skills, Interpersonal Skills"
+      ],
+      "answer": "Charisma, Expertise, Leadership Style, Communication Skills"
+    }
+  ],
+  "Group Decision Making Techniques": [
+    {
+      "question": "What are the main group decision making techniques?",
+      "options": [
+        "Nominal Group Technique, Delphi Technique, Brainstorming, Consensus Decision Making",
+        "Nominal Group Technique, Delphi Technique, Consensus Decision Making, Brainstorming",
+        "Delphi Technique, Brainstorming, Consensus Decision Making, Nominal Group Technique",
+        "Consensus Decision Making, Brainstorming, Nominal Group Technique, Delphi Technique"
+      ],
+      "answer": "Nominal Group Technique, Delphi Technique, Brainstorming, Consensus Decision Making"
+    }
+  ],
+  "Team Building and Interpersonal Relations": [
+    {
+      "question": "What are the main goals of team building?",
+      "options": [
+        "To improve communication and collaboration",
+        "To enhance employee motivation and engagement",
+        "To increase employee job satisfaction and well-being",
+        "To improve employee relationships and communication"
+      ],
+      "answer": "To improve communication and collaboration"
+    }
+  ],
+  "Communication and Control": [
+    {
+      "question": "What are the main methods of communication in organizations?",
+      "options": [
+        "Verbal, Nonverbal, Written, Electronic",
+        "Verbal, Nonverbal, Written, Visual",
+        "Verbal, Written, Electronic, Visual",
+        "Nonverbal, Written, Electronic, Visual"
+      ],
+      "answer": "Verbal, Nonverbal, Written, Electronic"
+    }
+  ],
+  "Leadership and Power": [
+    {
+      "question": "What are the main sources of power in organizations?",
+      "options": [
+        "Legitimate, Reward, Coercive, Referent",
+        "Legitimate, Reward, Coercive, Expert",
+        "Legitimate, Coercive, Referent, Expert",
+        "Reward, Coercive, Referent, Expert"
+      ],
+      "answer": "Legitimate, Reward, Coercive, Referent"
+    }
+  ],
+  "Meaning and Importance of Leadership": [
+    {
+      "question": "Why is leadership important in organizations?",
+      "options": [
+        "It affects employee motivation and engagement",
+        "It influences employee behavior and performance",
+        "It impacts employee job satisfaction and well-being",
+        "It affects employee relationships and communication"
+      ],
+      "answer": "It influences employee behavior and performance"
+    }
+  ],
+  "Leadership Styles": [
+    {
+      "question": "What are the main leadership styles?",
+      "options": [
+        "Autocratic, Democratic, Laissez-Faire, Transformational",
+        "Autocratic, Democratic, Transformational, Servant",
+        "Democratic, Laissez-Faire, Transformational, Servant",
+        "Autocratic, Laissez-Faire, Transformational, Servant"
+      ],
+      "answer": "Autocratic, Democratic, Laissez-Faire, Transformational"
+    }
+  ],
+  "Theories of Leadership": [
+    {
+      "question": "What are the main leadership theories?",
+      "options": [
+        "Trait, Behavioral, Contingency, Transformational",
+        "Trait, Behavioral, Contingency, Servant",
+        "Behavioral, Contingency, Transformational, Servant",
+        "Trait, Contingency, Transformational, Servant"
+      ],
+      "answer": "Trait, Behavioral, Contingency, Transformational"
+    }
+  ],
+  "Leaders vs Managers": [
+    {
+      "question": "What are the main differences between leaders and managers?",
+      "options": [
+        "Leaders focus on strategy, managers focus on operations",
+        "Leaders focus on people, managers focus on processes",
+        "Leaders focus on innovation, managers focus on efficiency",
+        "Leaders focus on change, managers focus on stability"
+      ],
+      "answer": "Leaders focus on people, managers focus on processes"
+    }
+  ],
+  "Sources of Power": [
+    {
+      "question": "What are the main sources of power in organizations?",
+      "options": [
+        "Legitimate, Reward, Coercive, Referent",
+        "Legitimate, Reward, Coercive, Expert",
+        "Legitimate, Coercive, Referent, Expert",
+        "Reward, Coercive, Referent, Expert"
+      ],
+      "answer": "Legitimate, Reward, Coercive, Referent"
+    }
+  ],
+  "Power Centers and Politics": [
+    {
+      "question": "What are the main power centers in organizations?",
+      "options": [
+        "Top Management, Middle Management, Line Management, Staff Management",
+        "Top Management, Middle Management, Line Management, Functional Management",
+        "Top Management, Line Management, Functional Management, Staff Management",
+        "Middle Management, Line Management, Functional Management, Staff Management"
+      ],
+      "answer": "Top Management, Middle Management, Line Management, Staff Management"
+    }
+  ],
+  "Dynamics of Organizational Behavior": [
+    {
+      "question": "What are the main factors that influence organizational behavior?",
+      "options": [
+        "Size, Technology, Environment, Culture",
+        "Size, Technology, Environment, Leadership",
+        "Size, Environment, Culture, Leadership",
+        "Technology, Environment, Culture, Leadership"
+      ],
+      "answer": "Size, Technology, Environment, Culture"
+    }
+  ],
+  "Organizational Culture and Climate": [
+    {
+      "question": "What are the main characteristics of organizational culture?",
+      "options": [
+        "Values, Norms, Beliefs, Practices",
+        "Values, Norms, Beliefs, Attitudes",
+        "Values, Norms, Practices, Attitudes",
+        "Values, Beliefs, Practices, Attitudes"
+      ],
+      "answer": "Values, Norms, Beliefs, Practices"
+    }
+  ],
+  "Factors Affecting Organizational Climate": [
+    {
+      "question": "What are the main factors that affect organizational climate?",
+      "options": [
+        "Size, Technology, Environment, Culture",
+        "Size, Technology, Environment, Leadership",
+        "Size, Environment, Culture, Leadership",
+        "Technology, Environment, Culture, Leadership"
+      ],
+      "answer": "Size, Technology, Environment, Culture"
+    }
+  ],
+  "Importance of Job Satisfaction": [
+    {
+      "question": "Why is job satisfaction important in organizations?",
+      "options": [
+        "It affects employee motivation and engagement",
+        "It influences employee behavior and performance",
+        "It impacts employee job satisfaction and well-being",
+        "It affects employee relationships and communication"
+      ],
+      "answer": "It influences employee behavior and performance"
+    }
+  ],
+  "Determinants of Job Satisfaction": [
+    {
+      "question": "What are the main determinants of job satisfaction?",
+      "options": [
+        "Pay, Benefits, Job Security, Job Autonomy",
+        "Pay, Benefits, Job Security, Work-Life Balance",
+        "Pay, Job Security, Job Autonomy, Work-Life Balance",
+        "Benefits, Job Security, Job Autonomy, Work-Life Balance"
+      ],
+      "answer": "Pay, Benefits, Job Security, Job Autonomy"
+    }
+  ]
+}
