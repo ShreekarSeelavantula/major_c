@@ -47,22 +47,40 @@ def build_adaptive_plan(
     topics = []
 
     for unit in structured_syllabus:
-        for topic in unit.get("topics", []):
 
-            # ⭐ FIX: use "difficulty" string field, not "complexity" dict
-            complexity = (
-                topic.get("difficulty")
-                or (
-                    topic["complexity"]["difficulty"]
-                    if isinstance(topic.get("complexity"), dict)
-                    else topic.get("complexity", "Medium")
+        # Handle both list-of-dicts and list-of-strings for topics
+        raw_topics = unit.get("topics", [])
+
+        for topic in raw_topics:
+
+            # ⭐ FIX: topic may be a string (old format) or dict (new format)
+            if isinstance(topic, str):
+                topic_name = topic
+                complexity = "Medium"
+                estimated_hours = 2
+            else:
+                topic_name = topic.get("name", "")
+                if not topic_name:
+                    continue
+
+                # Handle complexity as dict or string
+                complexity = (
+                    topic.get("difficulty")
+                    or (
+                        topic["complexity"]["difficulty"]
+                        if isinstance(topic.get("complexity"), dict)
+                        else topic.get("complexity", "Medium")
+                    )
                 )
-            )
+                estimated_hours = topic.get("estimated_hours", 2)
+
+            if not topic_name:
+                continue
 
             topics.append({
-                "topic": topic["name"],
+                "topic": topic_name,
                 "complexity": complexity,
-                "estimated_hours": topic["estimated_hours"]
+                "estimated_hours": estimated_hours
             })
 
     if not topics:

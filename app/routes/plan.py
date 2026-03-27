@@ -107,17 +107,20 @@ def view_plan(request: Request, plan_id: str):
 
     user_id = request.session["user_id"]
 
-    plan_doc = get_study_plan(
-        plan_id=plan_id,
-        user_id=user_id
-    )
+    plan_doc = get_study_plan(plan_id=plan_id, user_id=user_id)
 
     if not plan_doc:
         raise HTTPException(status_code=404, detail="Plan not found")
 
-    # plan_doc["plan"] has keys: "schedule" and "confidence"
     schedule = plan_doc["plan"].get("schedule", {})
     confidence = plan_doc["plan"].get("confidence", 0.5)
+
+    # Load syllabus_id for micro test links
+    syllabus = syllabus_collection.find_one(
+        {"user_id": ObjectId(user_id), "status": "structured"},
+        sort=[("_id", -1)]
+    )
+    syllabus_id = str(syllabus["_id"]) if syllabus else None
 
     return templates.TemplateResponse(
         "plans.html",
@@ -126,6 +129,7 @@ def view_plan(request: Request, plan_id: str):
             "active_page": "plan_latest",
             "schedule": schedule,
             "confidence": confidence,
+            "syllabus_id": syllabus_id,
             "meta": {
                 "hours_per_day": plan_doc.get("hours_per_day"),
                 "deadline_days": plan_doc.get("deadline_days"),
@@ -135,9 +139,6 @@ def view_plan(request: Request, plan_id: str):
     )
 
 
-# -----------------------------
-# View latest plan for user
-# -----------------------------
 @router.get("/plan/latest", response_class=HTMLResponse)
 def view_latest_plan(request: Request):
 
@@ -154,6 +155,12 @@ def view_latest_plan(request: Request):
     schedule = plan_doc["plan"].get("schedule", {})
     confidence = plan_doc["plan"].get("confidence", 0.5)
 
+    syllabus = syllabus_collection.find_one(
+        {"user_id": ObjectId(user_id), "status": "structured"},
+        sort=[("_id", -1)]
+    )
+    syllabus_id = str(syllabus["_id"]) if syllabus else None
+
     return templates.TemplateResponse(
         "plans.html",
         {
@@ -161,6 +168,49 @@ def view_latest_plan(request: Request):
             "active_page": "plan_latest",
             "schedule": schedule,
             "confidence": confidence,
+            "syllabus_id": syllabus_id,
+            "meta": {
+                "hours_per_day": plan_doc.get("hours_per_day"),
+                "deadline_days": plan_doc.get("deadline_days"),
+                "created_at": plan_doc.get("created_at")
+            }
+        }
+    )
+
+
+# -----------------------------
+# Dynamic Plan page
+# -----------------------------
+@router.get("/plan/dynamic", response_class=HTMLResponse)
+def dynamic_plan(request: Request):
+
+    if "user_id" not in request.session:
+        return RedirectResponse("/login", status_code=303)
+
+    user_id = request.session["user_id"]
+
+    plan_doc = load_plan(user_id)
+
+    if not plan_doc:
+        return RedirectResponse("/dashboard", status_code=303)
+
+    schedule = plan_doc["plan"].get("schedule", {})
+    confidence = plan_doc["plan"].get("confidence", 0.5)
+
+    syllabus = syllabus_collection.find_one(
+        {"user_id": ObjectId(user_id), "status": "structured"},
+        sort=[("_id", -1)]
+    )
+    syllabus_id = str(syllabus["_id"]) if syllabus else None
+
+    return templates.TemplateResponse(
+        "dynamic_plan.html",
+        {
+            "request": request,
+            "active_page": "dynamic_plan",
+            "schedule": schedule,
+            "confidence": confidence,
+            "syllabus_id": syllabus_id,
             "meta": {
                 "hours_per_day": plan_doc.get("hours_per_day"),
                 "deadline_days": plan_doc.get("deadline_days"),

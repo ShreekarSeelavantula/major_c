@@ -4,48 +4,56 @@
 
 {% block content %}
 
-<h2 class="mb-4">📊 Familiarity Test Result</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">📊 Familiarity Test Result</h2>
+    {% if syllabus_id %}
+    <a href="/syllabus/preview/{{ syllabus_id }}" class="btn btn-outline-secondary btn-sm">
+        ← Back to Syllabus
+    </a>
+    {% else %}
+    <a href="/dashboard" class="btn btn-outline-secondary btn-sm">
+        ← Dashboard
+    </a>
+    {% endif %}
+</div>
 
+<!-- Overall score card -->
 <div class="card mb-4 shadow-sm">
     <div class="card-body">
         <h4>
             Overall Familiarity Score:
-            <span class="badge bg-primary">
-                {{ (result.overall_score * 100) | round(2) }} %
+            <span class="badge bg-primary fs-5">
+                {{ (result.overall_score * 100) | round(1) }} %
             </span>
         </h4>
 
         {% if result.overall_score < 0.4 %}
         <p class="text-danger mt-2 mb-0">
-            🔴 You have low familiarity with these topics.
-            Your plan will allocate more time here.
+            🔴 Low familiarity. Your plan will allocate more time to these topics.
         </p>
         {% elif result.overall_score < 0.7 %}
         <p class="text-warning mt-2 mb-0">
-            🟡 Moderate familiarity detected.
-            Your plan will balance learning and revision.
+            🟡 Moderate familiarity. Your plan will balance learning and revision.
         </p>
         {% else %}
         <p class="text-success mt-2 mb-0">
-            🟢 Strong familiarity detected.
-            Your plan will fast-track these topics.
+            🟢 Strong familiarity. Your plan will fast-track these topics.
         </p>
         {% endif %}
-
     </div>
 </div>
 
+<!-- Topic wise table -->
 <div class="card shadow-sm mb-4">
     <div class="card-header fw-bold">
         Topic-wise Performance
     </div>
-
-    <div class="card-body">
-        <table class="table">
-            <thead>
+    <div class="card-body p-0">
+        <table class="table mb-0">
+            <thead class="table-light">
                 <tr>
                     <th>Topic</th>
-                    <th>Familiarity</th>
+                    <th>Score</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -53,7 +61,7 @@
                 {% for topic, score in result.topic_scores.items() %}
                 <tr>
                     <td>{{ topic }}</td>
-                    <td>{{ (score * 100) | round(2) }} %</td>
+                    <td>{{ (score * 100) | round(1) }} %</td>
                     <td>
                         {% if score < 0.4 %}
                             <span class="badge bg-danger">Weak</span>
@@ -70,14 +78,41 @@
     </div>
 </div>
 
+<!-- Previous test history -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header fw-bold d-flex justify-content-between">
+        <span>📜 Previous Test Results</span>
+        <button onclick="clearHistory()"
+                class="btn btn-outline-danger btn-sm">
+            Clear History
+        </button>
+    </div>
+    <div class="card-body p-0" id="historyContainer">
+        <div class="text-center text-muted py-3" id="noHistory">
+            No previous results yet.
+        </div>
+        <table class="table mb-0 d-none" id="historyTable">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Score</th>
+                    <th>Topics</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Action buttons -->
 <div class="mt-4 d-flex justify-content-between align-items-center">
 
     <a href="/dashboard" class="btn btn-outline-secondary">
-        Go to Dashboard
+        Dashboard
     </a>
 
     {% if syllabus_id %}
-    <!-- ⭐ After Unit-1 test, prompt user to self-rate remaining units -->
     <a href="/familiarity/self-rating/{{ syllabus_id }}"
        class="btn btn-primary btn-lg">
         Rate Remaining Units →
@@ -85,5 +120,70 @@
     {% endif %}
 
 </div>
+
+<script>
+// Save current result to localStorage history
+const currentResult = {
+    date: new Date().toLocaleDateString(),
+    score: {{ (result.overall_score * 100) | round(1) }},
+    topics: {{ result.topic_scores | length }}
+};
+
+function loadHistory() {
+    try {
+        return JSON.parse(localStorage.getItem('testHistory') || '[]');
+    } catch { return []; }
+}
+
+function saveHistory(history) {
+    localStorage.setItem('testHistory', JSON.stringify(history));
+}
+
+function renderHistory() {
+    const history = loadHistory();
+    const noHistory = document.getElementById('noHistory');
+    const table = document.getElementById('historyTable');
+    const tbody = document.getElementById('historyBody');
+
+    if (history.length === 0) {
+        noHistory.classList.remove('d-none');
+        table.classList.add('d-none');
+        return;
+    }
+
+    noHistory.classList.add('d-none');
+    table.classList.remove('d-none');
+
+    tbody.innerHTML = history.map((r, i) => `
+        <tr>
+            <td>${history.length - i}</td>
+            <td>${r.date}</td>
+            <td>
+                <span class="badge ${r.score >= 70 ? 'bg-success' : r.score >= 40 ? 'bg-warning text-dark' : 'bg-danger'}">
+                    ${r.score}%
+                </span>
+            </td>
+            <td>${r.topics} topics</td>
+        </tr>
+    `).reverse().join('');
+}
+
+function clearHistory() {
+    if (confirm('Clear all test history?')) {
+        localStorage.removeItem('testHistory');
+        renderHistory();
+    }
+}
+
+// Add current result to history on page load
+const history = loadHistory();
+history.push(currentResult);
+// Keep only last 20 results
+if (history.length > 20) history.shift();
+saveHistory(history);
+
+// Render on load
+renderHistory();
+</script>
 
 {% endblock %}

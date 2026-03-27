@@ -1,0 +1,866 @@
+{
+  "Security Concepts": [
+    {
+      "question": "What is the primary goal of security?",
+      "options": [
+        "To ensure data confidentiality",
+        "To ensure data integrity",
+        "To ensure data availability",
+        "To ensure data authentication"
+      ],
+      "answer": "To ensure data confidentiality"
+    }
+  ],
+  "Introduction": [
+    {
+      "question": "What is the main purpose of studying security?",
+      "options": [
+        "To learn about computer systems",
+        "To understand the importance of security",
+        "To learn about programming languages",
+        "To learn about data structures"
+      ],
+      "answer": "To understand the importance of security"
+    }
+  ],
+  "The Need for Security": [
+    {
+      "question": "Why is security necessary in computer systems?",
+      "options": [
+        "Because it is a requirement for all computer systems",
+        "Because it enhances the performance of computer systems",
+        "Because it protects against unauthorized access and malicious activities",
+        "Because it is a waste of time and resources"
+      ],
+      "answer": "Because it protects against unauthorized access and malicious activities"
+    }
+  ],
+  "Security Approaches": [
+    {
+      "question": "What is the main approach to security?",
+      "options": [
+        "Prevention",
+        "Deterrence",
+        "Recovery",
+        "Detection"
+      ],
+      "answer": "Prevention"
+    }
+  ],
+  "Principles of Security": [
+    {
+      "question": "What is the primary principle of security?",
+      "options": [
+        "Confidentiality, Integrity, Availability, Authenticity",
+        "Confidentiality, Integrity, Availability",
+        "Confidentiality, Integrity",
+        "Confidentiality"
+      ],
+      "answer": "Confidentiality, Integrity, Availability, Authenticity"
+    }
+  ],
+  "Types of Security Attacks": [
+    {
+      "question": "What is the primary type of security attack?",
+      "options": [
+        "Malware, Phishing, Ransomware, Denial of Service",
+        "Malware, Phishing, Denial of Service, Ransomware",
+        "Phishing, Ransomware, Denial of Service, Malware",
+        "Denial of Service, Malware, Phishing, Ransomware"
+      ],
+      "answer": "Malware, Phishing, Ransomware, Denial of Service"
+    }
+  ],
+  "Security Services": [
+    {
+      "question": "What is the primary security service?",
+      "options": [
+        "Confidentiality, Integrity, Authentication, Authorization",
+        "Confidentiality, Integrity, Authentication",
+        "Confidentiality, Integrity, Authorization",
+        "Confidentiality, Authentication, Authorization"
+      ],
+      "answer": "Confidentiality, Integrity, Authentication, Authorization"
+    }
+  ],
+  "Security Mechanisms": [
+    {
+      "question": "What is the primary security mechanism?",
+      "options": [
+        "Firewalls, Intrusion Detection Systems, Encryption, Access Control Lists",
+        "Firewalls, Encryption, Access Control Lists, Intrusion Detection Systems",
+        "Encryption, Access Control Lists, Intrusion Detection Systems, Firewalls",
+        "Access Control Lists, Intrusion Detection Systems, Firewalls, Encryption"
+      ],
+      "answer": "Firewalls, Intrusion Detection Systems, Encryption, Access Control Lists"
+    }
+  ],
+  "A Model for Network Security": [
+    {
+      "question": "What is the primary model for network security?",
+      "options": [
+        "Bell-LaPadula Model, Biba Model, Clark-Wilson Model, Brewer-Nash Model",
+        "Bell-LaPadula Model, Brewer-Nash Model, Clark-Wilson Model, Biba Model",
+        "Brewer-Nash Model, Clark-Wilson Model, Bell-LaPadula Model, Biba Model",
+        "Biba Model, Clark-Wilson Model, Brewer-Nash Model, Bell-LaPadula Model"
+      ],
+      "answer": "Bell-LaPadula Model, Biba Model, Clark-Wilson Model, Brewer-Nash Model"
+    }
+  ],
+  "Cryptography Concepts and Techniques": [
+    {
+      "question": "What is the primary concept of cryptography?",
+      "options": [
+        "Encryption, Decryption, Hashing, Steganography",
+        "Encryption, Hashing, Steganography, Decryption",
+        "Hashing, Steganography, Encryption, Decryption",
+        "Steganography, Hashing, Decryption, Encryption"
+      ],
+      "answer": "Encryption, Decryption, Hashing, Steganography"
+    }
+  ],
+  "Plain Text and Cipher Text": [
+    {
+      "question": "What is the primary difference between plain text and cipher text?",
+      "options": [
+        "Plain text is encrypted, cipher text is decrypted",
+        "Plain text is decrypted, cipher text is encrypted",
+        "Plain text is unreadable, cipher text is readable",
+        "Plain text is readable, cipher text is unreadable"
+      ],
+      "answer": "Plain text is unreadable, cipher text is readable"
+    }
+  ],
+  "Substitution Techniques": [
+    {
+      "question": "What is the primary type of substitution technique?",
+      "options": [
+        "Transposition, Substitution, Vigenere, Caesar",
+        "Transposition, Vigenere, Caesar, Substitution",
+        "Vigenere, Caesar, Substitution, Transposition",
+        "Caesar, Substitution, Transposition, Vigenere"
+      ],
+      "answer": "Transposition, Substitution, Vigenere, Caesar"
+    }
+  ],
+  "Encryption and Decryption Techniques": [
+    {
+      "question": "What is the primary encryption technique?",
+      "options": [
+        "Symmetric, Asymmetric, Hashing, Steganography",
+        "Symmetric, Hashing, Steganography, Asymmetric",
+        "Asymmetric, Hashing, Steganography, Symmetric",
+        "Hashing, Steganography, Symmetric, Asymmetric"
+      ],
+      "answer": "Symmetric, Asymmetric, Hashing, Steganography"
+    }
+  ],
+  "Symmetric and Asymmetric Key Cryptography, Steganography, Key Range and Key Size, Possible Types of Attacks": [
+    {
+      "question": "What is the primary difference between symmetric and asymmetric key cryptography?",
+      "options": [
+        "Symmetric key cryptography uses a single key, asymmetric key cryptography uses two keys",
+        "Symmetric key cryptography uses two keys, asymmetric key cryptography uses a single key",
+        "Asymmetric key cryptography is faster, symmetric key cryptography is slower",
+        "Symmetric key cryptography is slower, asymmetric key cryptography is faster"
+      ],
+      "answer": "Symmetric key cryptography uses a single key, asymmetric key cryptography uses two keys"
+    }
+  ],
+  "Symmetric Key Ciphers": [
+    {
+      "question": "What is the primary symmetric key cipher?",
+      "options": [
+        "AES, DES, Blowfish, RC5",
+        "AES, Blowfish, RC5, DES",
+        "Blowfish, RC5, DES, AES",
+        "DES, RC5, Blowfish, AES"
+      ],
+      "answer": "AES, DES, Blowfish, RC5"
+    }
+  ],
+  "Block Cipher Principles": [
+    {
+      "question": "What is the primary principle of block ciphers?",
+      "options": [
+        "Divide the plaintext into fixed-length blocks, encrypt each block separately, combine the encrypted blocks",
+        "Divide the plaintext into fixed-length blocks, combine the encrypted blocks, encrypt each block separately",
+        "Encrypt each block separately, combine the encrypted blocks, divide the plaintext into fixed-length blocks",
+        "Combine the encrypted blocks, divide the plaintext into fixed-length blocks, encrypt each block separately"
+      ],
+      "answer": "Divide the plaintext into fixed-length blocks, encrypt each block separately, combine the encrypted blocks"
+    }
+  ],
+  "DES": [
+    {
+      "question": "What is the primary limitation of DES?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too small"
+      ],
+      "answer": "Key size is too small, encryption speed is too slow"
+    }
+  ],
+  "AES": [
+    {
+      "question": "What is the primary advantage of AES?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too large"
+      ],
+      "answer": "Encryption speed is too fast, key size is too large"
+    }
+  ],
+  "Blowfish": [
+    {
+      "question": "What is the primary characteristic of Blowfish?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "RC5": [
+    {
+      "question": "What is the primary characteristic of RC5?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "IDEA": [
+    {
+      "question": "What is the primary characteristic of IDEA?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Block Cipher Operation": [
+    {
+      "question": "What is the primary operation of block ciphers?",
+      "options": [
+        "Encryption, decryption, hashing, steganography",
+        "Encryption, hashing, steganography, decryption",
+        "Hashing, steganography, encryption, decryption",
+        "Steganography, hashing, decryption, encryption"
+      ],
+      "answer": "Encryption, decryption, hashing, steganography"
+    }
+  ],
+  "Stream Ciphers": [
+    {
+      "question": "What is the primary characteristic of stream ciphers?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "RC4": [
+    {
+      "question": "What is the primary characteristic of RC4?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Asymmetric Key Ciphers": [
+    {
+      "question": "What is the primary characteristic of asymmetric key ciphers?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Principles of Public Key Cryptosystems": [
+    {
+      "question": "What is the primary principle of public key cryptosystems?",
+      "options": [
+        "Key pair generation, key exchange, encryption, decryption",
+        "Key pair generation, encryption, decryption, key exchange",
+        "Key exchange, encryption, decryption, key pair generation",
+        "Encryption, decryption, key pair generation, key exchange"
+      ],
+      "answer": "Key pair generation, key exchange, encryption, decryption"
+    }
+  ],
+  "RSA Algorithm, Elgamal": [
+    {
+      "question": "What is the primary characteristic of RSA and Elgamal algorithms?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Cryptography": [
+    {
+      "question": "What is the primary goal of cryptography?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, confidentiality, and authenticity"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Diffie-Hellman Key Exchange": [
+    {
+      "question": "What is the primary characteristic of Diffie-Hellman key exchange?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Knapsack Algorithm": [
+    {
+      "question": "What is the primary characteristic of the knapsack algorithm?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Cryptographic Hash Functions": [
+    {
+      "question": "What is the primary characteristic of cryptographic hash functions?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Message Authentication": [
+    {
+      "question": "What is the primary goal of message authentication?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Secure Hash Algorithm (SHA-512)": [
+    {
+      "question": "What is the primary characteristic of SHA-512?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Message Authentication Codes": [
+    {
+      "question": "What is the primary characteristic of message authentication codes?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Authentication Requirements": [
+    {
+      "question": "What is the primary requirement for authentication?",
+      "options": [
+        "Confidentiality, integrity, and availability",
+        "Integrity, confidentiality, and availability",
+        "Availability, integrity, and confidentiality",
+        "Confidentiality, availability, and integrity"
+      ],
+      "answer": "Confidentiality, integrity, and availability"
+    }
+  ],
+  "HMAC": [
+    {
+      "question": "What is the primary characteristic of HMAC?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "CMAC": [
+    {
+      "question": "What is the primary characteristic of CMAC?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Digital Signatures": [
+    {
+      "question": "What is the primary goal of digital signatures?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Elgamal Digital Signature Scheme": [
+    {
+      "question": "What is the primary characteristic of Elgamal digital signature scheme?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Key Management and Distribution": [
+    {
+      "question": "What is the primary goal of key management and distribution?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Symmetric Key Distribution Using Symmetric & Asymmetric": [
+    {
+      "question": "What is the primary characteristic of symmetric key distribution using symmetric and asymmetric keys?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Encryption": [
+    {
+      "question": "What is the primary goal of encryption?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Distribution of Public Keys": [
+    {
+      "question": "What is the primary method of distributing public keys?",
+      "options": [
+        "Symmetric key distribution, asymmetric key distribution, public key infrastructure, key exchange protocols",
+        "Symmetric key distribution, public key infrastructure, key exchange protocols, asymmetric key distribution",
+        "Asymmetric key distribution, public key infrastructure, key exchange protocols, symmetric key distribution",
+        "Public key infrastructure, key exchange protocols, symmetric key distribution, asymmetric key distribution"
+      ],
+      "answer": "Public key infrastructure, key exchange protocols, symmetric key distribution, asymmetric key distribution"
+    }
+  ],
+  "Kerberos": [
+    {
+      "question": "What is the primary characteristic of Kerberos?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "X.509 Authentication Service": [
+    {
+      "question": "What is the primary characteristic of X.509 authentication service?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Public-Key Infrastructure": [
+    {
+      "question": "What is the primary goal of public-key infrastructure?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Transport-Level Security": [
+    {
+      "question": "What is the primary characteristic of transport-level security?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Web Security Considerations": [
+    {
+      "question": "What is the primary consideration for web security?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Secure Socket Layer and Transport Layer Security": [
+    {
+      "question": "What is the primary characteristic of secure socket layer and transport layer security?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Security over HTTPS": [
+    {
+      "question": "What is the primary characteristic of security over HTTPS?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Secure Shell (SSH)": [
+    {
+      "question": "What is the primary characteristic of secure shell (SSH)?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Wireless Network Security": [
+    {
+      "question": "What is the primary consideration for wireless network security?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Wireless Security": [
+    {
+      "question": "What is the primary characteristic of wireless security?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Mobile Device Security": [
+    {
+      "question": "What is the primary consideration for mobile device security?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "IEEE 802.11 Wireless LAN": [
+    {
+      "question": "What is the primary characteristic of IEEE 802.11 wireless LAN?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "IEEE 802.11i Wireless LAN Security": [
+    {
+      "question": "What is the primary characteristic of IEEE 802.11i wireless LAN security?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "E-Mail Security": [
+    {
+      "question": "What is the primary consideration for e-mail security?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Pretty Good Privacy": [
+    {
+      "question": "What is the primary characteristic of pretty good privacy?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "S/MIME IP Security: IP Security Overview": [
+    {
+      "question": "What is the primary characteristic of S/MIME IP security?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "IP Security Architecture, Authentication Header, Encapsulating Security Payload, Combining Security Associations, Internet Key Exchange": [
+    {
+      "question": "What is the primary characteristic of IP security architecture?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Case Studies on Cryptography and Security": [
+    {
+      "question": "What is the primary consideration for case studies on cryptography and security?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Secure Multiparty Calculation": [
+    {
+      "question": "What is the primary characteristic of secure multiparty calculation?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Virtual Elections, Single Sign On": [
+    {
+      "question": "What is the primary consideration for virtual elections and single sign on?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Secure Inter-branch Payment Transactions": [
+    {
+      "question": "What is the primary characteristic of secure inter-branch payment transactions?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Cross-Site Scripting Vulnerability": [
+    {
+      "question": "What is the primary characteristic of cross-site scripting vulnerability?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Encapsulating security payload": [
+    {
+      "question": "What is the primary characteristic of encapsulating security payload?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Combining security associations": [
+    {
+      "question": "What is the primary characteristic of combining security associations?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Internet Key Exchange": [
+    {
+      "question": "What is the primary characteristic of internet key exchange?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Case Studies on Cryptography and security": [
+    {
+      "question": "What is the primary consideration for case studies on cryptography and security?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "Virtual Elections, Single": [
+    {
+      "question": "What is the primary consideration for virtual elections and single sign on?",
+      "options": [
+        "To ensure data integrity, authenticity, and confidentiality",
+        "To ensure data confidentiality, authenticity, and integrity",
+        "To ensure data authenticity, confidentiality, and integrity",
+        "To ensure data integrity, authenticity, and confidentiality"
+      ],
+      "answer": "To ensure data integrity, authenticity, and confidentiality"
+    }
+  ],
+  "sign on": [
+    {
+      "question": "What is the primary characteristic of single sign on?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ],
+  "Cross site Scripting Vulnerability": [
+    {
+      "question": "What is the primary characteristic of cross site scripting vulnerability?",
+      "options": [
+        "Key size is too small, encryption speed is too slow",
+        "Encryption speed is too slow, key size is too large",
+        "Key size is too large, encryption speed is too fast",
+        "Encryption speed is too fast, key size is too variable"
+      ],
+      "answer": "Encryption speed is too fast, key size is too variable"
+    }
+  ]
+}

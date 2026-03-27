@@ -55,13 +55,18 @@ def dashboard(request: Request):
 
     user_id = request.session.get("user_id")
 
+    # Load user from MongoDB for avatar
+    from app.database import users_collection as uc
+    from bson import ObjectId as ObjId
+    user = uc.find_one({"_id": ObjId(user_id)}) or {}
+
     # Load learner state for stats
     learner_state = load_learner_state(user_id)
     avg_familiarity = None
     learning_speed = None
 
     if learner_state:
-        states = learner_state.get("topic_states", {}).values()
+        states = list(learner_state.get("topic_states", {}).values())
         if states:
             avg_familiarity = round(
                 sum(s.get("familiarity", 0) for s in states) / len(states),
@@ -91,6 +96,7 @@ def dashboard(request: Request):
             "request": request,
             "active_page": "dashboard",
             "user_name": request.session.get("user_name"),
+            "user_avatar": user.get("avatar", "🧑"),
             "avg_familiarity": avg_familiarity,
             "learning_speed": learning_speed,
             "syllabus_id": syllabus_id,
@@ -110,15 +116,50 @@ def study_plans(request: Request):
     if not require_login(request):
         return RedirectResponse("/login", status_code=303)
 
+    user_id = request.session.get("user_id")
+
+    # Load most recent syllabus for syllabus_id (needed for micro test link)
+    syllabus = syllabus_collection.find_one(
+        {
+            "user_id": ObjectId(user_id),
+            "status": "structured"
+        },
+        sort=[("_id", -1)]
+    )
+    syllabus_id = str(syllabus["_id"]) if syllabus else None
+
+    # Load real plan data
+    plan_doc = load_plan(user_id)
+
+    if not plan_doc:
+        return templates.TemplateResponse(
+            "plans.html",
+            {
+                "request": request,
+                "active_page": "plans",
+                "schedule": None,
+                "confidence": None,
+                "meta": None,
+                "syllabus_id": syllabus_id
+            }
+        )
+
+    schedule = plan_doc["plan"].get("schedule", {})
+    confidence = plan_doc["plan"].get("confidence", 0.5)
+
     return templates.TemplateResponse(
         "plans.html",
         {
             "request": request,
             "active_page": "plans",
-            "schedule": None,
-            "confidence": None,
-            "meta": None,
-            "syllabus_id": None
+            "schedule": schedule,
+            "confidence": confidence,
+            "syllabus_id": syllabus_id,
+            "meta": {
+                "hours_per_day": plan_doc.get("hours_per_day"),
+                "deadline_days": plan_doc.get("deadline_days"),
+                "created_at": plan_doc.get("created_at")
+            }
         }
     )
 
@@ -128,15 +169,63 @@ def profile(request: Request):
     if not require_login(request):
         return RedirectResponse("/login", status_code=303)
 
+    user_id = request.session.get("user_id")
+
+    # Load full user profile from MongoDB
+    from app.database import users_collection
+    from bson import ObjectId as ObjId
+    user = users_collection.find_one({"_id": ObjId(user_id)})
+
     return templates.TemplateResponse(
         "profile.html",
         {
             "request": request,
             "active_page": "profile",
+            "user": user or {},
             "user_name": request.session.get("user_name"),
             "user_email": request.session.get("user_email")
         }
     )
+
+
+@router.post("/profile/update")
+async def update_profile(request: Request):
+    if not require_login(request):
+        return RedirectResponse("/login", status_code=303)
+
+    user_id = request.session.get("user_id")
+    form = await request.form()
+
+    from app.database import users_collection
+    from bson import ObjectId as ObjId
+
+    update_data = {}
+
+    if form.get("name"):
+        update_data["name"] = form["name"].strip()
+    if form.get("phone"):
+        update_data["phone"] = form["phone"].strip()
+    if form.get("degree"):
+        update_data["degree"] = form["degree"]
+    if form.get("branch"):
+        update_data["branch"] = form["branch"].strip()
+    if form.get("year"):
+        update_data["year"] = int(form["year"])
+    if form.get("study_preference"):
+        update_data["study_preference"] = form["study_preference"]
+    if form.get("avatar"):
+        update_data["avatar"] = form["avatar"]
+
+    if update_data:
+        users_collection.update_one(
+            {"_id": ObjId(user_id)},
+            {"$set": update_data}
+        )
+        # Update session name if changed
+        if "name" in update_data:
+            request.session["user_name"] = update_data["name"]
+
+    return RedirectResponse("/profile?updated=1", status_code=303)
 
 
 @router.get("/logout")

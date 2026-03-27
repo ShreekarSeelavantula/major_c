@@ -138,6 +138,24 @@
             🧞 Prep Genie
         </h4>
 
+        <!-- User avatar + name -->
+        {% if request.session.get("user_name") %}
+        <div class="d-flex align-items-center gap-2 px-2 mb-3 pb-3 border-bottom">
+            <div style="width:36px; height:36px; border-radius:50%;
+                        background: linear-gradient(135deg,#4e73df,#9b59b6);
+                        display:flex; align-items:center; justify-content:center;
+                        font-size:1.2rem;">
+                {{ user_avatar if user_avatar else '🧑' }}
+            </div>
+            <div style="overflow:hidden;">
+                <div class="fw-semibold small text-truncate">
+                    {{ request.session.get("user_name") }}
+                </div>
+                <div class="text-muted" style="font-size:0.7rem;">Student</div>
+            </div>
+        </div>
+        {% endif %}
+
         <nav class="d-flex flex-column gap-1">
 
             <a href="/dashboard"
@@ -146,10 +164,10 @@
                 Dashboard
             </a>
 
-            <a href="/plans"
-               class="nav-link {% if active_page == 'plans' %}active{% endif %}">
-                <i class="bi bi-journal-check"></i>
-                Study Plans
+            <a href="/plan/dynamic"
+               class="nav-link {% if active_page == 'dynamic_plan' %}active{% endif %}">
+                <i class="bi bi-lightning-charge-fill text-warning"></i>
+                Dynamic Plan
             </a>
 
             <a href="/plan/latest"
@@ -162,6 +180,12 @@
                class="nav-link {% if active_page == 'upload' %}active{% endif %}">
                 <i class="bi bi-upload"></i>
                 Upload Syllabus
+            </a>
+
+            <a href="/plans"
+               class="nav-link {% if active_page == 'plans' %}active{% endif %}">
+                <i class="bi bi-journal-check"></i>
+                Study Plans
             </a>
 
             <a href="/profile"

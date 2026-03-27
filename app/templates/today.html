@@ -78,7 +78,8 @@
                         </label>
                     </div>
 
-                    <span class="badge bg-success px-3 py-2">
+                    <span class="badge bg-success px-3 py-2 time-badge"
+                          data-hours="{{ task.hours }}">
                         ⏱ {{ task.hours }} hrs
                     </span>
 
@@ -136,25 +137,41 @@
     {% if micro_test %}
     <div class="card shadow-sm border-0 mb-4">
 
-        {% if request.session.get("micro_test_done_today") %}
+        {% set mt_done = request.session.get("micro_test_done_today") %}
+        {% if mt_done and mt_done.syllabus_id == syllabus_id %}
+
         <!-- Already completed today -->
         <div class="card-header fw-bold bg-success text-white">
             🧪 Micro Test — ✅ Completed
         </div>
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div>
-                <p class="mb-1">
-                    <strong>Score: {{ request.session.get("micro_test_done_today").score }}%</strong>
-                    — {{ request.session.get("micro_test_done_today").topics_tested }} topics tested
-                </p>
-                <small class="text-muted">
-                    Familiarity scores updated. Plan adjusted.
-                </small>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-1">
+                        <strong>Score: {{ mt_done.score }}%</strong>
+                        — {{ mt_done.topics_tested }} topics tested
+                    </p>
+                    <small class="text-muted">
+                        Familiarity updated. Plan adjusted.
+                    </small>
+                </div>
+                <span class="badge bg-success px-3 py-2 fs-6">Done ✅</span>
             </div>
-            <span class="badge bg-success px-3 py-2 fs-6">Done ✅</span>
+            <!-- ⭐ Retest option -->
+            <div class="mt-3 pt-3 border-top">
+                <p class="text-muted small mb-2">
+                    Want to improve your score?
+                    Results from the latest attempt are always used.
+                </p>
+                <a href="/familiarity/micro/{{ syllabus_id }}"
+                   class="btn btn-outline-success btn-sm">
+                    🔁 Re-attempt Test
+                </a>
+            </div>
         </div>
 
         {% else %}
+
         <!-- Not yet done -->
         <div class="card-header fw-bold bg-info text-white">
             🧪 Micro Test
@@ -175,6 +192,7 @@
                 Start Test →
             </a>
         </div>
+
         {% endif %}
 
     </div>
@@ -231,10 +249,77 @@
 </form>
 
 <script>
-    // Strike-through completed tasks visually
+    // ─────────────────────────────────────────
+    // TIME FORMATTER
+    // ─────────────────────────────────────────
+    function formatTime(hours) {
+        const totalMins = Math.round(hours * 60);
+        const h = Math.floor(totalMins / 60);
+        const m = totalMins % 60;
+        if (h === 0) return `${m} min`;
+        if (m === 0) return `${h} hr${h > 1 ? 's' : ''}`;
+        return `${h} hr${h > 1 ? 's' : ''} ${m} min`;
+    }
+
+    document.querySelectorAll('.time-badge').forEach(el => {
+        const raw = parseFloat(el.dataset.hours);
+        if (!isNaN(raw)) el.textContent = '⏱ ' + formatTime(raw);
+    });
+
+    // ─────────────────────────────────────────
+    // SYNC WITH DYNAMIC PLAN via localStorage
+    // ─────────────────────────────────────────
+    const STORAGE_KEY = 'completedTopics_{{ syllabus_id }}';
+
+    function getCompleted() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+        catch { return []; }
+    }
+
+    function saveCompleted(list) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        localStorage.setItem('completedTopics', JSON.stringify(list));
+    }
+
+    // Pre-check boxes that were already completed on dynamic plan
+    function syncCheckboxes() {
+        const completed = getCompleted();
+        document.querySelectorAll('input[type="checkbox"][name^="done__"]').forEach(cb => {
+            const topic = cb.name.replace('done__', '');
+            if (completed.includes(topic)) {
+                cb.checked = true;
+                const label = cb.nextElementSibling;
+                if (label) {
+                    label.style.textDecoration = 'line-through';
+                    label.style.opacity = '0.5';
+                }
+            }
+        });
+    }
+
+    // When user checks a box here, sync to localStorage too
+    document.querySelectorAll('input[type="checkbox"][name^="done__"]').forEach(cb => {
+        cb.addEventListener('change', function() {
+            const topic = this.name.replace('done__', '');
+            let completed = getCompleted();
+            if (this.checked) {
+                if (!completed.includes(topic)) completed.push(topic);
+                const label = this.nextElementSibling;
+                if (label) { label.style.textDecoration = 'line-through'; label.style.opacity = '0.5'; }
+            } else {
+                completed = completed.filter(t => t !== topic);
+                const label = this.nextElementSibling;
+                if (label) { label.style.textDecoration = 'none'; label.style.opacity = '1'; }
+            }
+            saveCompleted(completed);
+        });
+    });
+
+    // Strike-through on check (visual only)
     document.querySelectorAll('.form-check-input').forEach(checkbox => {
         checkbox.addEventListener('change', function () {
             const label = this.nextElementSibling;
+            if (!label) return;
             if (this.checked) {
                 label.style.textDecoration = 'line-through';
                 label.style.opacity = '0.5';
@@ -244,6 +329,8 @@
             }
         });
     });
+
+    syncCheckboxes();
 </script>
 
 {% endblock %}

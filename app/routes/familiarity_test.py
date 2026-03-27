@@ -291,17 +291,54 @@ async def submit_familiarity_test(request: Request):
     user_id = request.session["user_id"]
     learner_state = load_learner_state(user_id) or {"topic_states": {}}
 
+    # ⭐ Snapshot familiarity BEFORE update for comparison
+    familiarity_before = {
+        topic: learner_state.get("topic_states", {}).get(topic, {}).get("familiarity", 0.0)
+        for topic in topic_scores.keys()
+    }
+
     learner_state = update_familiarity(learner_state, topic_scores)
     save_learner_state(user_id, learner_state)
+
+    # ⭐ Snapshot familiarity AFTER update
+    familiarity_after = {
+        topic: learner_state.get("topic_states", {}).get(topic, {}).get("familiarity", 0.0)
+        for topic in topic_scores.keys()
+    }
 
     test_type = request.session.get("test_type", "")
     syllabus_id = request.session.get("test_syllabus_id", "")
 
     # --------------------------------------------------
-    # MICRO TEST → redirect back to Today's page
+    # MICRO TEST → show micro result page
     # --------------------------------------------------
     if test_type == "micro" and syllabus_id:
 
+        # Build topic comparison data
+        topic_comparison = {}
+        for topic, score in topic_scores.items():
+            before = familiarity_before.get(topic, 0.0)
+            after = familiarity_after.get(topic, 0.0)
+            topic_comparison[topic] = {
+                "score": round(score * 100, 1),
+                "before": round(before * 100, 1),
+                "after": round(after * 100, 1),
+                "change": round((after - before) * 100, 1),
+                "still_weak": after < 0.5
+            }
+
+        request.session["micro_test_result"] = {
+            "syllabus_id": syllabus_id,
+            "overall_score": round(overall_score * 100, 1),
+            "topic_comparison": topic_comparison,
+            "topics_tested": len(topic_scores),
+            "weak_topics": [
+                t for t, d in topic_comparison.items()
+                if d["still_weak"]
+            ]
+        }
+
+        # Also store for Today's page done banner
         request.session["micro_test_done_today"] = {
             "syllabus_id": syllabus_id,
             "score": round(overall_score * 100, 1),
@@ -313,20 +350,18 @@ async def submit_familiarity_test(request: Request):
             request.session.pop(key, None)
 
         return RedirectResponse(
-            url=f"/progress/today/{syllabus_id}",
+            url="/familiarity/micro-result",
             status_code=303
         )
 
     # --------------------------------------------------
     # INITIAL TEST → go to result page
-    # ⭐ FIX: store syllabus_id INSIDE the result dict
-    # so it survives the redirect regardless of session state
     # --------------------------------------------------
     request.session["last_test_result"] = {
         "topic_scores": topic_scores,
         "overall_score": overall_score,
-        "syllabus_id": syllabus_id,        # ⭐ stored here
-        "test_type": test_type             # ⭐ stored here too
+        "syllabus_id": syllabus_id,
+        "test_type": test_type
     }
 
     return RedirectResponse(url="/familiarity/result", status_code=303)
@@ -343,30 +378,66 @@ async def familiarity_result(request: Request):
     if not result:
         return RedirectResponse("/dashboard", status_code=303)
 
-    # ⭐ FIX: read syllabus_id from result dict — not from session
-    # This survives Codespaces redirect session drops
     syllabus_id = result.get("syllabus_id", "")
     test_type = result.get("test_type", "")
 
-    # Build clean result for template (without internal fields)
+    print(f"DEBUG result route → test_type={test_type}, syllabus_id={syllabus_id}")
+
     clean_result = {
         "topic_scores": result.get("topic_scores", {}),
         "overall_score": result.get("overall_score", 0)
     }
+
+    # ⭐ FIX: pass syllabus_id for ANY non-micro test
+    # so "Rate Remaining Units" button always shows after initial test
+    show_self_rating = bool(syllabus_id) and test_type != "micro"
 
     response = templates.TemplateResponse(
         "test_result.html",
         {
             "request": request,
             "result": clean_result,
-            "syllabus_id": syllabus_id if test_type == "initial" else None
+            "syllabus_id": syllabus_id if show_self_rating else None
         }
     )
 
-    # Clean up session after rendering
     for key in ["last_test_result", "test_questions", "test_topic_map",
                 "test_syllabus_id", "test_type", "pending_self_rating_syllabus_id"]:
         request.session.pop(key, None)
+
+    return response
+
+
+# ---------------------------------------------------
+# MICRO TEST RESULT PAGE
+# ---------------------------------------------------
+@router.get("/familiarity/micro-result", response_class=HTMLResponse)
+async def micro_test_result(request: Request):
+    """
+    Dedicated result page for micro tests.
+    Shows before/after familiarity comparison,
+    weak topics, and correct action buttons.
+    """
+
+    result = request.session.get("micro_test_result")
+
+    if not result:
+        return RedirectResponse("/dashboard", status_code=303)
+
+    syllabus_id = result.get("syllabus_id", "")
+
+    response = templates.TemplateResponse(
+        "micro_result.html",
+        {
+            "request": request,
+            "result": result,
+            "syllabus_id": syllabus_id
+        }
+    )
+
+    # Keep micro_test_done_today so Today's page shows ✅ Done
+    # Only clear the detailed result
+    request.session.pop("micro_test_result", None)
 
     return response
 

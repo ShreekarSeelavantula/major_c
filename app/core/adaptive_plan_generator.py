@@ -218,11 +218,20 @@ def generate_adaptive_plan(
             if available <= 0:
                 continue
 
-            allocated = min(
-                available,
-                remaining_day_hours,
-                max(0.5, available * 0.45)
-            )
+            # ⭐ FIX: allocation logic
+            # Old: max(0.5, available * 0.45) — too conservative, same topic repeats
+            # New: try to finish small topics in one session,
+            #      spread large topics across sessions (max 2hrs per session)
+            if available <= 1.0:
+                # Small topic — finish it completely in one go
+                allocated = min(available, remaining_day_hours)
+            else:
+                # Large topic — spread across days, max 2hrs per session
+                allocated = min(
+                    available,
+                    remaining_day_hours,
+                    2.0
+                )
 
             allocated = round(allocated, 2)
 

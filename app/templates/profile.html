@@ -3,10 +3,235 @@
 {% block title %}Profile | Prep Genie{% endblock %}
 
 {% block content %}
-<h2 class="fw-bold mb-3">Your Profile</h2>
 
-<div class="card p-4 shadow-sm">
-    <p><strong>Name:</strong> {{ user_name }}</p>
-    <p><strong>Email:</strong> {{ user_email }}</p>
+<h2 class="fw-bold mb-1">👤 Your Profile</h2>
+<p class="text-muted mb-4">
+    Manage your personal information and study preferences.
+</p>
+
+{% if request.query_params.get("updated") %}
+<div class="alert alert-success mb-4">
+    ✅ Profile updated successfully!
 </div>
+{% endif %}
+
+<form method="post" action="/profile/update">
+
+    <!-- ─── AVATAR SELECTION ─── -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header fw-bold bg-light">
+            🖼️ Profile Avatar
+        </div>
+        <div class="card-body">
+
+            <div class="d-flex flex-wrap gap-3 align-items-center">
+
+                <!-- Current avatar display -->
+                <div id="currentAvatar"
+                     style="width:80px; height:80px; border-radius:50%;
+                            background: linear-gradient(135deg, #4e73df, #9b59b6);
+                            display:flex; align-items:center; justify-content:center;
+                            font-size: 2.5rem; border: 3px solid #0d6efd;">
+                    {{ user.avatar or '🧑' }}
+                </div>
+
+                <div>
+                    <p class="fw-semibold mb-2">Choose your avatar:</p>
+                    <div class="d-flex flex-wrap gap-2" id="avatarGrid">
+                        {% set avatars = ['🧑', '👩', '🧑‍💻', '👩‍💻', '🧑‍🎓', '👩‍🎓',
+                                          '🦊', '🐼', '🦁', '🐯', '🤖', '👾',
+                                          '🌟', '🔥', '⚡', '🎯', '🚀', '🎓'] %}
+                        {% for av in avatars %}
+                        <button type="button"
+                                class="btn btn-outline-secondary p-2 avatar-btn
+                                       {% if user.avatar == av %}border-primary{% endif %}"
+                                style="font-size: 1.5rem; width:50px; height:50px;"
+                                onclick="selectAvatar('{{ av }}', this)">
+                            {{ av }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                    <input type="hidden" name="avatar" id="avatarInput"
+                           value="{{ user.avatar or '🧑' }}">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Left column -->
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header fw-bold bg-light">
+                    Personal Information
+                </div>
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Full Name</label>
+                        <input type="text"
+                               name="name"
+                               class="form-control"
+                               value="{{ user.name or user_name or '' }}"
+                               placeholder="Your full name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email</label>
+                        <input type="email"
+                               class="form-control"
+                               value="{{ user.email or user_email or '' }}"
+                               disabled>
+                        <small class="text-muted">Email cannot be changed</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Phone Number</label>
+                        <input type="tel"
+                               name="phone"
+                               class="form-control"
+                               value="{{ user.phone or '' }}"
+                               placeholder="10-digit phone number">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right column -->
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header fw-bold bg-light">
+                    Academic Information
+                </div>
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Degree</label>
+                        <select name="degree" class="form-select">
+                            <option value="">Select Degree</option>
+                            {% for deg in ["B.Tech", "B.Sc", "M.Tech", "MBA", "Other"] %}
+                            <option value="{{ deg }}"
+                                {% if user.degree == deg %}selected{% endif %}>
+                                {{ deg }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Branch / Major</label>
+                        <input type="text"
+                               name="branch"
+                               class="form-control"
+                               value="{{ user.branch or '' }}"
+                               placeholder="e.g. Computer Science">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Current Year</label>
+                        <select name="year" class="form-select">
+                            {% for y in [1, 2, 3, 4] %}
+                            <option value="{{ y }}"
+                                {% if user.year == y %}selected{% endif %}>
+                                Year {{ y }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Full width — study preferences -->
+        <div class="col-12">
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header fw-bold bg-light">
+                    Study Preferences
+                    <small class="text-muted fw-normal ms-2">
+                        — These affect how your study plan is generated
+                    </small>
+                </div>
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            When do you prefer to study?
+                        </label>
+                        <div class="d-flex gap-3 flex-wrap">
+
+                            {% for pref in ["Morning", "Night", "Flexible"] %}
+                            <label class="btn btn-outline-primary
+                                {% if user.study_preference == pref %}active{% endif %}">
+                                <input type="radio"
+                                       name="study_preference"
+                                       value="{{ pref }}"
+                                       class="d-none"
+                                       {% if user.study_preference == pref %}checked{% endif %}>
+                                {% if pref == "Morning" %}🌅{% elif pref == "Night" %}🌙{% else %}⚡{% endif %}
+                                {{ pref }}
+                            </label>
+                            {% endfor %}
+
+                        </div>
+                        <small class="text-muted mt-2 d-block">
+                            Morning → Harder topics scheduled first each day.<br>
+                            Night → Easier topics first, harder ones later.<br>
+                            Flexible → System decides based on priority.
+                        </small>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Save button -->
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="/dashboard" class="btn btn-outline-secondary">
+            ← Back to Dashboard
+        </a>
+        <button type="submit" class="btn btn-primary px-5">
+            Save Changes ✅
+        </button>
+    </div>
+
+</form>
+
+<script>
+// Highlight selected study preference button
+document.querySelectorAll('input[name="study_preference"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('label.btn-outline-primary').forEach(l => {
+            l.classList.remove('active');
+        });
+        this.closest('label').classList.add('active');
+    });
+});
+
+// Avatar selection
+function selectAvatar(av, btn) {
+    document.getElementById('avatarInput').value = av;
+    document.getElementById('currentAvatar').textContent = av;
+
+    document.querySelectorAll('.avatar-btn').forEach(b => {
+        b.classList.remove('border-primary', 'btn-primary');
+        b.classList.add('btn-outline-secondary');
+    });
+    btn.classList.remove('btn-outline-secondary');
+    btn.classList.add('btn-primary', 'border-primary');
+}
+</script>
+
 {% endblock %}
