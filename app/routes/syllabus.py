@@ -9,11 +9,18 @@ from app.services.ocr_service import extract_text_with_ocr
 from app.services.syllabus_validator import analyze_syllabus
 from app.services.syllabus_structurer import structure_syllabus
 from app.services.subject_detector import detect_subjects
-from app.services.syllabus_pipeline import process_syllabus
 from app.services.planner_service import PlannerService
-from app.services.topic_complexity_engine import evaluate_topic
 from app.services.topic_cleaner import TopicCleaner
 from app.storage.learner_store import get_learner_state
+
+# -------------------------------------------------------
+# NOTE: syllabus_pipeline and topic_complexity_engine
+# imports were removed — those files are deleted.
+# evaluate_topic is called directly from complexity_engine
+# via the inline logic below.
+# -------------------------------------------------------
+from app.services.complexity_engine import compute_complexity
+from app.services.topic_analyzer import analyze_topic
 
 
 router = APIRouter(tags=["Syllabus"])
@@ -26,6 +33,32 @@ ALLOWED_TYPES = {
 }
 
 MAX_SIZE = 10 * 1024 * 1024
+
+
+# --------------------------------------------------
+# evaluate_topic replacement
+# Previously imported from topic_complexity_engine.py
+# (now deleted). This replicates the same behaviour
+# using the existing complexity_engine + topic_analyzer.
+# --------------------------------------------------
+def evaluate_topic(topic_title: str, subtopics: list, topic_index: int) -> dict:
+    """
+    Compute complexity data for a single topic.
+    Returns a dict with 'difficulty', 'total_score', and sub-scores.
+    """
+    features = analyze_topic(topic_title, topic_index)
+    features["subtopics"] = len(subtopics) if subtopics else 1
+
+    result = compute_complexity(features)
+
+    return {
+        "difficulty": result["complexity"],
+        "total_score": result["score"],
+        "subtopic_score": features.get("subtopics", 1),
+        "verb_score": 0,
+        "density_score": 0,
+        "dependency_score": 0,
+    }
 
 
 # --------------------------------------------------
@@ -200,13 +233,8 @@ def structure_selected_subject(
             unit_topics.append({
                 "name": name,
                 "subtopics": subtopics,
-
-                # ⭐ FIX: store full complexity dict for display purposes
                 "complexity": complexity_data,
-
-                # ⭐ FIX: store difficulty string separately for planner use
                 "difficulty": complexity_data["difficulty"],
-
                 "score": complexity_data["total_score"],
                 "estimated_hours": estimated_hours,
                 "unit_index": unit.unit_number
@@ -235,7 +263,6 @@ def structure_selected_subject(
 
     # -----------------------------------------
     # REBUILD PLANNER TOPICS FROM CLEANED DATA
-    # ⭐ FIX: use "difficulty" string, not "complexity" dict
     # -----------------------------------------
     planner_topics = []
 
@@ -243,14 +270,12 @@ def structure_selected_subject(
         for topic in unit["topics"]:
             planner_topics.append({
                 "topic": topic["name"],
-                "complexity": topic["difficulty"],        # ✅ plain string "Easy"/"Medium"/"Hard"
+                "complexity": topic["difficulty"],
                 "estimated_hours": topic["estimated_hours"]
             })
 
     # -----------------------------------------
     # GENERATE STUDY PLAN
-    # ⭐ FIX: load real learner state so familiarity
-    # scores from tests are used in plan generation
     # -----------------------------------------
     user_id = request.session["user_id"]
     learner_state = get_learner_state(user_id) or {
@@ -259,7 +284,6 @@ def structure_selected_subject(
         "topic_states": {}
     }
 
-    # Ensure all topics exist in learner state
     for t in planner_topics:
         learner_state["topic_states"].setdefault(t["topic"], {
             "familiarity": 0.0,

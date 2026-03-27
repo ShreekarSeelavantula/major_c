@@ -6,6 +6,75 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+# -------------------------------------------------------
+# GENERIC WORD FILTER
+# Topics extracted from syllabuses often contain single
+# generic academic words that mean nothing in isolation.
+# e.g. "Definition", "Types", "Labor", "Emotional"
+# These pass the AI cleaner because they are valid English
+# words — but they are useless as study topics.
+# This filter rejects them before they get saved.
+# -------------------------------------------------------
+
+GENERIC_WORDS = {
+    "definition", "definitions",
+    "types", "type",
+    "introduction", "intro",
+    "overview", "summary",
+    "basics", "basic",
+    "concepts", "concept",
+    "labor", "labour",
+    "emotional", "intelligence",
+    "management", "intervention",
+    "theories", "theory",
+    "framework", "frameworks",
+    "nature", "scope",
+    "importance", "need",
+    "effects", "effect",
+    "characteristics", "characteristic",
+    "components", "component",
+    "elements", "element",
+    "factors", "factor",
+    "principles", "principle",
+    "objectives", "objective",
+    "functions", "function",
+    "applications", "application",
+    "advantages", "disadvantages",
+    "features", "feature",
+    "methods", "method",
+    "techniques", "technique",
+    "process", "processes",
+    "model", "models",
+    "structure", "structures",
+    "system", "systems",
+    "review", "analysis",
+    "classification", "categories",
+    "comparison", "examples",
+}
+
+
+def _is_generic(name: str) -> bool:
+    """
+    Returns True if the topic name is a single generic word
+    that has no meaning as a standalone study topic.
+
+    Rules:
+    - If it is a single word AND that word is in GENERIC_WORDS -> reject
+    - If it is two words and BOTH are in GENERIC_WORDS -> reject
+    - Otherwise keep it (multi-word topics are almost always fine)
+    """
+    cleaned = name.strip().lower()
+    words = cleaned.split()
+
+    if len(words) == 1 and cleaned in GENERIC_WORDS:
+        return True
+
+    if len(words) == 2 and all(w in GENERIC_WORDS for w in words):
+        return True
+
+    return False
+
+
 class TopicCleaner:
 
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -29,7 +98,7 @@ class TopicCleaner:
                 topic_names.append(topic["name"])
 
         # --------------------------------
-        # Prompt (much smaller)
+        # Prompt
         # --------------------------------
         prompt = f"""
 You are cleaning syllabus topic names extracted from a PDF.
@@ -222,18 +291,31 @@ Topic names:
 
             print("Cleaned topic list:", cleaned_list)
 
-            # Replace names inside structured syllabus
+            # -------------------------------------------------------
+            # Write cleaned names back into structured syllabus.
+            # FILTER: skip generic single words before saving.
+            # If a cleaned name is generic (e.g. "Labor", "Types"),
+            # keep the original name instead of replacing it.
+            # This prevents meaningless topics polluting the plan.
+            # -------------------------------------------------------
             index = 0
 
             for unit in structured_syllabus:
                 for topic in unit["topics"]:
 
                     if index < len(cleaned_list):
-                        topic["name"] = cleaned_list[index]
+                        candidate = cleaned_list[index]
+
+                        if _is_generic(candidate):
+                            # Keep original name — generic word is worse
+                            print(f"Skipping generic: '{candidate}' keeping '{topic['name']}'")
+                        else:
+                            topic["name"] = candidate
 
                     index += 1
 
             return structured_syllabus
+
         except Exception as e:
 
             print("AI parsing error:", e)

@@ -1,6 +1,5 @@
 import math
-import time
-
+from datetime import datetime
 
 # -----------------------------
 # Memory Model Constants
@@ -61,7 +60,7 @@ def update_familiarity(learner_state, topic_scores):
                 "retention": 1.0,
                 "attempts": 1,
                 "revision_due": False,
-                "last_updated": time.time()
+                "last_updated": datetime.utcnow().date().isoformat()
             }
             continue
 

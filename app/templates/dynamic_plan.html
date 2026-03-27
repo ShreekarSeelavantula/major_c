@@ -79,14 +79,22 @@
                 {% for task in tasks %}
 
                     {% if task.type == "study" %}
+                    {#
+                        ⭐ FIX: data-key is now "day__DAY__topic__TOPIC"
+                        This makes every checkbox uniquely identifiable even
+                        when the same topic appears across multiple days.
+                        Previously, only data-topic was used, which caused
+                        all matching topics across all days to get checked
+                        at the same time.
+                    #}
                     <li class="list-group-item d-flex justify-content-between
                                 align-items-center study-item py-3"
                         data-topic="{{ task.topic }}">
                         <div class="d-flex align-items-center gap-2">
-                            <!-- ⭐ FIX: unique id per checkbox using day + loop index -->
                             <input type="checkbox"
                                    class="form-check-input topic-checkbox mt-0"
                                    id="cb_{{ day }}_{{ loop.index }}"
+                                   data-key="day__{{ day }}__topic__{{ task.topic }}"
                                    data-topic="{{ task.topic }}">
                             <label for="cb_{{ day }}_{{ loop.index }}"
                                    class="topic-label mb-0">
@@ -111,6 +119,7 @@
                             <input type="checkbox"
                                    class="form-check-input topic-checkbox mt-0"
                                    id="cb_rev_{{ day }}_{{ loop.index }}"
+                                   data-key="day__{{ day }}__rev__{{ task.topic }}"
                                    data-topic="{{ task.topic }}">
                             <label for="cb_rev_{{ day }}_{{ loop.index }}"
                                    class="topic-label mb-0">
@@ -147,7 +156,7 @@
 
 <!-- Completed Topics Section -->
 <div id="completedSection" style="display:none;" class="mt-4">
-    <h5 class="fw-bold mb-3 text-success">✅ Completed Topics</h5>
+    <h5 class="fw-bold mb-3 text-success">✅ Completed Sessions</h5>
     <div class="card shadow-sm border-0 border-start border-success border-4">
         <div class="card-body">
             <div id="completedList" class="d-flex flex-wrap gap-2"></div>
@@ -198,18 +207,36 @@ document.querySelectorAll('.time-fmt').forEach(el => {
 
 
 // ─────────────────────────────────────────
-// ⭐ CHECKBOX FIX
-// Root cause of the multi-check bug:
-// localStorage key was shared across all topics
-// and querySelector was matching by text which
-// caused multiple checkboxes to get checked.
+// ⭐ BUG FIX EXPLANATION
 //
-// Fix: use strict data-topic matching only.
-// Each checkbox is identified ONLY by its own
-// data-topic attribute — nothing else.
+// OLD BUG:
+//   localStorage stored completed items by topic name alone,
+//   e.g. "Plain Text and Cipher Text".
+//   When the same topic appears on Day 1, Day 2, Day 3,
+//   checking Day 1's checkbox caused ALL three to get
+//   visually checked — because renderAll() matched by
+//   topic name string across every checkbox on the page.
+//
+// ROOT CAUSE:
+//   completed.includes(topic)  ← matched by topic name only
+//   This is true for EVERY checkbox with the same topic name.
+//
+// FIX:
+//   Each checkbox now has a unique data-key attribute:
+//   "day__1__topic__Plain Text and Cipher Text"
+//   "day__2__topic__Plain Text and Cipher Text"
+//   "day__3__topic__Plain Text and Cipher Text"
+//
+//   Storage and lookup both use data-key, never data-topic.
+//   This means checking Day 1 ONLY affects Day 1's checkbox.
+//   Day 2 and Day 3 remain independent.
+//
+// The completed topics panel at the bottom still shows
+// topic names (not keys) for readability.
 // ─────────────────────────────────────────
 
-const STORAGE_KEY = 'completedTopics_{{ syllabus_id }}';
+// ⭐ Storage key is per syllabus to avoid cross-plan bleed
+const STORAGE_KEY = 'completedKeys_{{ syllabus_id }}';
 
 function getCompleted() {
     try {
@@ -219,24 +246,33 @@ function getCompleted() {
 
 function saveCompleted(arr) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-    // Keep generic key in sync for Today's page
-    localStorage.setItem('completedTopics', JSON.stringify(arr));
+
+    // ── Keep the old 'completedTopics' key in sync ──
+    // today.html and plans.html use localStorage.getItem('completedTopics')
+    // to highlight done topics. We populate it with unique topic names
+    // (deduped) extracted from completed keys so those pages still work.
+    const topicNames = arr.map(key => {
+        // key format: "day__N__topic__TOPIC NAME" or "day__N__rev__TOPIC NAME"
+        const parts = key.split('__');
+        // parts[0]="day", parts[1]=dayNum, parts[2]="topic"/"rev", parts[3+]=topic name
+        return parts.slice(3).join('__');
+    });
+    const unique = [...new Set(topicNames)];
+    localStorage.setItem('completedTopics', JSON.stringify(unique));
 }
 
-// ⭐ Each checkbox change handler — ONLY affects its own topic
+// ⭐ Each checkbox is identified ONLY by its own data-key
 document.querySelectorAll('.topic-checkbox').forEach(cb => {
     cb.addEventListener('change', function () {
-        // Get topic ONLY from this checkbox's data attribute
-        const topic = this.dataset.topic;
+        const key = this.dataset.key;   // unique per day+topic
         let completed = getCompleted();
 
         if (this.checked) {
-            // Only add if not already there
-            if (!completed.includes(topic)) {
-                completed.push(topic);
+            if (!completed.includes(key)) {
+                completed.push(key);
             }
         } else {
-            completed = completed.filter(t => t !== topic);
+            completed = completed.filter(k => k !== key);
         }
 
         saveCompleted(completed);
@@ -244,22 +280,22 @@ document.querySelectorAll('.topic-checkbox').forEach(cb => {
     });
 });
 
-// ⭐ renderAll — iterates each checkbox individually
-// NEVER uses querySelector by topic name (that was the bug)
+// ⭐ renderAll — matches each checkbox by its own data-key ONLY
+// This is the critical fix: we never touch a checkbox based on
+// its topic name. We only compare checkbox.dataset.key against
+// the stored completed keys array.
 function renderAll() {
     const completed = getCompleted();
     let totalTopics = 0;
     let completedCount = 0;
 
     document.querySelectorAll('.topic-checkbox').forEach(cb => {
-        // Match strictly by data-topic attribute
-        const topic = cb.dataset.topic;
-        const li    = cb.closest('li');
+        const key   = cb.dataset.key;    // ⭐ unique per day+topic
         const label = cb.closest('li')?.querySelector('.topic-label');
 
         totalTopics++;
 
-        if (completed.includes(topic)) {
+        if (completed.includes(key)) {
             completedCount++;
             cb.checked = true;
             if (label) {
@@ -275,7 +311,7 @@ function renderAll() {
         }
     });
 
-    // Update summary
+    // Update summary counters
     const remaining = totalTopics - completedCount;
     const pct = totalTopics > 0
         ? Math.round((completedCount / totalTopics) * 100)
@@ -286,7 +322,7 @@ function renderAll() {
     document.getElementById('pctDisplay').textContent     = pct + '%';
     document.getElementById('progressBar').style.width   = pct + '%';
 
-    // Completed topics list at bottom
+    // Completed sessions list at bottom — show friendly topic names
     const section = document.getElementById('completedSection');
     const list    = document.getElementById('completedList');
 
@@ -294,17 +330,27 @@ function renderAll() {
         section.style.display = 'none';
     } else {
         section.style.display = 'block';
-        list.innerHTML = completed.map(t =>
+
+        // Extract readable label: "Day N — Topic Name"
+        const labels = completed.map(key => {
+            const parts = key.split('__');
+            const dayNum   = parts[1];
+            const topicName = parts.slice(3).join('__');
+            const prefix   = parts[2] === 'rev' ? '🔁 ' : '📘 ';
+            return `${prefix}Day ${dayNum}: ${topicName}`;
+        });
+
+        list.innerHTML = labels.map(label =>
             `<span class="badge bg-success bg-opacity-15 text-success
                           border border-success px-3 py-2"
-                   style="text-decoration:line-through; opacity:0.8;">
-                ✓ ${t}
+                   style="text-decoration:none; font-size:0.75rem;">
+                ✓ ${label}
              </span>`
         ).join('');
     }
 }
 
-// Run on page load
+// Run on page load to restore saved state
 renderAll();
 </script>
 
