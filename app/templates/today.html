@@ -26,30 +26,13 @@
 </div>
 {% endif %}
 
-<!-- Micro test completed banner -->
-{% if request.session.get("micro_test_done_today") %}
-{% set mt = request.session.get("micro_test_done_today") %}
-<div class="alert alert-info mt-3 d-flex justify-content-between align-items-center">
-    <div>
-        🧪 <strong>Micro test completed!</strong>
-        Score: <strong>{{ mt.score }}%</strong>
-        across {{ mt.topics_tested }} topics.
-        Your familiarity scores have been updated.
-    </div>
-    <span class="badge bg-success fs-6">✅ Done</span>
-</div>
-{% endif %}
-
 <hr class="mb-4">
 
 <form method="post" action="/progress/submit/{{ syllabus_id }}">
 
-    <!-- Hidden fields -->
     <input type="hidden" name="expected_hours" value="{{ planned_hours }}">
 
-    <!-- ------------------------------------------------ -->
     <!-- STUDY TASKS -->
-    <!-- ------------------------------------------------ -->
     {% if study_tasks %}
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-header fw-bold bg-primary text-white">
@@ -57,43 +40,32 @@
         </div>
         <div class="card-body p-0">
             <ul class="list-group list-group-flush">
-
                 {% for task in study_tasks %}
                 <li class="list-group-item d-flex justify-content-between align-items-center py-3">
-
                     <div class="d-flex align-items-center gap-3">
-                        <!-- Checkbox -->
                         <input class="form-check-input mt-0"
                                type="checkbox"
                                name="done__{{ task.topic }}"
                                value="on"
                                id="task_{{ loop.index }}">
-
                         <label for="task_{{ loop.index }}" class="mb-0">
                             <strong>{{ task.topic }}</strong>
                             <br>
-                            <small class="text-muted">
-                                {{ task.complexity }} level
-                            </small>
+                            <small class="text-muted">{{ task.complexity }} level</small>
                         </label>
                     </div>
-
                     <span class="badge bg-success px-3 py-2 time-badge"
                           data-hours="{{ task.hours }}">
                         ⏱ {{ task.hours }} hrs
                     </span>
-
                 </li>
                 {% endfor %}
-
             </ul>
         </div>
     </div>
     {% endif %}
 
-    <!-- ------------------------------------------------ -->
     <!-- REVISION TASKS -->
-    <!-- ------------------------------------------------ -->
     {% if revision_tasks %}
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-header fw-bold bg-warning text-dark">
@@ -101,236 +73,771 @@
         </div>
         <div class="card-body p-0">
             <ul class="list-group list-group-flush">
-
                 {% for task in revision_tasks %}
                 <li class="list-group-item d-flex justify-content-between align-items-center py-3">
-
                     <div class="d-flex align-items-center gap-3">
                         <input class="form-check-input mt-0"
                                type="checkbox"
                                name="done__{{ task.topic }}"
                                value="on"
                                id="rev_{{ loop.index }}">
-
                         <label for="rev_{{ loop.index }}" class="mb-0">
                             <strong>{{ task.topic }}</strong>
                             <br>
                             <small class="text-muted">Revision</small>
                         </label>
                     </div>
-
                     <span class="badge bg-warning text-dark px-3 py-2">
                         ⏱ {{ task.hours }} hrs
                     </span>
-
                 </li>
                 {% endfor %}
-
             </ul>
         </div>
     </div>
     {% endif %}
 
-    <!-- ------------------------------------------------ -->
-    <!-- MICRO TEST -->
-    <!-- ------------------------------------------------ -->
-    {% if micro_test %}
-    <div class="card shadow-sm border-0 mb-4">
-
-        {% set mt_done = request.session.get("micro_test_done_today") %}
-        {% if mt_done and mt_done.syllabus_id == syllabus_id %}
-
-        <!-- Already completed today -->
-        <div class="card-header fw-bold bg-success text-white">
-            🧪 Micro Test — ✅ Completed
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <p class="mb-1">
-                        <strong>Score: {{ mt_done.score }}%</strong>
-                        — {{ mt_done.topics_tested }} topics tested
-                    </p>
-                    <small class="text-muted">
-                        Familiarity updated. Plan adjusted.
-                    </small>
-                </div>
-                <span class="badge bg-success px-3 py-2 fs-6">Done ✅</span>
-            </div>
-            <!-- ⭐ Retest option -->
-            <div class="mt-3 pt-3 border-top">
-                <p class="text-muted small mb-2">
-                    Want to improve your score?
-                    Results from the latest attempt are always used.
-                </p>
-                <a href="/familiarity/micro/{{ syllabus_id }}"
-                   class="btn btn-outline-success btn-sm">
-                    🔁 Re-attempt Test
-                </a>
-            </div>
-        </div>
-
-        {% else %}
-
-        <!-- Not yet done -->
-        <div class="card-header fw-bold bg-info text-white">
-            🧪 Micro Test
-        </div>
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div>
-                <p class="mb-1">
-                    <strong>{{ micro_test.questions }} question test</strong>
-                    — tests your weak topics
-                </p>
-                <small class="text-muted">
-                    Takes about 5 minutes. Updates your familiarity
-                    scores and adjusts your plan automatically.
-                </small>
-            </div>
-            <a href="/familiarity/micro/{{ syllabus_id }}"
-               class="btn btn-info text-white px-4">
-                Start Test →
-            </a>
-        </div>
-
-        {% endif %}
-
-    </div>
-    {% endif %}
-
-    <!-- ------------------------------------------------ -->
     <!-- ACTUAL HOURS INPUT -->
-    <!-- ------------------------------------------------ -->
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
-
             <label class="form-label fw-semibold">
                 ⏱ How many hours did you actually study today?
             </label>
-
             <div class="d-flex align-items-center gap-3">
                 <input type="number"
                        name="actual_hours"
                        class="form-control"
                        style="max-width: 150px;"
-                       min="0"
-                       max="24"
-                       step="0.25"
+                       min="0" max="24" step="0.25"
                        placeholder="e.g. 2.5"
                        required>
                 <span class="text-muted">
                     Planned: <strong>{{ planned_hours }} hrs</strong>
                 </span>
             </div>
-
             <small class="text-muted mt-2 d-block">
-                This helps the system learn your study pace
-                and adjust future days automatically.
+                This helps the system learn your study pace.
             </small>
-
         </div>
     </div>
 
-    <!-- ------------------------------------------------ -->
     <!-- SUBMIT -->
-    <!-- ------------------------------------------------ -->
     <div class="d-flex justify-content-between align-items-center mt-2">
-
         <a href="/plan/latest" class="btn btn-outline-secondary">
             ← View Full Plan
         </a>
-
         <button type="submit" class="btn btn-primary btn-lg px-5">
             Save Progress & Update Plan ✅
         </button>
-
     </div>
 
 </form>
 
+
+<!-- ============================================================ -->
+<!-- ⭐ MICRO TEST POPUP SYSTEM                                   -->
+<!-- Shows automatically if there are self-rated units remaining  -->
+<!-- ============================================================ -->
+
+{% if show_micro_popup %}
+
+<!-- DATA passed from backend into JS -->
+<div id="microTestData"
+     data-syllabus-id="{{ syllabus_id }}"
+     data-unit-name="{{ next_unit_to_test or 'Next Unit' }}"
+     style="display:none;">
+</div>
+
+<!-- ── BACKDROP ── -->
+<div id="microBackdrop"
+     style="display:none;
+            position:fixed; inset:0;
+            background:rgba(0,0,0,0.55);
+            backdrop-filter:blur(6px);
+            z-index:1040;
+            opacity:0;
+            transition:opacity 0.4s ease;">
+</div>
+
+<!-- ── POPUP CARD ── -->
+<div id="microPopup"
+     style="display:none;
+            position:fixed;
+            top:50%; left:50%;
+            transform:translate(-50%,-50%) scale(0.85);
+            z-index:1050;
+            width:min(560px, 92vw);
+            max-height:85vh;
+            overflow-y:auto;
+            opacity:0;
+            transition:opacity 0.35s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);">
+
+    <div class="card shadow border-0 rounded-4">
+
+        <!-- HEADER -->
+        <div class="card-header border-0 rounded-top-4 px-4 pt-4 pb-3"
+             style="background:linear-gradient(135deg,#4e73df,#9b59b6);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-white">
+                    <div class="small opacity-75 mb-1">⚡ Sudden Micro Test</div>
+                    <h5 class="fw-bold mb-0" id="popupUnitName">Loading...</h5>
+                </div>
+                <button onclick="dismissMicroTest()"
+                        class="btn btn-sm text-white opacity-75"
+                        style="background:rgba(255,255,255,0.15);
+                               border-radius:50%; width:32px; height:32px;
+                               padding:0; font-size:1rem; line-height:1;">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="mt-3"
+                 style="background:rgba(255,255,255,0.25);
+                        border-radius:50px; height:6px; overflow:hidden;">
+                <div id="questionProgress"
+                     style="height:100%;
+                            background:white;
+                            border-radius:50px;
+                            width:0%;
+                            transition:width 0.4s ease;">
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-1">
+                <small class="text-white opacity-75"
+                       id="questionCounter">Question 1 of 10</small>
+                <small class="text-white opacity-75"
+                       id="scoreTracker">0 correct</small>
+            </div>
+        </div>
+
+        <!-- BODY — question area -->
+        <div class="card-body px-4 py-4" id="popupBody">
+
+            <!-- Loading state -->
+            <div id="loadingState" class="text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status"></div>
+                <p class="text-muted">Preparing your test...</p>
+            </div>
+
+            <!-- Question state (hidden until loaded) -->
+            <div id="questionState" style="display:none;">
+                <p class="fw-semibold mb-3 fs-5" id="questionText"></p>
+                <div id="optionsContainer" class="d-flex flex-column gap-2"></div>
+            </div>
+
+            <!-- Result state (hidden until submitted) -->
+            <div id="resultState" style="display:none;">
+                <div class="text-center mb-4">
+                    <div id="resultEmoji" style="font-size:3rem;" class="mb-2"></div>
+                    <h4 class="fw-bold" id="resultScore"></h4>
+                    <p class="text-muted" id="resultMessage"></p>
+                </div>
+
+                <div id="weakTopicsBlock" style="display:none;">
+                    <p class="fw-semibold text-danger small mb-2">
+                        ⚠️ Topics that need more attention:
+                    </p>
+                    <div id="weakTopicsList" class="d-flex flex-wrap gap-2 mb-3"></div>
+                </div>
+
+                <div class="alert alert-success py-2 small mb-0">
+                    ✅ Familiarity scores updated. Plan regenerated automatically.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="card-footer border-0 px-4 pb-4 pt-0 bg-white rounded-bottom-4"
+             id="popupFooter">
+            <button id="nextBtn"
+                    onclick="nextQuestion()"
+                    class="btn btn-primary w-100 py-2 fw-semibold"
+                    style="display:none;">
+                Next →
+            </button>
+            <button id="submitBtn"
+                    onclick="submitMicroTest()"
+                    class="btn btn-success w-100 py-2 fw-semibold"
+                    style="display:none;">
+                Submit Test ✅
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── DONE TOAST ── -->
+<div id="doneToast"
+     style="display:none;
+            position:fixed; bottom:24px; right:24px;
+            z-index:1060;
+            background:#198754; color:white;
+            padding:12px 20px;
+            border-radius:12px;
+            font-weight:600;
+            box-shadow:0 8px 24px rgba(0,0,0,0.2);
+            opacity:0;
+            transition:opacity 0.3s ease;">
+    ✅ Micro test done! Plan updated.
+</div>
+
+
 <script>
-    // ─────────────────────────────────────────
-    // TIME FORMATTER
-    // ─────────────────────────────────────────
-    function formatTime(hours) {
-        const totalMins = Math.round(hours * 60);
-        const h = Math.floor(totalMins / 60);
-        const m = totalMins % 60;
-        if (h === 0) return `${m} min`;
-        if (m === 0) return `${h} hr${h > 1 ? 's' : ''}`;
-        return `${h} hr${h > 1 ? 's' : ''} ${m} min`;
-    }
+// ─────────────────────────────────────────────────────────
+// MICRO TEST POPUP ENGINE
+// ─────────────────────────────────────────────────────────
 
-    document.querySelectorAll('.time-badge').forEach(el => {
-        const raw = parseFloat(el.dataset.hours);
-        if (!isNaN(raw)) el.textContent = '⏱ ' + formatTime(raw);
+const META = document.getElementById('microTestData').dataset;
+const SYLLABUS_ID  = META.syllabusId;
+const UNIT_NAME    = META.unitName;
+
+let allQuestions   = {};   // { topic_id: [question objects] }
+let topicMap       = {};   // { topic_id: topic_name }
+let unitNumber     = null;
+let flatQuestions  = [];   // [ {topic_id, q_index, question, options, answer} ]
+let currentIndex   = 0;
+let userAnswers    = {};   // { "topic_id_qindex": selected_option }
+let correctCount   = 0;
+
+// ─────────────────────────────────────────────────────────
+// 1. FETCH QUESTIONS FROM SERVER
+// ─────────────────────────────────────────────────────────
+async function loadMicroTestQuestions() {
+    try {
+        const res = await fetch(
+            `/familiarity/micro/data/${SYLLABUS_ID}`,
+            { method: 'GET' }
+        );
+        const data = await res.json();
+
+        if (data.error) {
+            console.error('Micro test load error:', data.error);
+            dismissMicroTest();
+            return;
+        }
+
+        allQuestions = data.questions;
+        topicMap     = data.topic_map;
+        unitNumber   = data.unit_number;
+
+        // Flatten into ordered list
+        flatQuestions = [];
+        for (const [topic_id, qs] of Object.entries(allQuestions)) {
+            qs.forEach((q, i) => {
+                flatQuestions.push({
+                    topic_id,
+                    q_index: i,
+                    question: q.question,
+                    options:  q.options,
+                    answer:   q.answer
+                });
+            });
+        }
+
+        document.getElementById('popupUnitName').textContent =
+            `📚 ${UNIT_NAME}`;
+
+        updateProgressUI();
+
+        // Show first question
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('questionState').style.display = 'block';
+        renderQuestion(0);
+
+    } catch(e) {
+        console.error('Failed to load micro test:', e);
+        dismissMicroTest();
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+// 2. RENDER A QUESTION
+// ─────────────────────────────────────────────────────────
+function renderQuestion(index) {
+    const q = flatQuestions[index];
+    if (!q) return;
+
+    document.getElementById('questionText').textContent = q.question;
+
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+
+    q.options.forEach((opt, i) => {
+        const key = `${q.topic_id}_${q.q_index}`;
+        const isSelected = userAnswers[key] === opt;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `btn text-start px-3 py-2 fw-normal option-btn
+                         ${isSelected ? 'btn-primary' : 'btn-outline-secondary'}`;
+        btn.style.borderRadius = '10px';
+        btn.style.transition = 'all 0.2s ease';
+        btn.textContent = opt;
+        btn.onclick = () => selectOption(opt, key, btn);
+        container.appendChild(btn);
     });
 
-    // ─────────────────────────────────────────
-    // SYNC WITH DYNAMIC PLAN via localStorage
-    // ─────────────────────────────────────────
-    const STORAGE_KEY = 'completedTopics_{{ syllabus_id }}';
+    updateProgressUI();
+    updateNavButtons();
+}
 
-    function getCompleted() {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-        catch { return []; }
+// ─────────────────────────────────────────────────────────
+// 3. SELECT AN OPTION
+// ─────────────────────────────────────────────────────────
+function selectOption(opt, key, clickedBtn) {
+    // Deselect all
+    document.querySelectorAll('.option-btn').forEach(b => {
+        b.className = b.className
+            .replace('btn-primary', 'btn-outline-secondary');
+    });
+
+    // Select this one
+    clickedBtn.className = clickedBtn.className
+        .replace('btn-outline-secondary', 'btn-primary');
+
+    userAnswers[key] = opt;
+    updateNavButtons();
+}
+
+// ─────────────────────────────────────────────────────────
+// 4. NEXT QUESTION
+// ─────────────────────────────────────────────────────────
+function nextQuestion() {
+    currentIndex++;
+    renderQuestion(currentIndex);
+}
+
+// ─────────────────────────────────────────────────────────
+// 5. UPDATE PROGRESS BAR + COUNTER
+// ─────────────────────────────────────────────────────────
+function updateProgressUI() {
+    const total   = flatQuestions.length;
+    const current = currentIndex + 1;
+    const pct     = total > 0 ? Math.round((current / total) * 100) : 0;
+
+    document.getElementById('questionProgress').style.width = pct + '%';
+    document.getElementById('questionCounter').textContent  =
+        `Question ${current} of ${total}`;
+
+    // Live correct count
+    let correct = 0;
+    flatQuestions.forEach(q => {
+        const key = `${q.topic_id}_${q.q_index}`;
+        if (userAnswers[key] &&
+            userAnswers[key].trim().toLowerCase() ===
+            q.answer.trim().toLowerCase()) {
+            correct++;
+        }
+    });
+    correctCount = correct;
+    document.getElementById('scoreTracker').textContent =
+        `${correct} correct`;
+}
+
+// ─────────────────────────────────────────────────────────
+// 6. SHOW/HIDE NEXT vs SUBMIT BUTTON
+// ─────────────────────────────────────────────────────────
+function updateNavButtons() {
+    const isLast    = currentIndex === flatQuestions.length - 1;
+    const answered  = userAnswers[
+        `${flatQuestions[currentIndex]?.topic_id}_${flatQuestions[currentIndex]?.q_index}`
+    ];
+
+    const nextBtn   = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (isLast) {
+        nextBtn.style.display   = 'none';
+        submitBtn.style.display = answered ? 'block' : 'none';
+    } else {
+        nextBtn.style.display   = answered ? 'block' : 'none';
+        submitBtn.style.display = 'none';
     }
+}
 
-    function saveCompleted(list) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-        localStorage.setItem('completedTopics', JSON.stringify(list));
-    }
+// ─────────────────────────────────────────────────────────
+// 7. SUBMIT
+// ─────────────────────────────────────────────────────────
+async function submitMicroTest() {
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').textContent = 'Submitting...';
 
-    // Pre-check boxes that were already completed on dynamic plan
-    function syncCheckboxes() {
-        const completed = getCompleted();
-        document.querySelectorAll('input[type="checkbox"][name^="done__"]').forEach(cb => {
-            const topic = cb.name.replace('done__', '');
-            if (completed.includes(topic)) {
-                cb.checked = true;
-                const label = cb.nextElementSibling;
-                if (label) {
-                    label.style.textDecoration = 'line-through';
-                    label.style.opacity = '0.5';
-                }
-            }
+    try {
+        const res = await fetch('/familiarity/micro/popup/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                answers:     userAnswers,
+                questions:   allQuestions,
+                topic_map:   topicMap,
+                syllabus_id: SYLLABUS_ID,
+                unit_number: unitNumber
+            })
         });
+
+        const data = await res.json();
+        showResult(data);
+
+    } catch(e) {
+        console.error('Submit failed:', e);
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submitBtn').textContent = 'Submit Test ✅';
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+// 8. SHOW RESULT INSIDE POPUP
+// ─────────────────────────────────────────────────────────
+function showResult(data) {
+    // Hide question area
+    document.getElementById('questionState').style.display = 'none';
+    document.getElementById('popupFooter').style.display   = 'none';
+
+    // Show result area
+    document.getElementById('resultState').style.display = 'block';
+
+    const score = data.overall_score;
+
+    // Emoji + score
+    const emoji = score >= 70 ? '🎉' : score >= 40 ? '😐' : '😓';
+    document.getElementById('resultEmoji').textContent  = emoji;
+    document.getElementById('resultScore').textContent  =
+        `${score}% — ${data.total_correct} / ${data.total_questions} correct`;
+    document.getElementById('resultMessage').textContent =
+        score >= 70
+            ? 'Great job! Your plan has been fast-tracked for these topics.'
+            : score >= 40
+            ? 'Decent attempt. Weak topics will get more time in your plan.'
+            : 'These topics need more study. Your plan has been updated.';
+
+    // Weak topics
+    if (data.weak_topics && data.weak_topics.length > 0) {
+        document.getElementById('weakTopicsBlock').style.display = 'block';
+        document.getElementById('weakTopicsList').innerHTML =
+            data.weak_topics.map(t =>
+                `<span class="badge bg-danger bg-opacity-10
+                              text-danger border border-danger px-2 py-1">
+                    ${t}
+                 </span>`
+            ).join('');
     }
 
-    // When user checks a box here, sync to localStorage too
+    // Show done toast
+    setTimeout(() => showDoneToast(), 600);
+
+    // Auto close after 4 seconds
+    setTimeout(() => closePopup(), 4000);
+}
+
+// ─────────────────────────────────────────────────────────
+// 9. TOAST
+// ─────────────────────────────────────────────────────────
+function showDoneToast() {
+    const toast = document.getElementById('doneToast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.opacity = '1'; }, 50);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => { toast.style.display = 'none'; }, 400);
+    }, 3000);
+}
+
+// ─────────────────────────────────────────────────────────
+// 10. OPEN / CLOSE POPUP
+// ─────────────────────────────────────────────────────────
+function openPopup() {
+    const backdrop = document.getElementById('microBackdrop');
+    const popup    = document.getElementById('microPopup');
+
+    backdrop.style.display = 'block';
+    popup.style.display    = 'block';
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+        backdrop.style.opacity = '1';
+        popup.style.opacity    = '1';
+        popup.style.transform  =
+            'translate(-50%,-50%) scale(1)';
+    });
+
+    loadMicroTestQuestions();
+}
+
+function closePopup() {
+    const backdrop = document.getElementById('microBackdrop');
+    const popup    = document.getElementById('microPopup');
+
+    backdrop.style.opacity = '0';
+    popup.style.opacity    = '0';
+    popup.style.transform  = 'translate(-50%,-50%) scale(0.85)';
+
+    setTimeout(() => {
+        backdrop.style.display = 'none';
+        popup.style.display    = 'none';
+    }, 400);
+}
+
+function dismissMicroTest() {
+    closePopup();
+    sessionStorage.setItem('microPopupDismissed_{{ syllabus_id }}', '1');
+}
+
+// ─────────────────────────────────────────────────────────
+// 11. MEMORY REMINDER ENTRANCE ANIMATION
+//
+// Phase 1 (1.5s): Brain notification card slides in from right
+// Phase 2 (4s):   Card pulses to grab attention
+// Phase 3 (5.5s): User clicks OR auto-expands → full popup blooms
+// ─────────────────────────────────────────────────────────
+
+const REMINDER_CARD_ID = 'memoryReminderCard';
+
+function createReminderCard() {
+    const card = document.createElement('div');
+    card.id = REMINDER_CARD_ID;
+    card.innerHTML = `
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div id="brainIcon"
+                 style="font-size:2rem;
+                        animation: brainPulse 1.2s ease-in-out infinite;">
+                🧠
+            </div>
+            <div style="flex:1;">
+                <div style="font-weight:700; font-size:0.95rem; color:#1a1a2e;">
+                    Memory Check!
+                </div>
+                <div style="font-size:0.78rem; color:#555; margin-top:2px;">
+                    {{ next_unit_to_test or "Next unit" }} needs verification
+                </div>
+                <div style="margin-top:6px;">
+                    <div style="height:3px;
+                                border-radius:50px;
+                                background:#e9ecef;
+                                overflow:hidden;">
+                        <div id="reminderCountdown"
+                             style="height:100%;
+                                    border-radius:50px;
+                                    background:linear-gradient(90deg,#4e73df,#9b59b6);
+                                    width:100%;
+                                    transition: width 2s linear;">
+                        </div>
+                    </div>
+                    <div style="font-size:0.7rem;
+                                color:#888;
+                                margin-top:3px;">
+                        Starting in a moment...
+                    </div>
+                </div>
+            </div>
+            <button onclick="dismissReminderCard(event)"
+                    style="background:none;
+                           border:none;
+                           font-size:1rem;
+                           color:#aaa;
+                           cursor:pointer;
+                           padding:4px;
+                           line-height:1;">
+                ✕
+            </button>
+        </div>
+    `;
+
+    Object.assign(card.style, {
+        position:     'fixed',
+        bottom:       '24px',
+        right:        '-380px',       // starts off-screen
+        width:        '320px',
+        background:   'white',
+        borderRadius: '16px',
+        padding:      '16px 18px',
+        boxShadow:    '0 12px 40px rgba(78,115,223,0.25), 0 4px 12px rgba(0,0,0,0.1)',
+        borderLeft:   '4px solid #4e73df',
+        zIndex:       '1045',
+        cursor:       'pointer',
+        transition:   'right 0.6s cubic-bezier(0.34,1.56,0.64,1)',
+    });
+
+    // Clicking the card opens the full popup
+    card.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') return;
+        expandToFullPopup();
+    });
+
+    document.body.appendChild(card);
+    return card;
+}
+
+function showReminderCard() {
+    const card = createReminderCard();
+
+    // Slide in from right
+    requestAnimationFrame(() => {
+        setTimeout(() => {
+            card.style.right = '24px';
+        }, 50);
+    });
+
+    // Start countdown bar drain after slide-in completes
+    setTimeout(() => {
+        const bar = document.getElementById('reminderCountdown');
+        if (bar) bar.style.width = '0%';
+    }, 800);
+
+    // Auto expand to full popup after countdown (2s drain + 0.8s slide-in + 0.7s buffer)
+    setTimeout(() => {
+        expandToFullPopup();
+    }, 3500);
+}
+
+function dismissReminderCard(e) {
+    if (e) e.stopPropagation();
+    const card = document.getElementById(REMINDER_CARD_ID);
+    if (card) {
+        card.style.right = '-380px';
+        setTimeout(() => card.remove(), 700);
+    }
+    sessionStorage.setItem('microPopupDismissed_{{ syllabus_id }}', '1');
+}
+
+function expandToFullPopup() {
+    // Remove reminder card smoothly
+    const card = document.getElementById(REMINDER_CARD_ID);
+    if (card) {
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.8)';
+        card.style.transition += ', opacity 0.3s ease, transform 0.3s ease';
+        setTimeout(() => card.remove(), 350);
+    }
+
+    // Open full popup with a slight delay so card exit is visible
+    setTimeout(() => openPopup(), 300);
+}
+
+// Override openPopup to use a more dramatic entrance
+const _originalOpenPopup = openPopup;
+openPopup = function() {
+    const backdrop = document.getElementById('microBackdrop');
+    const popup    = document.getElementById('microPopup');
+
+    backdrop.style.display = 'block';
+    popup.style.display    = 'block';
+
+    // Start from bottom-right position (where card was)
+    popup.style.transformOrigin = 'bottom right';
+    popup.style.transform =
+        'translate(-50%,-50%) scale(0.3) translate(200px, 200px)';
+    popup.style.opacity = '0';
+
+    requestAnimationFrame(() => {
+        setTimeout(() => {
+            backdrop.style.opacity = '1';
+            popup.style.transform  = 'translate(-50%,-50%) scale(1) translate(0,0)';
+            popup.style.opacity    = '1';
+            popup.style.transition =
+                'opacity 0.5s ease, transform 0.6s cubic-bezier(0.34,1.56,0.64,1)';
+        }, 30);
+    });
+
+    loadMicroTestQuestions();
+};
+
+// CSS for brain pulse animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes brainPulse {
+        0%   { transform: scale(1);    }
+        40%  { transform: scale(1.2);  }
+        60%  { transform: scale(0.95); }
+        100% { transform: scale(1);    }
+    }
+`;
+document.head.appendChild(style);
+
+// ── TRIGGER ──
+window.addEventListener('load', () => {
+    const dismissed = sessionStorage.getItem(
+        'microPopupDismissed_{{ syllabus_id }}'
+    );
+    if (!dismissed) {
+        setTimeout(showReminderCard, 1500);
+    }
+});
+</script>
+
+{% endif %}
+<!-- END MICRO TEST POPUP -->
+
+
+<script>
+// TIME FORMATTER
+function formatTime(hours) {
+    const totalMins = Math.round(hours * 60);
+    const h = Math.floor(totalMins / 60);
+    const m = totalMins % 60;
+    if (h === 0) return `${m} min`;
+    if (m === 0) return `${h} hr${h > 1 ? 's' : ''}`;
+    return `${h} hr${h > 1 ? 's' : ''} ${m} min`;
+}
+
+document.querySelectorAll('.time-badge').forEach(el => {
+    const raw = parseFloat(el.dataset.hours);
+    if (!isNaN(raw)) el.textContent = '⏱ ' + formatTime(raw);
+});
+
+// SYNC CHECKBOXES with localStorage
+const STORAGE_KEY = 'completedTopics_{{ syllabus_id }}';
+
+function getCompleted() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    catch { return []; }
+}
+
+function saveCompleted(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    localStorage.setItem('completedTopics', JSON.stringify(list));
+}
+
+function syncCheckboxes() {
+    const completed = getCompleted();
     document.querySelectorAll('input[type="checkbox"][name^="done__"]').forEach(cb => {
-        cb.addEventListener('change', function() {
-            const topic = this.name.replace('done__', '');
-            let completed = getCompleted();
-            if (this.checked) {
-                if (!completed.includes(topic)) completed.push(topic);
-                const label = this.nextElementSibling;
-                if (label) { label.style.textDecoration = 'line-through'; label.style.opacity = '0.5'; }
-            } else {
-                completed = completed.filter(t => t !== topic);
-                const label = this.nextElementSibling;
-                if (label) { label.style.textDecoration = 'none'; label.style.opacity = '1'; }
-            }
-            saveCompleted(completed);
-        });
-    });
-
-    // Strike-through on check (visual only)
-    document.querySelectorAll('.form-check-input').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const label = this.nextElementSibling;
-            if (!label) return;
-            if (this.checked) {
+        const topic = cb.name.replace('done__', '');
+        if (completed.includes(topic)) {
+            cb.checked = true;
+            const label = cb.nextElementSibling;
+            if (label) {
                 label.style.textDecoration = 'line-through';
                 label.style.opacity = '0.5';
-            } else {
+            }
+        }
+    });
+}
+
+document.querySelectorAll('input[type="checkbox"][name^="done__"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+        const topic = this.name.replace('done__', '');
+        let completed = getCompleted();
+        if (this.checked) {
+            if (!completed.includes(topic)) completed.push(topic);
+            const label = this.nextElementSibling;
+            if (label) {
+                label.style.textDecoration = 'line-through';
+                label.style.opacity = '0.5';
+            }
+        } else {
+            completed = completed.filter(t => t !== topic);
+            const label = this.nextElementSibling;
+            if (label) {
                 label.style.textDecoration = 'none';
                 label.style.opacity = '1';
             }
-        });
+        }
+        saveCompleted(completed);
     });
+});
 
-    syncCheckboxes();
+syncCheckboxes();
 </script>
 
 {% endblock %}

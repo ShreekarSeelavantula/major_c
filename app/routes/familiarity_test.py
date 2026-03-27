@@ -11,6 +11,10 @@ from app.services.test_sampler import sample_initial_unit_topics, sample_micro_t
 
 from app.storage.learner_store import load_learner_state, save_learner_state
 
+from app.services.familiarity_updater import update_familiarity
+from app.services.plan_orchestrator import build_adaptive_plan
+from app.storage.learner_store import mark_unit_as_tested
+
 import json
 import random
 
@@ -158,11 +162,17 @@ async def micro_familiarity_test(request: Request, syllabus_id: str):
 
     structured = syllabus.get("structured_syllabus", [])
 
-    # ⭐ Load bank — no new API call
+    # ⭐ Ensure bank exists — no new API call if already built
     bank = _ensure_question_bank(syllabus)
 
-    # Sample 10 weak/random topics for micro test
-    topics = sample_micro_topics(structured, learner_state, n=10)
+    # ⭐ Unit-aware sampling — returns (topics, unit_number_being_tested)
+    result = sample_micro_topics(structured, learner_state, n=10)
+
+    # Handle both old (list) and new (tuple) return format
+    if isinstance(result, tuple):
+        topics, unit_being_tested = result
+    else:
+        topics, unit_being_tested = result, None
 
     questions, topic_map = _build_test_from_bank(bank, topics)
 
@@ -170,6 +180,9 @@ async def micro_familiarity_test(request: Request, syllabus_id: str):
     request.session["test_topic_map"] = topic_map
     request.session["test_syllabus_id"] = syllabus_id
     request.session["test_type"] = "micro"
+
+    # ⭐ Store which unit this test covers so submit can mark it tested
+    request.session["test_unit_number"] = unit_being_tested
 
     return templates.TemplateResponse(
         "familiarity_test.html",
@@ -179,6 +192,7 @@ async def micro_familiarity_test(request: Request, syllabus_id: str):
             "topic_map": topic_map,
             "syllabus_id": syllabus_id,
             "test_type": "micro",
+            "unit_being_tested": unit_being_tested,
             "error_message": None
         }
     )
@@ -348,6 +362,33 @@ async def submit_familiarity_test(request: Request):
         for key in ["test_questions", "test_topic_map",
                     "test_syllabus_id", "test_type"]:
             request.session.pop(key, None)
+
+        
+        # ⭐ Mark the unit as properly tested (replaces self-rating)
+        unit_number = request.session.get("test_unit_number")
+        if unit_number is not None:
+            from app.storage.learner_store import mark_unit_as_tested
+            mark_unit_as_tested(user_id, unit_number)
+
+        # ⭐ Regenerate plan now that a unit has real data
+        try:
+            from app.services.plan_orchestrator import build_adaptive_plan
+            from app.storage.plan_store import load_plan
+            syllabus_doc = syllabus_collection.find_one(
+                {"_id": ObjectId(syllabus_id)}
+            )
+            if syllabus_doc and syllabus_doc.get("structured_syllabus"):
+                plan_doc = load_plan(user_id)
+                hours_per_day = plan_doc.get("hours_per_day", 3) if plan_doc else 3
+                deadline_days = plan_doc.get("deadline_days", 30) if plan_doc else 30
+                build_adaptive_plan(
+                    user_id=user_id,
+                    structured_syllabus=syllabus_doc["structured_syllabus"],
+                    hours_per_day=hours_per_day,
+                    deadline_days=deadline_days
+                )
+        except Exception as e:
+            print(f"Plan regen after micro test failed: {e}")
 
         return RedirectResponse(
             url="/familiarity/micro-result",
@@ -621,3 +662,169 @@ async def submit_self_rating(request: Request):
         import traceback
         traceback.print_exc()
         return RedirectResponse("/dashboard", status_code=303)
+
+    
+
+
+# ---------------------------------------------------
+# MICRO TEST POPUP SUBMIT  (JSON endpoint — no redirect)
+# Called by the popup via fetch(), not a form POST
+# ---------------------------------------------------
+@router.post("/familiarity/micro/popup/submit")
+async def submit_micro_popup(request: Request):
+    """
+    Lightweight JSON endpoint for the inline micro test popup.
+    Accepts answers, updates familiarity, regenerates plan.
+    Returns score summary as JSON so popup can show results
+    without any page reload.
+    """
+
+    if "user_id" not in request.session:
+        return {"error": "not_authenticated"}
+
+    user_id = request.session["user_id"]
+
+    body = await request.json()
+    answers = body.get("answers", {})        # { "topic_id_qindex": "selected_option" }
+    questions = body.get("questions", {})    # { topic_id: [question objects] }
+    topic_map = body.get("topic_map", {})    # { topic_id: topic_name }
+    syllabus_id = body.get("syllabus_id", "")
+    unit_number = body.get("unit_number")    # which unit this test covers
+
+    # --------------------------------------------------
+    # Score the answers
+    # --------------------------------------------------
+    topic_scores = {}
+    total_q = 0
+    total_correct = 0
+
+    for topic_id, qs in questions.items():
+        real_topic = topic_map.get(topic_id, topic_id)
+        correct_count = 0
+
+        for i, q in enumerate(qs):
+            key = f"{topic_id}_{i}"
+            total_q += 1
+            user_answer = answers.get(key, "").strip().lower()
+            correct_text = q.get("answer", "").strip().lower()
+            if user_answer == correct_text:
+                correct_count += 1
+                total_correct += 1
+
+        topic_scores[real_topic] = correct_count / len(qs) if qs else 0
+
+    overall_score = total_correct / total_q if total_q else 0
+
+    # --------------------------------------------------
+    # Update familiarity
+    # --------------------------------------------------
+    learner_state = load_learner_state(user_id) or {"topic_states": {}}
+
+    familiarity_before = {
+        t: learner_state.get("topic_states", {}).get(t, {}).get("familiarity", 0.0)
+        for t in topic_scores
+    }
+
+    learner_state = update_familiarity(learner_state, topic_scores)
+    save_learner_state(user_id, learner_state)
+
+    familiarity_after = {
+        t: learner_state.get("topic_states", {}).get(t, {}).get("familiarity", 0.0)
+        for t in topic_scores
+    }
+
+    # --------------------------------------------------
+    # Mark unit as tested
+    # --------------------------------------------------
+    if unit_number is not None:
+        mark_unit_as_tested(user_id, unit_number)
+
+    # --------------------------------------------------
+    # Regenerate plan silently
+    # --------------------------------------------------
+    try:
+        syllabus_doc = syllabus_collection.find_one(
+            {"_id": ObjectId(syllabus_id)}
+        )
+        if syllabus_doc and syllabus_doc.get("structured_syllabus"):
+            from app.storage.plan_store import load_plan
+            plan_doc = load_plan(user_id)
+            hours_per_day = plan_doc.get("hours_per_day", 3) if plan_doc else 3
+            deadline_days = plan_doc.get("deadline_days", 30) if plan_doc else 30
+            build_adaptive_plan(
+                user_id=user_id,
+                structured_syllabus=syllabus_doc["structured_syllabus"],
+                hours_per_day=hours_per_day,
+                deadline_days=deadline_days
+            )
+    except Exception as e:
+        print(f"Plan regen after popup micro test failed: {e}")
+
+    # --------------------------------------------------
+    # Build response summary
+    # --------------------------------------------------
+    weak_topics = [
+        t for t, s in topic_scores.items() if s < 0.5
+    ]
+
+    topic_comparison = {
+        t: {
+            "score": round(s * 100, 1),
+            "before": round(familiarity_before.get(t, 0) * 100, 1),
+            "after": round(familiarity_after.get(t, 0) * 100, 1),
+            "change": round((familiarity_after.get(t, 0) - familiarity_before.get(t, 0)) * 100, 1)
+        }
+        for t, s in topic_scores.items()
+    }
+
+    return {
+        "overall_score": round(overall_score * 100, 1),
+        "total_correct": total_correct,
+        "total_questions": total_q,
+        "weak_topics": weak_topics,
+        "topic_comparison": topic_comparison,
+        "plan_updated": True
+    }
+
+
+
+# ---------------------------------------------------
+# MICRO TEST DATA ENDPOINT  (JSON — for popup fetch)
+# ---------------------------------------------------
+@router.get("/familiarity/micro/data/{syllabus_id}")
+async def micro_test_data(request: Request, syllabus_id: str):
+    """
+    Returns questions + topic_map + unit_number as JSON.
+    Called by the popup's JS fetch() — no page load needed.
+    """
+
+    if "user_id" not in request.session:
+        return {"error": "not_authenticated"}
+
+    user_id = request.session["user_id"]
+    learner_state = load_learner_state(user_id) or {"topic_states": {}}
+
+    syllabus = syllabus_collection.find_one({"_id": ObjectId(syllabus_id)})
+
+    if not syllabus:
+        return {"error": "syllabus_not_found"}
+
+    structured = syllabus.get("structured_syllabus", [])
+    bank = _ensure_question_bank(syllabus)
+
+    # Unit-aware sampling
+    result = sample_micro_topics(structured, learner_state, n=10)
+
+    if isinstance(result, tuple):
+        topics, unit_being_tested = result
+    else:
+        topics, unit_being_tested = result, None
+
+    questions, topic_map = _build_test_from_bank(bank, topics)
+
+    return {
+        "questions": questions,
+        "topic_map": topic_map,
+        "unit_number": unit_being_tested,
+        "total_questions": sum(len(qs) for qs in questions.values())
+    }

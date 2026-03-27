@@ -10,6 +10,7 @@ from app.storage.learner_store import load_learner_state, save_learner_state
 from app.storage.plan_store import load_plan, save_plan
 from app.core.learner_updater import update_learner_state
 from app.services.plan_orchestrator import build_adaptive_plan
+from app.services.test_sampler import all_units_tested
 
 router = APIRouter(tags=["Progress"])
 templates = Jinja2Templates(directory="app/templates")
@@ -19,17 +20,11 @@ templates = Jinja2Templates(directory="app/templates")
 # HELPER: get today's day number in the plan
 # --------------------------------------------------
 def _get_today_day_number(plan_doc: dict) -> int:
-    """
-    Calculate which day of the plan today is.
-    Based on how many days since plan was created.
-    Returns day number (1-indexed), capped at deadline_days.
-    """
     created_at = plan_doc.get("created_at")
 
     if not created_at:
         return 1
 
-    # created_at may be string (from JSON) or datetime
     if isinstance(created_at, str):
         from datetime import datetime
         try:
@@ -66,7 +61,6 @@ def today_tasks(request: Request, syllabus_id: str):
         )
 
     # ⭐ Clear micro_test_done_today if it's from a different syllabus
-    # (user may have multiple syllabi in future)
     mt_done = request.session.get("micro_test_done_today", {})
     if mt_done.get("syllabus_id") != syllabus_id:
         request.session.pop("micro_test_done_today", None)
@@ -74,11 +68,10 @@ def today_tasks(request: Request, syllabus_id: str):
     schedule = plan_doc["plan"].get("schedule", {})
     today_day = _get_today_day_number(plan_doc)
 
-    # Get today's tasks — try exact day, fallback to last available day
+    # Get today's tasks — try exact day, fallback to nearest available day
     today_tasks_list = schedule.get(str(today_day)) or schedule.get(today_day)
 
     if not today_tasks_list:
-        # Find nearest day
         available_days = [int(d) for d in schedule.keys()]
         if available_days:
             nearest = min(available_days, key=lambda d: abs(d - today_day))
@@ -101,6 +94,47 @@ def today_tasks(request: Request, syllabus_id: str):
         if t.get("type") in ("study", "revision")
     )
 
+    # --------------------------------------------------
+    # ⭐ MICRO TEST POPUP LOGIC
+    # Check if there are still self-rated units that need
+    # proper testing. If yes, show the popup on Today's page.
+    # --------------------------------------------------
+    show_micro_popup = False
+    next_unit_to_test = None
+
+    learner_state_check = load_learner_state(user_id) or {}
+
+    # Only bother checking if learner state exists
+    if learner_state_check:
+        syllabus_doc = syllabus_collection.find_one(
+            {"_id": ObjectId(syllabus_id)}
+        )
+
+        if syllabus_doc:
+            structured_check = syllabus_doc.get("structured_syllabus", [])
+
+            if structured_check and not all_units_tested(
+                structured_check, learner_state_check
+            ):
+                show_micro_popup = True
+
+                # Find which unit is next to be properly tested
+                tested = set(learner_state_check.get("tested_units", []))
+
+                for unit in structured_check:
+                    u_num = unit.get("unit_number", 1)
+
+                    # Unit-1 is always tested in initial diagnostic
+                    if u_num == 1:
+                        continue
+
+                    if u_num not in tested:
+                        next_unit_to_test = unit.get(
+                            "title",
+                            f"Unit {u_num}"
+                        )
+                        break
+
     return templates.TemplateResponse(
         "today.html",
         {
@@ -112,7 +146,10 @@ def today_tasks(request: Request, syllabus_id: str):
             "micro_test": micro_test,
             "planned_hours": round(planned_hours, 2),
             "deadline_days": plan_doc.get("deadline_days", 30),
-            "hours_per_day": plan_doc.get("hours_per_day", 3)
+            "hours_per_day": plan_doc.get("hours_per_day", 3),
+            # ⭐ Popup trigger variables
+            "show_micro_popup": show_micro_popup,
+            "next_unit_to_test": next_unit_to_test
         }
     )
 
@@ -133,14 +170,12 @@ async def submit_progress(request: Request, syllabus_id: str):
     # ------------------------------------------------
     # 1. Parse completed tasks from form
     # ------------------------------------------------
-    # Checkboxes: "done__{topic}" = "on" if checked
     completed_topics = []
     for key, value in answers.items():
         if key.startswith("done__") and value == "on":
             topic_name = key.replace("done__", "")
             completed_topics.append(topic_name)
 
-    # Hours actually spent — user fills this in
     try:
         actual_hours = float(answers.get("actual_hours", 0))
     except ValueError:
@@ -164,7 +199,7 @@ async def submit_progress(request: Request, syllabus_id: str):
 
     daily_report = {
         "study_sessions": study_sessions,
-        "micro_tests": [],          # micro test results come separately
+        "micro_tests": [],
         "actual_hours": actual_hours,
         "expected_hours": expected_hours
     }
@@ -211,7 +246,6 @@ async def submit_progress(request: Request, syllabus_id: str):
                 deadline_days=deadline_days
             )
 
-            # Store success message in session
             request.session["progress_message"] = (
                 f"✅ Progress saved! "
                 f"Completed {len(completed_topics)} topic(s) "

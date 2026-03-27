@@ -156,6 +156,10 @@ def generate_adaptive_plan(
     plan = defaultdict(list)
     total_days = deadline_days
 
+    # ⭐ FIX: track how many days each topic has been scheduled
+    # prevents any single topic from monopolizing the entire plan
+    days_scheduled = {}
+
     deadline_pressure = max(0.1, 1 / max(5, deadline_days))
     early_phase_days = math.ceil(total_days * 0.4)
 
@@ -202,6 +206,8 @@ def generate_adaptive_plan(
 
         # -----------------------------
         # Study Allocation
+        # ⭐ FIX: track days_scheduled per topic
+        # so no topic monopolizes the plan forever
         # -----------------------------
         for topic in candidates:
 
@@ -218,15 +224,28 @@ def generate_adaptive_plan(
             if available <= 0:
                 continue
 
-            # ⭐ FIX: allocation logic
-            # Old: max(0.5, available * 0.45) — too conservative, same topic repeats
-            # New: try to finish small topics in one session,
-            #      spread large topics across sessions (max 2hrs per session)
+            # ⭐ FIX: cap how many consecutive days a single topic
+            # can be scheduled. Max days = ceil(original_hours / 0.5)
+            # This prevents a topic from repeating indefinitely
+            # when effective_daily_hours is very low.
+            original_hours = next(
+                (t["estimated_hours"] for t in topics if t["topic"] == topic_name),
+                available
+            )
+            max_days_for_topic = max(3, int(original_hours / 0.5) + 1)
+            days_already_scheduled = days_scheduled.get(topic_name, 0)
+
+            if days_already_scheduled >= max_days_for_topic:
+                # Force-skip this topic today — move to next candidate
+                # Mark it as done to avoid infinite loop
+                remaining_hours[topic_name] = 0
+                continue
+
             if available <= 1.0:
-                # Small topic — finish it completely in one go
                 allocated = min(available, remaining_day_hours)
             else:
                 # Large topic — spread across days, max 2hrs per session
+                # But also enforce a minimum of 0.5hrs so progress is real
                 allocated = min(
                     available,
                     remaining_day_hours,
@@ -235,6 +254,11 @@ def generate_adaptive_plan(
 
             allocated = round(allocated, 2)
 
+            if allocated < 0.1:
+                # Too small to be meaningful — just finish the topic
+                allocated = round(available, 2)
+                remaining_hours[topic_name] = 0
+            
             if allocated <= 0:
                 continue
 
@@ -245,8 +269,13 @@ def generate_adaptive_plan(
                 "complexity": topic["complexity"]
             })
 
-            remaining_hours[topic_name] -= allocated
+            remaining_hours[topic_name] = round(
+                remaining_hours[topic_name] - allocated, 2
+            )
             remaining_day_hours -= allocated
+
+            # ⭐ Track days scheduled per topic
+            days_scheduled[topic_name] = days_already_scheduled + 1
 
         # -----------------------------
         # Revision Allocation

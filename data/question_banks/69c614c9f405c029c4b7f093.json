@@ -1,0 +1,878 @@
+{
+  "Security Concepts": [
+    {
+      "question": "What is the primary goal of security in computing?",
+      "options": [
+        "To ensure confidentiality, integrity, and availability of data",
+        "To ensure the availability of data",
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data"
+      ],
+      "answer": "To ensure confidentiality, integrity, and availability of data"
+    }
+  ],
+  "Introduction": [
+    {
+      "question": "What is the main purpose of a security policy?",
+      "options": [
+        "To define the rules and procedures for security",
+        "To define the goals and objectives of an organization",
+        "To define the roles and responsibilities of employees",
+        "To define the budget for security"
+      ],
+      "answer": "To define the rules and procedures for security"
+    }
+  ],
+  "The Need for Security": [
+    {
+      "question": "What is the main reason for the need of security in computing?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To prevent unauthorized access to data"
+      ],
+      "answer": "To prevent unauthorized access to data"
+    }
+  ],
+  "Security Approaches": [
+    {
+      "question": "What is the main difference between a preventive and detective security approach?",
+      "options": [
+        "Preventive approach is proactive while detective approach is reactive",
+        "Preventive approach is reactive while detective approach is proactive",
+        "Preventive approach is focused on people while detective approach is focused on technology",
+        "Preventive approach is focused on technology while detective approach is focused on people"
+      ],
+      "answer": "Preventive approach is proactive while detective approach is reactive"
+    }
+  ],
+  "Principles of Security": [
+    {
+      "question": "What is the principle of least privilege?",
+      "options": [
+        "To grant users the highest level of access possible",
+        "To grant users the lowest level of access necessary to perform their job",
+        "To grant users the same level of access as the system administrator",
+        "To grant users the ability to access all systems and data"
+      ],
+      "answer": "To grant users the lowest level of access necessary to perform their job"
+    }
+  ],
+  "Types of Security Attacks": [
+    {
+      "question": "What is the primary goal of a denial-of-service (DoS) attack?",
+      "options": [
+        "To steal sensitive data",
+        "To disrupt the normal functioning of a system",
+        "To gain unauthorized access to a system",
+        "To install malware on a system"
+      ],
+      "answer": "To disrupt the normal functioning of a system"
+    }
+  ],
+  "Security Services": [
+    {
+      "question": "What is the primary function of authentication?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To verify the identity of users or systems",
+        "To ensure the availability of data"
+      ],
+      "answer": "To verify the identity of users or systems"
+    }
+  ],
+  "Security Mechanisms": [
+    {
+      "question": "What is the primary function of encryption?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To verify the identity of users or systems"
+      ],
+      "answer": "To ensure the confidentiality of data"
+    }
+  ],
+  "A Model for Network Security": [
+    {
+      "question": "What is the primary function of the CIA triad?",
+      "options": [
+        "To ensure the confidentiality, integrity, and availability of data",
+        "To ensure the availability, integrity, and confidentiality of data",
+        "To ensure the integrity, availability, and confidentiality of data",
+        "To ensure the confidentiality, availability, and integrity of data"
+      ],
+      "answer": "To ensure the confidentiality, integrity, and availability of data"
+    }
+  ],
+  "Cryptography Concepts and Techniques": [
+    {
+      "question": "What is the primary function of a cryptographic hash function?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To verify the integrity of data",
+        "To ensure the confidentiality of data"
+      ],
+      "answer": "To verify the integrity of data"
+    }
+  ],
+  "Introduction to Cryptography": [
+    {
+      "question": "What is the primary goal of cryptography?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To prevent unauthorized access to data"
+      ],
+      "answer": "To prevent unauthorized access to data"
+    }
+  ],
+  "Plain Text and Cipher Text": [
+    {
+      "question": "What is the primary difference between plain text and cipher text?",
+      "options": [
+        "Plain text is encrypted while cipher text is unencrypted",
+        "Plain text is unencrypted while cipher text is encrypted",
+        "Plain text is used for confidentiality while cipher text is used for integrity",
+        "Plain text is used for integrity while cipher text is used for confidentiality"
+      ],
+      "answer": "Plain text is unencrypted while cipher text is encrypted"
+    }
+  ],
+  "Substitution Techniques": [
+    {
+      "question": "What is the primary function of substitution in cryptography?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To replace plaintext characters with ciphertext characters",
+        "To ensure the confidentiality of data"
+      ],
+      "answer": "To replace plaintext characters with ciphertext characters"
+    }
+  ],
+  "Encryption and Decryption Techniques": [
+    {
+      "question": "What is the primary function of decryption in cryptography?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To verify the integrity of data"
+      ],
+      "answer": "To decrypt data"
+    }
+  ],
+  "Symmetric and Asymmetric Key Cryptography, Steganography, Key Range and Key Size, Possible Types of Attacks": [
+    {
+      "question": "What is the primary difference between symmetric and asymmetric key cryptography?",
+      "options": [
+        "Symmetric key cryptography uses a single key for encryption and decryption while asymmetric key cryptography uses two keys",
+        "Symmetric key cryptography uses two keys for encryption and decryption while asymmetric key cryptography uses a single key",
+        "Symmetric key cryptography is used for confidentiality while asymmetric key cryptography is used for integrity",
+        "Symmetric key cryptography is used for integrity while asymmetric key cryptography is used for confidentiality"
+      ],
+      "answer": "Symmetric key cryptography uses a single key for encryption and decryption while asymmetric key cryptography uses two keys"
+    }
+  ],
+  "Symmetric Key Ciphers": [
+    {
+      "question": "What is the primary function of a block cipher?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To replace plaintext characters with ciphertext characters"
+      ],
+      "answer": "To encrypt data"
+    }
+  ],
+  "Block Cipher Principles": [
+    {
+      "question": "What is the primary difference between a block cipher and a stream cipher?",
+      "options": [
+        "A block cipher encrypts data in blocks while a stream cipher encrypts data in streams",
+        "A block cipher encrypts data in streams while a stream cipher encrypts data in blocks",
+        "A block cipher is used for confidentiality while a stream cipher is used for integrity",
+        "A block cipher is used for integrity while a stream cipher is used for confidentiality"
+      ],
+      "answer": "A block cipher encrypts data in blocks while a stream cipher encrypts data in streams"
+    }
+  ],
+  "DES": [
+    {
+      "question": "What is the primary weakness of the Data Encryption Standard (DES)?",
+      "options": [
+        "It uses a 56-bit key",
+        "It uses a 128-bit key",
+        "It is slow and inefficient",
+        "It is fast and efficient"
+      ],
+      "answer": "It uses a 56-bit key"
+    }
+  ],
+  "AES": [
+    {
+      "question": "What is the primary advantage of the Advanced Encryption Standard (AES)?",
+      "options": [
+        "It is slow and inefficient",
+        "It is fast and efficient",
+        "It uses a 56-bit key",
+        "It uses a 128-bit key"
+      ],
+      "answer": "It is fast and efficient"
+    }
+  ],
+  "Blowfish": [
+    {
+      "question": "What is the primary characteristic of the Blowfish algorithm?",
+      "options": [
+        "It is slow and inefficient",
+        "It is fast and efficient",
+        "It uses a 56-bit key",
+        "It is a variable-block-size cipher"
+      ],
+      "answer": "It is a variable-block-size cipher"
+    }
+  ],
+  "RC5": [
+    {
+      "question": "What is the primary characteristic of the RC5 algorithm?",
+      "options": [
+        "It is slow and inefficient",
+        "It is fast and efficient",
+        "It uses a 56-bit key",
+        "It is a variable-block-size cipher"
+      ],
+      "answer": "It is a variable-block-size cipher"
+    }
+  ],
+  "IDEA": [
+    {
+      "question": "What is the primary characteristic of the International Data Encryption Algorithm (IDEA)?",
+      "options": [
+        "It is slow and inefficient",
+        "It is fast and efficient",
+        "It uses a 56-bit key",
+        "It uses a 128-bit key"
+      ],
+      "answer": "It uses a 128-bit key"
+    }
+  ],
+  "Block Cipher Operation": [
+    {
+      "question": "What is the primary step in the block cipher operation?",
+      "options": [
+        "Encryption",
+        "Decryption",
+        "Key expansion",
+        "Data padding"
+      ],
+      "answer": "Encryption"
+    }
+  ],
+  "Stream Ciphers": [
+    {
+      "question": "What is the primary characteristic of a stream cipher?",
+      "options": [
+        "It encrypts data in blocks",
+        "It encrypts data in streams",
+        "It uses a 56-bit key",
+        "It uses a 128-bit key"
+      ],
+      "answer": "It encrypts data in streams"
+    }
+  ],
+  "RC4": [
+    {
+      "question": "What is the primary characteristic of the RC4 algorithm?",
+      "options": [
+        "It is slow and inefficient",
+        "It is fast and efficient",
+        "It uses a 56-bit key",
+        "It is a variable-block-size cipher"
+      ],
+      "answer": "It is a stream cipher"
+    }
+  ],
+  "Asymmetric Key Ciphers": [
+    {
+      "question": "What is the primary function of an asymmetric key cipher?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To verify the identity of users or systems"
+      ],
+      "answer": "To verify the identity of users or systems"
+    }
+  ],
+  "Principles of Public Key Cryptosystems": [
+    {
+      "question": "What is the primary principle of a public key cryptosystem?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To verify the identity of users or systems",
+        "To ensure the availability of data"
+      ],
+      "answer": "To verify the identity of users or systems"
+    }
+  ],
+  "RSA Algorithm, Elgamal": [
+    {
+      "question": "What is the primary function of the RSA algorithm?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To verify the identity of users or systems"
+      ],
+      "answer": "To verify the identity of users or systems"
+    }
+  ],
+  "Cryptography Overview": [
+    {
+      "question": "What is the primary goal of cryptography?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To prevent unauthorized access to data"
+      ],
+      "answer": "To prevent unauthorized access to data"
+    }
+  ],
+  "Diffie-Hellman Key Exchange": [
+    {
+      "question": "What is the primary function of the Diffie-Hellman key exchange?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To establish a shared secret key between two parties"
+      ],
+      "answer": "To establish a shared secret key between two parties"
+    }
+  ],
+  "Knapsack Algorithm": [
+    {
+      "question": "What is the primary characteristic of the knapsack algorithm?",
+      "options": [
+        "It is a public key cryptosystem",
+        "It is a symmetric key cryptosystem",
+        "It is a stream cipher",
+        "It is a block cipher"
+      ],
+      "answer": "It is a public key cryptosystem"
+    }
+  ],
+  "Cryptographic Hash Functions": [
+    {
+      "question": "What is the primary function of a cryptographic hash function?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To verify the integrity of data"
+      ],
+      "answer": "To verify the integrity of data"
+    }
+  ],
+  "Message Authentication": [
+    {
+      "question": "What is the primary goal of message authentication?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To prevent unauthorized access to data"
+      ],
+      "answer": "To ensure the integrity of data"
+    }
+  ],
+  "Secure Hash Algorithm (SHA-512)": [
+    {
+      "question": "What is the primary characteristic of the SHA-512 algorithm?",
+      "options": [
+        "It is a stream cipher",
+        "It is a block cipher",
+        "It is a public key cryptosystem",
+        "It is a cryptographic hash function"
+      ],
+      "answer": "It is a cryptographic hash function"
+    }
+  ],
+  "Message Authentication Codes": [
+    {
+      "question": "What is the primary function of a message authentication code?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To verify the integrity of data"
+      ],
+      "answer": "To verify the integrity of data"
+    }
+  ],
+  "Authentication Requirements": [
+    {
+      "question": "What is the primary requirement for authentication?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To verify the identity of users or systems"
+      ],
+      "answer": "To verify the identity of users or systems"
+    }
+  ],
+  "HMAC": [
+    {
+      "question": "What is the primary characteristic of the HMAC algorithm?",
+      "options": [
+        "It is a stream cipher",
+        "It is a block cipher",
+        "It is a public key cryptosystem",
+        "It is a cryptographic hash function"
+      ],
+      "answer": "It is a cryptographic hash function"
+    }
+  ],
+  "CMAC": [
+    {
+      "question": "What is the primary characteristic of the CMAC algorithm?",
+      "options": [
+        "It is a stream cipher",
+        "It is a block cipher",
+        "It is a public key cryptosystem",
+        "It is a cryptographic hash function"
+      ],
+      "answer": "It is a cryptographic hash function"
+    }
+  ],
+  "Digital Signatures": [
+    {
+      "question": "What is the primary function of a digital signature?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To verify the authenticity and integrity of data"
+      ],
+      "answer": "To verify the authenticity and integrity of data"
+    }
+  ],
+  "Elgamal Digital Signature Scheme": [
+    {
+      "question": "What is the primary characteristic of the Elgamal digital signature scheme?",
+      "options": [
+        "It is a public key cryptosystem",
+        "It is a symmetric key cryptosystem",
+        "It is a stream cipher",
+        "It is a block cipher"
+      ],
+      "answer": "It is a public key cryptosystem"
+    }
+  ],
+  "Key Management and Distribution": [
+    {
+      "question": "What is the primary goal of key management and distribution?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To securely manage and distribute cryptographic keys"
+      ],
+      "answer": "To securely manage and distribute cryptographic keys"
+    }
+  ],
+  "Symmetric Key Distribution Using Symmetric & Asymmetric": [
+    {
+      "question": "What is the primary method of symmetric key distribution?",
+      "options": [
+        "Using a public key cryptosystem",
+        "Using a symmetric key cryptosystem",
+        "Using a stream cipher",
+        "Using a block cipher"
+      ],
+      "answer": "Using a symmetric key cryptosystem"
+    }
+  ],
+  "Encryption and Distribution": [
+    {
+      "question": "What is the primary goal of encryption and distribution?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To securely encrypt and distribute data"
+      ],
+      "answer": "To securely encrypt and distribute data"
+    }
+  ],
+  "Distribution of Public Keys": [
+    {
+      "question": "What is the primary method of distributing public keys?",
+      "options": [
+        "Using a public key infrastructure",
+        "Using a symmetric key cryptosystem",
+        "Using a stream cipher",
+        "Using a block cipher"
+      ],
+      "answer": "Using a public key infrastructure"
+    }
+  ],
+  "Kerberos": [
+    {
+      "question": "What is the primary function of the Kerberos protocol?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure authentication and ticketing services"
+      ],
+      "answer": "To provide secure authentication and ticketing services"
+    }
+  ],
+  "X.509 Authentication Service": [
+    {
+      "question": "What is the primary function of the X.509 authentication service?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure authentication and certificate management services"
+      ],
+      "answer": "To provide secure authentication and certificate management services"
+    }
+  ],
+  "Public Key Infrastructure": [
+    {
+      "question": "What is the primary function of a public key infrastructure?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To securely manage and distribute public keys and certificates"
+      ],
+      "answer": "To securely manage and distribute public keys and certificates"
+    }
+  ],
+  "Transport-level Security": [
+    {
+      "question": "What is the primary goal of transport-level security?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure end-to-end encryption and authentication services"
+      ],
+      "answer": "To provide secure end-to-end encryption and authentication services"
+    }
+  ],
+  "Web Security Considerations": [
+    {
+      "question": "What is the primary consideration for web security?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To protect against common web-based attacks such as SQL injection and cross-site scripting"
+      ],
+      "answer": "To protect against common web-based attacks such as SQL injection and cross-site scripting"
+    }
+  ],
+  "Secure Socket Layer and Transport Layer Security": [
+    {
+      "question": "What is the primary function of the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure end-to-end encryption and authentication services"
+      ],
+      "answer": "To provide secure end-to-end encryption and authentication services"
+    }
+  ],
+  "Security and HTTPS": [
+    {
+      "question": "What is the primary benefit of using HTTPS?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure end-to-end encryption and authentication services"
+      ],
+      "answer": "To provide secure end-to-end encryption and authentication services"
+    }
+  ],
+  "Secure Shell (SSH)": [
+    {
+      "question": "What is the primary function of the Secure Shell (SSH) protocol?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure remote access and authentication services"
+      ],
+      "answer": "To provide secure remote access and authentication services"
+    }
+  ],
+  "Wireless Network Security": [
+    {
+      "question": "What is the primary consideration for wireless network security?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To protect against common wireless-based attacks such as eavesdropping and man-in-the-middle attacks"
+      ],
+      "answer": "To protect against common wireless-based attacks such as eavesdropping and man-in-the-middle attacks"
+    }
+  ],
+  "Wireless Security": [
+    {
+      "question": "What is the primary goal of wireless security?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure wireless communication and authentication services"
+      ],
+      "answer": "To provide secure wireless communication and authentication services"
+    }
+  ],
+  "Mobile Device Security": [
+    {
+      "question": "What is the primary consideration for mobile device security?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To protect against common mobile-based attacks such as malware and unauthorized access"
+      ],
+      "answer": "To protect against common mobile-based attacks such as malware and unauthorized access"
+    }
+  ],
+  "IEEE 802.11 Wireless LAN": [
+    {
+      "question": "What is the primary standard for wireless local area networks?",
+      "options": [
+        "IEEE 802.11a",
+        "IEEE 802.11b",
+        "IEEE 802.11g",
+        "IEEE 802.11ac"
+      ],
+      "answer": "IEEE 802.11ac"
+    }
+  ],
+  "IEEE 802.11i Wireless LAN Security": [
+    {
+      "question": "What is the primary security standard for wireless local area networks?",
+      "options": [
+        "IEEE 802.11i",
+        "IEEE 802.11k",
+        "IEEE 802.11n",
+        "IEEE 802.11ac"
+      ],
+      "answer": "IEEE 802.11i"
+    }
+  ],
+  "E-Mail Security": [
+    {
+      "question": "What is the primary consideration for e-mail security?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To protect against common e-mail-based attacks such as phishing and spam"
+      ],
+      "answer": "To protect against common e-mail-based attacks such as phishing and spam"
+    }
+  ],
+  "Pretty Good Privacy": [
+    {
+      "question": "What is the primary function of the Pretty Good Privacy (PGP) protocol?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure e-mail encryption and authentication services"
+      ],
+      "answer": "To provide secure e-mail encryption and authentication services"
+    }
+  ],
+  "S/MIME IP Security: IP Security Overview": [
+    {
+      "question": "What is the primary function of the S/MIME protocol?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure e-mail encryption and authentication services"
+      ],
+      "answer": "To provide secure e-mail encryption and authentication services"
+    }
+  ],
+  "IP Security Architecture": [
+    {
+      "question": "What is the primary goal of IP security architecture?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure end-to-end encryption and authentication services"
+      ],
+      "answer": "To provide secure end-to-end encryption and authentication services"
+    }
+  ],
+  "Authentication Header": [
+    {
+      "question": "What is the primary function of the authentication header?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure authentication and integrity services"
+      ],
+      "answer": "To provide secure authentication and integrity services"
+    }
+  ],
+  "Encapsulating Security Payload": [
+    {
+      "question": "What is the primary function of the encapsulating security payload?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure end-to-end encryption services"
+      ],
+      "answer": "To provide secure end-to-end encryption services"
+    }
+  ],
+  "Combining Security Associations": [
+    {
+      "question": "What is the primary goal of combining security associations?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure end-to-end encryption and authentication services"
+      ],
+      "answer": "To provide secure end-to-end encryption and authentication services"
+    }
+  ],
+  "Internet Key Exchange": [
+    {
+      "question": "What is the primary function of the internet key exchange?",
+      "options": [
+        "To encrypt data",
+        "To decrypt data",
+        "To ensure the confidentiality of data",
+        "To provide secure key exchange and authentication services"
+      ],
+      "answer": "To provide secure key exchange and authentication services"
+    }
+  ],
+  "Case Studies on Cryptography and Security": [
+    {
+      "question": "What is the primary goal of case studies on cryptography and security?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide real-world examples of cryptography and security applications"
+      ],
+      "answer": "To provide real-world examples of cryptography and security applications"
+    }
+  ],
+  "Secure Multiparty Calculation": [
+    {
+      "question": "What is the primary goal of secure multiparty calculation?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure and private calculation services"
+      ],
+      "answer": "To provide secure and private calculation services"
+    }
+  ],
+  "Virtual Elections, Single Sign-on": [
+    {
+      "question": "What is the primary goal of virtual elections and single sign-on?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure and private voting and authentication services"
+      ],
+      "answer": "To provide secure and private voting and authentication services"
+    }
+  ],
+  "Secure Inter-branch Payment Transactions": [
+    {
+      "question": "What is the primary goal of secure inter-branch payment transactions?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure and private payment services"
+      ],
+      "answer": "To provide secure and private payment services"
+    }
+  ],
+  "Cross-site Scripting Vulnerability": [
+    {
+      "question": "What is the primary goal of cross-site scripting vulnerability?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To exploit vulnerabilities in web applications and steal sensitive information"
+      ],
+      "answer": "To exploit vulnerabilities in web applications and steal sensitive information"
+    }
+  ],
+  "Virtual Elections, Single": [
+    {
+      "question": "What is the primary goal of virtual elections and single sign-on?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure and private voting and authentication services"
+      ],
+      "answer": "To provide secure and private voting and authentication services"
+    }
+  ],
+  "sign on": [
+    {
+      "question": "What is the primary goal of single sign-on?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To provide secure and private authentication services"
+      ],
+      "answer": "To provide secure and private authentication services"
+    }
+  ],
+  "Cross site Scripting Vulnerability": [
+    {
+      "question": "What is the primary goal of cross-site scripting vulnerability?",
+      "options": [
+        "To ensure the confidentiality of data",
+        "To ensure the integrity of data",
+        "To ensure the availability of data",
+        "To exploit vulnerabilities in web applications and steal sensitive information"
+      ],
+      "answer": "To exploit vulnerabilities in web applications and steal sensitive information"
+    }
+  ]
+}

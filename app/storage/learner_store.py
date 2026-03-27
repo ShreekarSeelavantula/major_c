@@ -104,3 +104,22 @@ def update_topic_states(user_id: str, topic_scores: dict):
 
     save_learner_state(user_id, state)
     return state
+
+
+# --------------------------------------------------
+# MARK UNIT AS TESTED  (called after micro test)
+# --------------------------------------------------
+def mark_unit_as_tested(user_id: str, unit_number: int):
+    """
+    Record that a unit has been properly tested via micro test.
+    This replaces the self-rating flag for that unit.
+    """
+    state = load_learner_state(user_id) or {}
+
+    tested_units = state.get("tested_units", [])
+
+    if unit_number not in tested_units:
+        tested_units.append(unit_number)
+
+    state["tested_units"] = tested_units
+    save_learner_state(user_id, state)

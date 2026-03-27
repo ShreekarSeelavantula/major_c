@@ -104,11 +104,14 @@ def update_learner_state(
 
     if expected > 0:
         ratio = actual / expected
+        new_speed = 0.8 * updated_state["learning_speed"] + 0.2 * ratio
+
+        # ⭐ FIX: clamp learning_speed so the plan never becomes
+        # absurdly conservative. Floor = 0.7, Ceiling = 1.5
         updated_state["learning_speed"] = round(
-            0.8 * updated_state["learning_speed"] + 0.2 * ratio,
+            max(0.7, min(1.5, new_speed)),
             2
         )
-
     # -----------------------------------
     # 5. CONSISTENCY UPDATE
     # -----------------------------------

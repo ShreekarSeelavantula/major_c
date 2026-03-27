@@ -17,22 +17,22 @@
       "last_updated": 1773593501.1767662
     },
     "Need and Importance of Organizational Behavior": {
-      "familiarity": 0.037,
-      "confidence": 0.062,
-      "retention": 0.987,
-      "attempts": 14,
+      "familiarity": 0.015,
+      "confidence": 0.043,
+      "retention": 0.0,
+      "attempts": 15,
       "revision_due": true,
-      "last_updated": 1773593501.17677,
+      "last_updated": 1774584649.3034823,
       "last_studied": "2026-03-15"
     },
     "Nature and Scope of Organizational Behavior": {
-      "familiarity": 0.031,
-      "confidence": 0.055,
-      "retention": 0.991,
-      "attempts": 15,
-      "revision_due": true,
+      "familiarity": 0.056,
+      "confidence": 0.056,
+      "retention": 1.0,
+      "attempts": 16,
+      "revision_due": false,
       "last_updated": 1773593501.1767752,
-      "last_studied": "2026-03-15"
+      "last_studied": "2026-03-27"
     },
     "Framework": {
       "familiarity": 0.929,
@@ -51,18 +51,19 @@
       "last_updated": 1773593501.1767595
     },
     "Individual Behavior": {
-      "familiarity": 0.07500000000000001,
-      "confidence": 0.03,
-      "retention": 1.0,
-      "attempts": 1,
+      "familiarity": 0.03,
+      "confidence": 0.021,
+      "retention": 0.0,
+      "attempts": 2,
       "last_studied": "2026-03-15",
-      "revision_due": false,
-      "complexity": "Easy"
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774584649.3034902
     },
     "Personality Types": {
       "familiarity": 0.63,
       "confidence": 0.321,
-      "retention": 1.0,
+      "retention": 0.0,
       "attempts": 2,
       "last_studied": "2026-03-15",
       "revision_due": false,
@@ -72,7 +73,7 @@
     "Factors Influencing Personality": {
       "familiarity": 0.613,
       "confidence": 0.321,
-      "retention": 1.0,
+      "retention": 0.0,
       "attempts": 2,
       "last_studied": "2026-03-15",
       "revision_due": false,
@@ -130,11 +131,11 @@
       "last_updated": 1773587170.5667527
     },
     "Types": {
-      "familiarity": 0.038000000000000006,
-      "confidence": 0.03,
+      "familiarity": 0.063,
+      "confidence": 0.06,
       "retention": 1.0,
-      "attempts": 1,
-      "last_studied": "2026-03-15",
+      "attempts": 2,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium"
     },
@@ -149,13 +150,14 @@
       "last_updated": 1773588360.9866266
     },
     "Intervention": {
-      "familiarity": 0.038000000000000006,
-      "confidence": 0.03,
+      "familiarity": 0.74,
+      "confidence": 0.351,
       "retention": 1.0,
-      "attempts": 1,
-      "last_studied": "2026-03-15",
+      "attempts": 3,
+      "last_studied": "2026-03-27",
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1774584649.3034759
     },
     "Emotions": {
       "familiarity": 0.6,
@@ -198,39 +200,40 @@
       "last_updated": 1773586032.755135
     },
     "Intelligence": {
-      "familiarity": 0.05,
-      "confidence": 0.03,
+      "familiarity": 0.045,
+      "confidence": 0.045,
       "retention": 1.0,
-      "attempts": 1,
-      "last_studied": "2026-03-15",
+      "attempts": 3,
+      "last_studied": "2026-03-27",
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1774584649.3034856
     },
     "Theories": {
-      "familiarity": 0.07500000000000001,
-      "confidence": 0.055,
+      "familiarity": 0.15000000000000002,
+      "confidence": 0.08499999999999999,
       "retention": 1.0,
-      "attempts": 2,
-      "last_studied": "2026-03-15",
+      "attempts": 3,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium"
     },
     "Attitudes": {
-      "familiarity": 0.07500000000000001,
-      "confidence": 0.055,
+      "familiarity": 0.15000000000000002,
+      "confidence": 0.08499999999999999,
       "retention": 1.0,
-      "attempts": 4,
-      "last_studied": "2026-03-15",
+      "attempts": 5,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium",
       "last_updated": 1773588360.9866238
     },
     "Characteristics and Components of Formation": {
-      "familiarity": 0.07500000000000001,
-      "confidence": 0.055,
+      "familiarity": 0.17500000000000002,
+      "confidence": 0.08499999999999999,
       "retention": 1.0,
-      "attempts": 4,
-      "last_studied": "2026-03-15",
+      "attempts": 5,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium",
       "last_updated": 1773588360.9866357
@@ -248,7 +251,7 @@
     "Importance and Factors Influencing Perception": {
       "familiarity": 0.613,
       "confidence": 0.321,
-      "retention": 1.0,
+      "retention": 0.0,
       "attempts": 2,
       "last_studied": "2026-03-15",
       "revision_due": false,
@@ -258,7 +261,7 @@
     "Interpersonal Perception and Impression Management": {
       "familiarity": 0.613,
       "confidence": 0.321,
-      "retention": 1.0,
+      "retention": 0.0,
       "attempts": 2,
       "last_studied": "2026-03-15",
       "revision_due": false,
@@ -276,13 +279,14 @@
       "last_updated": 1773586032.7559595
     },
     "Types of Motivation": {
-      "familiarity": 0.067,
-      "confidence": 0.03,
-      "retention": 1.0,
-      "attempts": 1,
+      "familiarity": 0.627,
+      "confidence": 0.321,
+      "retention": 0.0,
+      "attempts": 2,
       "last_studied": "2026-03-15",
       "revision_due": false,
-      "complexity": "Easy"
+      "complexity": "Easy",
+      "last_updated": 1774584649.3034778
     },
     "Effects on Work Behavior": {
       "familiarity": 0.6,
@@ -305,14 +309,14 @@
       "last_updated": 1773585916.6738093
     },
     "Organization Structure and Formation": {
-      "familiarity": 0.07500000000000001,
-      "confidence": 0.03,
+      "familiarity": 0.055,
+      "confidence": 0.051000000000000004,
       "retention": 1.0,
-      "attempts": 2,
-      "last_studied": "2026-03-15",
+      "attempts": 4,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium",
-      "last_updated": 1773585916.673802
+      "last_updated": 1774584649.3034923
     },
     "Groups in Organizations": {
       "familiarity": 0.6,
@@ -337,7 +341,7 @@
     "Emergence of Informal Leaders and Working Norms": {
       "familiarity": 0.067,
       "confidence": 0.03,
-      "retention": 1.0,
+      "retention": 0.0,
       "attempts": 1,
       "last_studied": "2026-03-15",
       "revision_due": false,
@@ -346,7 +350,7 @@
     "Group Decision Making Techniques": {
       "familiarity": 0.667,
       "confidence": 0.32999999999999996,
-      "retention": 1.0,
+      "retention": 0.0,
       "attempts": 2,
       "last_studied": "2026-03-15",
       "revision_due": false,
@@ -374,13 +378,14 @@
       "last_updated": 1773587170.566748
     },
     "Leadership and Power": {
-      "familiarity": 0.05,
-      "confidence": 0.03,
+      "familiarity": 0.12000000000000001,
+      "confidence": 0.051000000000000004,
       "retention": 1.0,
-      "attempts": 1,
-      "last_studied": "2026-03-15",
+      "attempts": 3,
+      "last_studied": "2026-03-27",
       "revision_due": false,
-      "complexity": "Medium"
+      "complexity": "Medium",
+      "last_updated": 1774584649.3034842
     },
     "Meaning and Importance of Leadership": {
       "familiarity": 0.6,
@@ -393,11 +398,11 @@
       "last_updated": 1773586032.7551372
     },
     "Leadership Styles": {
-      "familiarity": 0.05,
-      "confidence": 0.03,
+      "familiarity": 0.1,
+      "confidence": 0.06,
       "retention": 1.0,
-      "attempts": 1,
-      "last_studied": "2026-03-15",
+      "attempts": 2,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium"
     },
@@ -412,11 +417,11 @@
       "last_updated": 1773587170.5667503
     },
     "Leaders vs Managers": {
-      "familiarity": 0.05,
-      "confidence": 0.03,
+      "familiarity": 0.1,
+      "confidence": 0.06,
       "retention": 1.0,
-      "attempts": 1,
-      "last_studied": "2026-03-15",
+      "attempts": 2,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium"
     },
@@ -451,11 +456,11 @@
       "last_updated": 1773585916.6737976
     },
     "Organizational Culture and Climate": {
-      "familiarity": 0.05,
-      "confidence": 0.03,
+      "familiarity": 0.125,
+      "confidence": 0.06,
       "retention": 1.0,
-      "attempts": 1,
-      "last_studied": "2026-03-15",
+      "attempts": 2,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium"
     },
@@ -490,139 +495,139 @@
       "last_updated": 1773587170.566755
     },
     "Principles of Security": {
-      "familiarity": 1.0,
-      "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
-      "revision_due": false,
-      "last_updated": 1773593023.2116556
+      "familiarity": 0.4,
+      "confidence": 0.7,
+      "retention": 0.177,
+      "attempts": 3,
+      "revision_due": true,
+      "last_updated": 1774589194.0341809
     },
     "The Need for Security": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "familiarity": 0.24,
+      "confidence": 0.21,
+      "retention": 0.177,
+      "attempts": 4,
       "revision_due": true,
-      "last_updated": 1773593023.21163
+      "last_updated": 1774589194.0341856
     },
     "Substitution Techniques": {
-      "familiarity": 1.0,
-      "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
-      "revision_due": false,
-      "last_updated": 1773593023.2116537
+      "familiarity": 0.4,
+      "confidence": 0.7,
+      "retention": 0.177,
+      "attempts": 3,
+      "revision_due": true,
+      "last_updated": 1774589194.0341685
     },
     "Introduction": {
-      "familiarity": 0.0,
-      "confidence": 0.0,
-      "retention": 0.998,
-      "attempts": 2,
-      "revision_due": true,
-      "last_updated": 1773593023.2116373
+      "familiarity": 0.84,
+      "confidence": 0.51,
+      "retention": 0.177,
+      "attempts": 4,
+      "revision_due": false,
+      "last_updated": 1774589194.034188
     },
     "Security Approaches": {
       "familiarity": 1.0,
       "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "retention": 0.177,
+      "attempts": 3,
       "revision_due": false,
-      "last_updated": 1773593023.21165
+      "last_updated": 1774589194.034202
     },
     "Security Concepts": {
       "familiarity": 1.0,
       "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "retention": 0.177,
+      "attempts": 3,
       "revision_due": false,
-      "last_updated": 1773593023.2116516
+      "last_updated": 1774589194.0341647
     },
     "Security Mechanisms": {
       "familiarity": 1.0,
       "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "retention": 0.177,
+      "attempts": 3,
       "revision_due": false,
-      "last_updated": 1773593023.2116475
+      "last_updated": 1774589194.0341904
     },
     "Encryption and Decryption Techniques": {
-      "familiarity": 1.0,
-      "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
-      "revision_due": false,
-      "last_updated": 1773593023.2116435
+      "familiarity": 0.4,
+      "confidence": 0.7,
+      "retention": 0.177,
+      "attempts": 3,
+      "revision_due": true,
+      "last_updated": 1774589194.0341578
     },
     "Cryptography Concepts and Techniques": {
-      "familiarity": 1.0,
-      "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
-      "revision_due": false,
-      "last_updated": 1773593023.2116394
+      "familiarity": 0.4,
+      "confidence": 0.7,
+      "retention": 0.177,
+      "attempts": 3,
+      "revision_due": true,
+      "last_updated": 1774589194.0341763
     },
     "Symmetric Key Ciphers": {
       "familiarity": 1.0,
       "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "retention": 0.177,
+      "attempts": 3,
       "revision_due": false,
-      "last_updated": 1773593023.21162
+      "last_updated": 1774589194.0341833
     },
     "Block Cipher Principles": {
       "familiarity": 1.0,
       "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "retention": 0.177,
+      "attempts": 3,
       "revision_due": false,
-      "last_updated": 1773593023.2116327
+      "last_updated": 1774589194.034171
     },
     "Plain Text and Cipher Text": {
       "familiarity": 0.0,
       "confidence": 0.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "retention": 0.177,
+      "attempts": 3,
       "revision_due": true,
-      "last_updated": 1773593023.2116454
+      "last_updated": 1774589194.0341785
     },
     "Symmetric and Asymmetric Key Cryptography, Steganography, Key Range and Key Size, Possible Types of Attacks": {
       "familiarity": 1.0,
       "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "retention": 0.177,
+      "attempts": 3,
       "revision_due": false,
-      "last_updated": 1773593023.2116268
+      "last_updated": 1774589194.0341926
     },
     "A Model for Network Security": {
       "familiarity": 1.0,
       "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
+      "retention": 0.177,
+      "attempts": 3,
       "revision_due": false,
-      "last_updated": 1773593023.2116349
+      "last_updated": 1774589194.0341947
     },
     "Types of Security Attacks": {
-      "familiarity": 1.0,
-      "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
-      "revision_due": false,
-      "last_updated": 1773593023.2116578
+      "familiarity": 0.4,
+      "confidence": 0.7,
+      "retention": 0.177,
+      "attempts": 3,
+      "revision_due": true,
+      "last_updated": 1774589194.034197
     },
     "Security Services": {
-      "familiarity": 1.0,
-      "confidence": 1.0,
-      "retention": 0.998,
-      "attempts": 2,
-      "revision_due": false,
-      "last_updated": 1773593023.2116413
+      "familiarity": 0.4,
+      "confidence": 0.7,
+      "retention": 0.177,
+      "attempts": 3,
+      "revision_due": true,
+      "last_updated": 1774589194.0341737
     },
     "Power Centers and Power Politics": {
-      "familiarity": 0.05,
-      "confidence": 0.03,
+      "familiarity": 0.07500000000000001,
+      "confidence": 0.06,
       "retention": 1.0,
-      "attempts": 1,
-      "last_studied": "2026-03-15",
+      "attempts": 2,
+      "last_studied": "2026-03-27",
       "revision_due": false,
       "complexity": "Medium"
     },
@@ -630,14 +635,547 @@
       "familiarity": 0.0,
       "confidence": 0.0,
       "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774584649.303461
+    },
+    "Introduction to Cryptography": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774589194.0341983
+    },
+    "Cryptographic Hash Functions": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821359
+    },
+    "Block Cipher Operation": {
+      "familiarity": 1.0,
+      "confidence": 1.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821397
+    },
+    "Stream Ciphers": {
+      "familiarity": 1.0,
+      "confidence": 1.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821414
+    },
+    "DES": {
+      "familiarity": 1.0,
+      "confidence": 1.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821428
+    },
+    "RC5": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.382144
+    },
+    "Blowfish": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821452
+    },
+    "Asymmetric Key Ciphers": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821464
+    },
+    "Cryptography Overview": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821473
+    },
+    "AES": {
+      "familiarity": 1.0,
+      "confidence": 1.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821485
+    },
+    "Principles of Public Key Cryptosystems": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "revision_due": false,
+      "last_updated": 1774591937.3821497
+    },
+    "IDEA": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
       "attempts": 0,
       "last_studied": null,
       "revision_due": false,
       "complexity": "Medium"
+    },
+    "RC4": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "RSA Algorithm, Elgamal": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Diffie-Hellman Key Exchange": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Knapsack Algorithm": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Message Authentication": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Secure Hash Algorithm (SHA-512)": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Message Authentication Codes": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774592426.4884083
+    },
+    "Authentication Requirements": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774592426.4884126
+    },
+    "HMAC": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774592426.488398
+    },
+    "CMAC": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Digital Signatures": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592426.4884112
+    },
+    "Elgamal Digital Signature Scheme": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Key Management and Distribution": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592426.4884098
+    },
+    "Symmetric Key Distribution Using Symmetric & Asymmetric": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Encryption and Distribution": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Distribution of Public Keys": {
+      "familiarity": 0.6,
+      "confidence": 0.3,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium",
+      "last_updated": 1774592426.488417
+    },
+    "Kerberos": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592426.488405
+    },
+    "X.509 Authentication Service": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Public Key Infrastructure": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592426.488407
+    },
+    "Transport-level Security": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592426.4884026
+    },
+    "Web Security Considerations": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592426.4884143
+    },
+    "Secure Socket Layer and Transport Layer Security": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Security and HTTPS": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Secure Shell (SSH)": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774592459.378838
+    },
+    "Wireless Network Security": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774592459.3788428
+    },
+    "Wireless Security": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774592459.3788486
+    },
+    "Mobile Device Security": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592459.37885
+    },
+    "IEEE 802.11 Wireless LAN": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592459.3788445
+    },
+    "IEEE 802.11i Wireless LAN Security": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592459.3788471
+    },
+    "E-Mail Security": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592459.3788352
+    },
+    "Pretty Good Privacy": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592459.3788457
+    },
+    "S/MIME IP Security: IP Security Overview": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592459.3788395
+    },
+    "IP Security Architecture": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592459.3788414
+    },
+    "Authentication Header": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774592495.0807495
+    },
+    "Encapsulating Security Payload": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Easy",
+      "last_updated": 1774592495.0807543
+    },
+    "Combining Security Associations": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Easy"
+    },
+    "Internet Key Exchange": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592495.0807588
+    },
+    "Case Studies on Cryptography and Security": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592495.0807455
+    },
+    "Secure Multiparty Calculation": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592495.0807526
+    },
+    "Virtual Elections, Single Sign-on": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 0,
+      "last_studied": null,
+      "revision_due": false,
+      "complexity": "Medium"
+    },
+    "Secure Inter-branch Payment Transactions": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592495.080748
+    },
+    "Cross-site Scripting Vulnerability": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592495.08076
+    },
+    "Virtual Elections, Single": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592495.080756
+    },
+    "sign on": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592495.0807512
+    },
+    "Cross site Scripting Vulnerability.": {
+      "familiarity": 0.0,
+      "confidence": 0.0,
+      "retention": 1.0,
+      "attempts": 1,
+      "last_studied": null,
+      "revision_due": true,
+      "complexity": "Medium",
+      "last_updated": 1774592495.0807576
     }
   },
-  "learning_speed": 0.51,
-  "consistency": 0.6399999999999997,
+  "learning_speed": 0.75,
+  "consistency": 0.6699999999999998,
   "history": [
     {
       "date": "2026-03-15",
@@ -733,6 +1271,72 @@
       "date": "2026-03-15",
       "actual_hours": 0.5,
       "expected_hours": 0.95
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 2.17
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.25,
+      "expected_hours": 1.75
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.25,
+      "expected_hours": 1.57
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 1.0,
+      "expected_hours": 1.47
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.51
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.5,
+      "expected_hours": 1.41
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.25,
+      "expected_hours": 1.3
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.75,
+      "expected_hours": 1.2
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.75,
+      "expected_hours": 1.24
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 0.75,
+      "expected_hours": 1.28
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 1.0,
+      "expected_hours": 1.32
+    },
+    {
+      "date": "2026-03-27",
+      "actual_hours": 1.25,
+      "expected_hours": 1.38
     }
+  ],
+  "tested_units": [
+    2,
+    3,
+    4,
+    5
   ]
 }

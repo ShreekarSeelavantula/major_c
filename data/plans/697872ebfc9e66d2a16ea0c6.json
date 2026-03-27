@@ -6,8 +6,8 @@
       "1": [
         {
           "type": "study",
-          "topic": "Determinants and Measurements of Job Satisfaction",
-          "hours": 0.98,
+          "topic": "Plain Text and Cipher Text",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -18,8 +18,8 @@
       "2": [
         {
           "type": "study",
-          "topic": "Determinants and Measurements of Job Satisfaction",
-          "hours": 0.98,
+          "topic": "Plain Text and Cipher Text",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -30,8 +30,14 @@
       "3": [
         {
           "type": "study",
-          "topic": "Determinants and Measurements of Job Satisfaction",
-          "hours": 0.98,
+          "topic": "Plain Text and Cipher Text",
+          "hours": 0.58,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "Principles of Security",
+          "hours": 0.93,
           "complexity": "Medium"
         },
         {
@@ -42,8 +48,8 @@
       "4": [
         {
           "type": "study",
-          "topic": "Determinants and Measurements of Job Satisfaction",
-          "hours": 0.59,
+          "topic": "Principles of Security",
+          "hours": 0.91,
           "complexity": "Medium"
         },
         {
@@ -54,8 +60,8 @@
       "5": [
         {
           "type": "study",
-          "topic": "Determinants and Measurements of Job Satisfaction",
-          "hours": 0.98,
+          "topic": "Principles of Security",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -66,8 +72,14 @@
       "6": [
         {
           "type": "study",
-          "topic": "Determinants and Measurements of Job Satisfaction",
-          "hours": 0.98,
+          "topic": "Principles of Security",
+          "hours": 0.25,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "Types of Security Attacks",
+          "hours": 1.26,
           "complexity": "Medium"
         },
         {
@@ -78,8 +90,8 @@
       "7": [
         {
           "type": "study",
-          "topic": "Determinants and Measurements of Job Satisfaction",
-          "hours": 0.98,
+          "topic": "Types of Security Attacks",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -90,8 +102,14 @@
       "8": [
         {
           "type": "study",
-          "topic": "Determinants and Measurements of Job Satisfaction",
-          "hours": 0.59,
+          "topic": "Types of Security Attacks",
+          "hours": 0.83,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "Security Services",
+          "hours": 3.6,
           "complexity": "Medium"
         },
         {
@@ -102,8 +120,8 @@
       "9": [
         {
           "type": "study",
-          "topic": "Nature and Scope of Organizational Behavior",
-          "hours": 0.98,
+          "topic": "Cryptography Concepts and Techniques",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -114,8 +132,8 @@
       "10": [
         {
           "type": "study",
-          "topic": "Nature and Scope of Organizational Behavior",
-          "hours": 0.98,
+          "topic": "Cryptography Concepts and Techniques",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -126,8 +144,14 @@
       "11": [
         {
           "type": "study",
-          "topic": "Nature and Scope of Organizational Behavior",
-          "hours": 0.98,
+          "topic": "Cryptography Concepts and Techniques",
+          "hours": 0.58,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "Substitution Techniques",
+          "hours": 0.93,
           "complexity": "Medium"
         },
         {
@@ -138,8 +162,8 @@
       "12": [
         {
           "type": "study",
-          "topic": "Nature and Scope of Organizational Behavior",
-          "hours": 0.59,
+          "topic": "Substitution Techniques",
+          "hours": 0.91,
           "complexity": "Medium"
         },
         {
@@ -150,8 +174,8 @@
       "13": [
         {
           "type": "study",
-          "topic": "Nature and Scope of Organizational Behavior",
-          "hours": 0.98,
+          "topic": "Substitution Techniques",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -162,14 +186,14 @@
       "14": [
         {
           "type": "study",
-          "topic": "Nature and Scope of Organizational Behavior",
-          "hours": 0.78,
+          "topic": "Substitution Techniques",
+          "hours": 0.25,
           "complexity": "Medium"
         },
         {
           "type": "study",
-          "topic": "Types",
-          "hours": 0.2,
+          "topic": "Encryption and Decryption Techniques",
+          "hours": 1.26,
           "complexity": "Medium"
         },
         {
@@ -180,8 +204,8 @@
       "15": [
         {
           "type": "study",
-          "topic": "Types",
-          "hours": 0.98,
+          "topic": "Encryption and Decryption Techniques",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -192,8 +216,14 @@
       "16": [
         {
           "type": "study",
-          "topic": "Types",
-          "hours": 0.59,
+          "topic": "Encryption and Decryption Techniques",
+          "hours": 0.83,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "Introduction to Cryptography",
+          "hours": 3.6,
           "complexity": "Medium"
         },
         {
@@ -204,8 +234,8 @@
       "17": [
         {
           "type": "study",
-          "topic": "Types",
-          "hours": 0.98,
+          "topic": "RC5",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -216,8 +246,8 @@
       "18": [
         {
           "type": "study",
-          "topic": "Types",
-          "hours": 0.98,
+          "topic": "RC5",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -228,8 +258,14 @@
       "19": [
         {
           "type": "study",
-          "topic": "Types",
-          "hours": 0.98,
+          "topic": "RC5",
+          "hours": 0.58,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "IDEA",
+          "hours": 0.93,
           "complexity": "Medium"
         },
         {
@@ -240,14 +276,8 @@
       "20": [
         {
           "type": "study",
-          "topic": "Types",
-          "hours": 0.58,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Intervention",
-          "hours": 0.01,
+          "topic": "IDEA",
+          "hours": 0.91,
           "complexity": "Medium"
         },
         {
@@ -258,8 +288,8 @@
       "21": [
         {
           "type": "study",
-          "topic": "Intervention",
-          "hours": 0.98,
+          "topic": "IDEA",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -270,8 +300,14 @@
       "22": [
         {
           "type": "study",
-          "topic": "Intervention",
-          "hours": 0.98,
+          "topic": "IDEA",
+          "hours": 0.25,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "RC4",
+          "hours": 1.26,
           "complexity": "Medium"
         },
         {
@@ -282,8 +318,8 @@
       "23": [
         {
           "type": "study",
-          "topic": "Intervention",
-          "hours": 0.98,
+          "topic": "RC4",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -294,8 +330,14 @@
       "24": [
         {
           "type": "study",
-          "topic": "Intervention",
-          "hours": 0.59,
+          "topic": "RC4",
+          "hours": 0.83,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "Asymmetric Key Ciphers",
+          "hours": 3.6,
           "complexity": "Medium"
         },
         {
@@ -306,8 +348,8 @@
       "25": [
         {
           "type": "study",
-          "topic": "Intervention",
-          "hours": 0.98,
+          "topic": "Principles of Public Key Cryptosystems",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -318,14 +360,8 @@
       "26": [
         {
           "type": "study",
-          "topic": "Intervention",
-          "hours": 0.77,
-          "complexity": "Medium"
-        },
-        {
-          "type": "study",
-          "topic": "Intelligence",
-          "hours": 0.21,
+          "topic": "Principles of Public Key Cryptosystems",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -336,8 +372,14 @@
       "27": [
         {
           "type": "study",
-          "topic": "Intelligence",
-          "hours": 0.98,
+          "topic": "Principles of Public Key Cryptosystems",
+          "hours": 0.58,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "RSA Algorithm, Elgamal",
+          "hours": 0.93,
           "complexity": "Medium"
         },
         {
@@ -348,8 +390,8 @@
       "28": [
         {
           "type": "study",
-          "topic": "Intelligence",
-          "hours": 0.59,
+          "topic": "RSA Algorithm, Elgamal",
+          "hours": 0.91,
           "complexity": "Medium"
         },
         {
@@ -360,8 +402,8 @@
       "29": [
         {
           "type": "study",
-          "topic": "Intelligence",
-          "hours": 0.98,
+          "topic": "RSA Algorithm, Elgamal",
+          "hours": 1.51,
           "complexity": "Medium"
         },
         {
@@ -372,8 +414,14 @@
       "30": [
         {
           "type": "study",
-          "topic": "Intelligence",
-          "hours": 0.98,
+          "topic": "RSA Algorithm, Elgamal",
+          "hours": 0.25,
+          "complexity": "Medium"
+        },
+        {
+          "type": "study",
+          "topic": "Cryptography Overview",
+          "hours": 1.26,
           "complexity": "Medium"
         },
         {
@@ -382,7 +430,7 @@
         }
       ]
     },
-    "confidence": 0.715,
+    "confidence": 0.52,
     "profile_used": {
       "topic_order": "hard_first",
       "year_pace_multiplier": 0.9
@@ -390,5 +438,5 @@
   },
   "hours_per_day": 3.0,
   "deadline_days": 30,
-  "created_at": "2026-03-15T17:10:24.965325"
+  "created_at": "2026-03-27T06:21:35.115699"
 }

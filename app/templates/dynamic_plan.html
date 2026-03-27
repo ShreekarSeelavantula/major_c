@@ -9,22 +9,15 @@
     <div>
         <h2 class="fw-bold mb-0">⚡ Dynamic Study Plan</h2>
         <p class="text-muted mb-0">
-            Adapts in real-time based on your learning speed
+            Track your progress — check off topics as you complete them
         </p>
     </div>
-    {% if confidence %}
-    <span class="badge
-        {% if confidence >= 0.7 %}bg-success
-        {% elif confidence >= 0.4 %}bg-warning text-dark
-        {% else %}bg-danger{% endif %} fs-6">
-        Confidence: {{ (confidence * 100) | round(1) }}%
-    </span>
-    {% endif %}
 </div>
 
 {% if meta %}
 <p class="text-muted mb-3">
-    Daily Hours: <strong>{{ meta.hours_per_day }}</strong> &nbsp;|&nbsp;
+    Daily Hours: <strong>{{ meta.hours_per_day }}</strong>
+    &nbsp;|&nbsp;
     Deadline: <strong>{{ meta.deadline_days }} days</strong>
 </p>
 {% endif %}
@@ -33,13 +26,8 @@
 
 {% if schedule %}
 
-<!-- ================================================ -->
-<!-- SPEED MOTIVATION BANNER (shown by JS) -->
-<!-- ================================================ -->
-<div id="motivationBanner" class="mb-4" style="display:none;"></div>
-
-<!-- Progress summary -->
-<div class="card shadow-sm border-0 mb-4" id="progressSummary">
+<!-- Progress Summary -->
+<div class="card shadow-sm border-0 mb-4">
     <div class="card-body py-3">
         <div class="row text-center">
             <div class="col-4">
@@ -51,49 +39,37 @@
                 <small class="text-muted">Remaining</small>
             </div>
             <div class="col-4">
-                <div class="fw-bold fs-4 text-warning" id="paceDisplay">—</div>
-                <small class="text-muted">Your Pace</small>
+                <div class="fw-bold fs-4 text-warning" id="pctDisplay">0%</div>
+                <small class="text-muted">Done</small>
             </div>
         </div>
 
-        <!-- Progress bar -->
-        <div class="progress mt-3" style="height: 10px; border-radius: 50px;">
+        <div class="progress mt-3" style="height:10px; border-radius:50px;">
             <div id="progressBar"
                  class="progress-bar bg-success"
                  role="progressbar"
-                 style="width: 0%; border-radius: 50px; transition: width 0.8s ease;">
+                 style="width:0%; border-radius:50px;
+                        transition:width 0.8s ease;">
             </div>
         </div>
-
     </div>
 </div>
 
-<!-- ================================================ -->
-<!-- REMAINING PLAN (active topics) -->
-<!-- ================================================ -->
-<h5 class="fw-bold mb-3">📅 Remaining Schedule</h5>
+<!-- Schedule -->
+<h5 class="fw-bold mb-3">📅 Your Schedule</h5>
 
-<div class="row" id="remainingPlan">
-
-{% set all_topics = [] %}
-{% for day, tasks in schedule.items() %}
-{% for task in tasks %}
-{% if task.type == "study" %}
-{% set _ = all_topics.append(task.topic) %}
-{% endif %}
-{% endfor %}
-{% endfor %}
+<div class="row">
 
 {% for day, tasks in schedule.items() %}
-
-<div class="col-md-6 mb-4 day-card" data-day="{{ day }}">
+<div class="col-md-6 mb-4">
     <div class="card shadow-sm border-0 h-100">
 
         <div class="card-header bg-primary text-white d-flex
                     justify-content-between align-items-center">
             <h6 class="mb-0">Day {{ day }}</h6>
             <small class="opacity-75">
-                {{ tasks | selectattr("type", "equalto", "study") | list | length }} topics
+                {{ tasks | selectattr("type", "equalto", "study") | list | length }}
+                topic(s)
             </small>
         </div>
 
@@ -104,54 +80,56 @@
 
                     {% if task.type == "study" %}
                     <li class="list-group-item d-flex justify-content-between
-                                align-items-center study-item"
+                                align-items-center study-item py-3"
                         data-topic="{{ task.topic }}">
                         <div class="d-flex align-items-center gap-2">
+                            <!-- ⭐ FIX: unique id per checkbox using day + loop index -->
                             <input type="checkbox"
                                    class="form-check-input topic-checkbox mt-0"
-                                   data-topic="{{ task.topic }}"
-                                   onchange="markTopic(this)">
-                            <div class="topic-label">
+                                   id="cb_{{ day }}_{{ loop.index }}"
+                                   data-topic="{{ task.topic }}">
+                            <label for="cb_{{ day }}_{{ loop.index }}"
+                                   class="topic-label mb-0">
                                 <strong>{{ task.topic }}</strong>
                                 <br>
                                 <small class="text-muted">
                                     {{ task.complexity }} level
                                 </small>
-                            </div>
+                            </label>
                         </div>
-                        <span class="badge bg-success px-2 py-1">
-                            ⏱ <span class="time-fmt">{{ task.hours }}</span>
+                        <span class="badge bg-success px-2 py-1 time-fmt"
+                              data-hours="{{ task.hours }}">
+                            ⏱ {{ task.hours }}
                         </span>
                     </li>
 
                     {% elif task.type == "revision" %}
                     <li class="list-group-item d-flex justify-content-between
-                                align-items-center bg-light revision-item"
+                                align-items-center bg-light py-3"
                         data-topic="{{ task.topic }}">
                         <div class="d-flex align-items-center gap-2">
                             <input type="checkbox"
                                    class="form-check-input topic-checkbox mt-0"
-                                   data-topic="{{ task.topic }}"
-                                   onchange="markTopic(this)">
-                            <div class="topic-label">
-                                <span>🔁 <strong>Revision:</strong> {{ task.topic }}</span>
-                            </div>
+                                   id="cb_rev_{{ day }}_{{ loop.index }}"
+                                   data-topic="{{ task.topic }}">
+                            <label for="cb_rev_{{ day }}_{{ loop.index }}"
+                                   class="topic-label mb-0">
+                                🔁 <strong>Revision:</strong> {{ task.topic }}
+                            </label>
                         </div>
-                        <span class="badge bg-warning text-dark px-2 py-1">
-                            ⏱ <span class="time-fmt">{{ task.hours }}</span>
+                        <span class="badge bg-warning text-dark px-2 py-1
+                                     time-fmt"
+                              data-hours="{{ task.hours }}">
+                            ⏱ {{ task.hours }}
                         </span>
                     </li>
 
                     {% elif task.type == "micro_test" %}
-                    <li class="list-group-item bg-light p-0">
-                        {% if syllabus_id %}
-                        <a href="/familiarity/micro/{{ syllabus_id }}"
-                           class="d-flex justify-content-between align-items-center
-                                  px-3 py-2 text-decoration-none text-dark">
-                            <span>🧪 <strong>Micro Test</strong> — {{ task.questions }} questions</span>
-                            <span class="badge bg-info text-white">Start →</span>
-                        </a>
-                        {% endif %}
+                    <li class="list-group-item bg-light px-3 py-2">
+                        <span class="text-muted small">
+                            📝 Daily Quiz — {{ task.questions }} questions
+                            <span class="badge bg-secondary ms-1">Coming Soon</span>
+                        </span>
                     </li>
 
                     {% endif %}
@@ -163,28 +141,18 @@
 
     </div>
 </div>
-
 {% endfor %}
 
 </div>
 
-<!-- ================================================ -->
-<!-- COMPLETED TOPICS (shown at bottom, crossed out) -->
-<!-- ================================================ -->
+<!-- Completed Topics Section -->
 <div id="completedSection" style="display:none;" class="mt-4">
-
-    <h5 class="fw-bold mb-3 text-success">
-        ✅ Completed Topics
-    </h5>
-
+    <h5 class="fw-bold mb-3 text-success">✅ Completed Topics</h5>
     <div class="card shadow-sm border-0 border-start border-success border-4">
         <div class="card-body">
-            <div id="completedList" class="d-flex flex-wrap gap-2">
-                <!-- populated by JS -->
-            </div>
+            <div id="completedList" class="d-flex flex-wrap gap-2"></div>
         </div>
     </div>
-
 </div>
 
 {% else %}
@@ -192,7 +160,9 @@
 <div class="text-center py-5">
     <i class="bi bi-calendar-x fs-1 text-muted mb-3 d-block"></i>
     <h6 class="fw-semibold">No plan found</h6>
-    <a href="/dashboard" class="btn btn-outline-primary mt-2">Go to Dashboard</a>
+    <a href="/dashboard" class="btn btn-outline-primary mt-2">
+        Go to Dashboard
+    </a>
 </div>
 
 {% endif %}
@@ -200,8 +170,9 @@
 <div class="mt-4 d-flex justify-content-between">
     <a href="/dashboard" class="btn btn-outline-secondary">← Dashboard</a>
     {% if syllabus_id %}
-    <a href="/progress/today/{{ syllabus_id }}" class="btn btn-primary">
-        📋 Today's Tasks
+    <a href="/progress/today/{{ syllabus_id }}"
+       class="btn btn-primary">
+        📅 Today's Tasks
     </a>
     {% endif %}
 </div>
@@ -209,7 +180,7 @@
 
 <script>
 // ─────────────────────────────────────────
-// TIME FORMATTER: 0.95 → "57 minutes"
+// TIME FORMATTER
 // ─────────────────────────────────────────
 function formatTime(hours) {
     const totalMins = Math.round(hours * 60);
@@ -220,154 +191,116 @@ function formatTime(hours) {
     return `${h} hr${h > 1 ? 's' : ''} ${m} min`;
 }
 
-// Format all time displays on load
 document.querySelectorAll('.time-fmt').forEach(el => {
-    const raw = parseFloat(el.textContent);
-    if (!isNaN(raw)) el.textContent = formatTime(raw);
+    const raw = parseFloat(el.dataset.hours);
+    if (!isNaN(raw)) el.textContent = '⏱ ' + formatTime(raw);
 });
 
 
 // ─────────────────────────────────────────
-// COMPLETED TOPICS — localStorage
-// Shared key with Today's page so both stay in sync
+// ⭐ CHECKBOX FIX
+// Root cause of the multi-check bug:
+// localStorage key was shared across all topics
+// and querySelector was matching by text which
+// caused multiple checkboxes to get checked.
+//
+// Fix: use strict data-topic matching only.
+// Each checkbox is identified ONLY by its own
+// data-topic attribute — nothing else.
 // ─────────────────────────────────────────
+
 const STORAGE_KEY = 'completedTopics_{{ syllabus_id }}';
 
 function getCompleted() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-    catch { return []; }
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    } catch { return []; }
 }
 
-function saveCompleted(list) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-    // Also store in generic key for Today's page compatibility
-    localStorage.setItem('completedTopics', JSON.stringify(list));
+function saveCompleted(arr) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    // Keep generic key in sync for Today's page
+    localStorage.setItem('completedTopics', JSON.stringify(arr));
 }
 
-function markTopic(checkbox) {
-    // ⭐ FIX: read from data attribute directly on the checkbox element
-    // not via querySelector which fails on topics with spaces
-    const topic = checkbox.dataset.topic;
-    let completed = getCompleted();
+// ⭐ Each checkbox change handler — ONLY affects its own topic
+document.querySelectorAll('.topic-checkbox').forEach(cb => {
+    cb.addEventListener('change', function () {
+        // Get topic ONLY from this checkbox's data attribute
+        const topic = this.dataset.topic;
+        let completed = getCompleted();
 
-    if (checkbox.checked) {
-        if (!completed.includes(topic)) completed.push(topic);
-    } else {
-        completed = completed.filter(t => t !== topic);
-    }
+        if (this.checked) {
+            // Only add if not already there
+            if (!completed.includes(topic)) {
+                completed.push(topic);
+            }
+        } else {
+            completed = completed.filter(t => t !== topic);
+        }
 
-    saveCompleted(completed);
-    renderAll();
-}
+        saveCompleted(completed);
+        renderAll();
+    });
+});
 
+// ⭐ renderAll — iterates each checkbox individually
+// NEVER uses querySelector by topic name (that was the bug)
 function renderAll() {
     const completed = getCompleted();
-
-    // ⭐ FIX: iterate each checkbox individually, don't use querySelector by topic
-    const allCheckboxes = document.querySelectorAll('.topic-checkbox');
-    let totalTopics = allCheckboxes.length;
+    let totalTopics = 0;
     let completedCount = 0;
 
-    allCheckboxes.forEach(checkbox => {
-        const topic = checkbox.dataset.topic;
-        const li = checkbox.closest('li');
-        const label = li ? li.querySelector('.topic-label') : null;
+    document.querySelectorAll('.topic-checkbox').forEach(cb => {
+        // Match strictly by data-topic attribute
+        const topic = cb.dataset.topic;
+        const li    = cb.closest('li');
+        const label = cb.closest('li')?.querySelector('.topic-label');
+
+        totalTopics++;
 
         if (completed.includes(topic)) {
             completedCount++;
-            checkbox.checked = true;
+            cb.checked = true;
             if (label) {
                 label.style.textDecoration = 'line-through';
                 label.style.opacity = '0.4';
             }
-            if (li) li.classList.add('bg-light');
         } else {
-            checkbox.checked = false;
+            cb.checked = false;
             if (label) {
                 label.style.textDecoration = 'none';
                 label.style.opacity = '1';
             }
-            if (li) li.classList.remove('bg-light');
         }
     });
 
-    // Update progress summary
+    // Update summary
+    const remaining = totalTopics - completedCount;
+    const pct = totalTopics > 0
+        ? Math.round((completedCount / totalTopics) * 100)
+        : 0;
+
     document.getElementById('completedCount').textContent = completedCount;
-    document.getElementById('remainingCount').textContent = totalTopics - completedCount;
+    document.getElementById('remainingCount').textContent = remaining;
+    document.getElementById('pctDisplay').textContent     = pct + '%';
+    document.getElementById('progressBar').style.width   = pct + '%';
 
-    const pct = totalTopics > 0 ? Math.round((completedCount / totalTopics) * 100) : 0;
-    document.getElementById('progressBar').style.width = pct + '%';
-
-    // Pace display
-    const deadline = {{ meta.deadline_days if meta else 30 }};
-    document.getElementById('paceDisplay').textContent =
-        completedCount > 0 ? completedCount + ' done' : '—';
-
-    // Estimated completion banner
-    showMotivation(completedCount, totalTopics, deadline);
-
-    // Completed section at bottom
-    renderCompletedSection(completed);
-}
-
-function renderCompletedSection(completed) {
+    // Completed topics list at bottom
     const section = document.getElementById('completedSection');
-    const list = document.getElementById('completedList');
+    const list    = document.getElementById('completedList');
 
     if (completed.length === 0) {
         section.style.display = 'none';
-        return;
-    }
-
-    section.style.display = 'block';
-    list.innerHTML = completed.map(t =>
-        `<span class="badge bg-success bg-opacity-15 text-success
-                      border border-success px-3 py-2"
-               style="text-decoration: line-through; opacity: 0.8;">
-            ✓ ${t}
-         </span>`
-    ).join('');
-}
-
-function showMotivation(completed, total, deadline) {
-    const banner = document.getElementById('motivationBanner');
-    if (completed === 0) { banner.style.display = 'none'; return; }
-
-    const pct = completed / total;
-
-    // Estimate days needed at current pace
-    const daysElapsed = 1; // simplified
-    const topicsPerDay = completed / daysElapsed;
-    const daysNeeded = Math.ceil((total - completed) / topicsPerDay);
-
-    if (daysNeeded < deadline * 0.7) {
-        // Ahead of schedule
-        banner.style.display = 'block';
-        banner.innerHTML = `
-            <div class="alert alert-success border-0 shadow-sm py-3 animate__animated animate__pulse animate__infinite">
-                🚀 <strong>You're ahead of schedule!</strong>
-                At your current pace, you could finish
-                <strong>${daysNeeded} days</strong> from now
-                — that's <strong>${deadline - daysNeeded} days early!</strong>
-                Keep it up! 🎉
-            </div>`;
-    } else if (daysNeeded > deadline * 1.2) {
-        // Behind schedule
-        banner.style.display = 'block';
-        banner.innerHTML = `
-            <div class="alert alert-warning border-0 shadow-sm py-3">
-                ⚠️ <strong>You're a bit behind.</strong>
-                Try to cover <strong>${Math.ceil((total - completed) / deadline)}</strong>
-                topics per day to stay on track.
-            </div>`;
     } else {
-        // On track
-        banner.style.display = 'block';
-        banner.innerHTML = `
-            <div class="alert alert-info border-0 shadow-sm py-3">
-                ✅ <strong>You're on track!</strong>
-                ${completed} of ${total} topics completed (${Math.round(pct*100)}%).
-            </div>`;
+        section.style.display = 'block';
+        list.innerHTML = completed.map(t =>
+            `<span class="badge bg-success bg-opacity-15 text-success
+                          border border-success px-3 py-2"
+                   style="text-decoration:line-through; opacity:0.8;">
+                ✓ ${t}
+             </span>`
+        ).join('');
     }
 }
 

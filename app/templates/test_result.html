@@ -6,15 +6,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold mb-0">📊 Familiarity Test Result</h2>
-    {% if syllabus_id %}
-    <a href="/syllabus/preview/{{ syllabus_id }}" class="btn btn-outline-secondary btn-sm">
-        ← Back to Syllabus
-    </a>
-    {% else %}
     <a href="/dashboard" class="btn btn-outline-secondary btn-sm">
-        ← Dashboard
+        Dashboard
     </a>
-    {% endif %}
 </div>
 
 <!-- Overall score card -->
@@ -40,6 +34,21 @@
             🟢 Strong familiarity. Your plan will fast-track these topics.
         </p>
         {% endif %}
+
+        <!-- ⭐ What happens next — clear explanation for user -->
+        <div class="alert alert-info mt-3 mb-0 py-2">
+            {% if test_type == "initial" %}
+                ℹ️ This was your <strong>Unit-1 diagnostic test</strong>.
+                Next, quickly rate your familiarity with the remaining units
+                so we can generate your personalized study plan.
+            {% elif test_type == "micro" %}
+                ℹ️ This was a <strong>micro test</strong>.
+                Your familiarity scores have been updated and your
+                plan has been regenerated automatically.
+            {% else %}
+                ℹ️ Your familiarity scores have been updated.
+            {% endif %}
+        </div>
     </div>
 </div>
 
@@ -105,28 +114,48 @@
     </div>
 </div>
 
-<!-- Action buttons -->
+<!-- ⭐ ACTION BUTTONS — differ based on test type -->
 <div class="mt-4 d-flex justify-content-between align-items-center">
 
     <a href="/dashboard" class="btn btn-outline-secondary">
-        Dashboard
+        ← Dashboard
     </a>
 
-    {% if syllabus_id %}
+    {% if test_type == "initial" and syllabus_id %}
+    <!-- Initial test → must go to self-rating next -->
     <a href="/familiarity/self-rating/{{ syllabus_id }}"
-       class="btn btn-primary btn-lg">
-        Rate Remaining Units →
+       class="btn btn-primary btn-lg px-5">
+        Continue → Rate Remaining Units
+    </a>
+
+    {% elif test_type == "micro" and syllabus_id %}
+    <!-- Micro test → go back to today or view updated plan -->
+    <div class="d-flex gap-2">
+        <a href="/plan/latest"
+           class="btn btn-outline-primary">
+            View Updated Plan
+        </a>
+        <a href="/progress/today/{{ syllabus_id }}"
+           class="btn btn-primary btn-lg px-4">
+            ← Back to Today's Tasks
+        </a>
+    </div>
+
+    {% else %}
+    <!-- Fallback -->
+    <a href="/dashboard" class="btn btn-primary btn-lg px-5">
+        Go to Dashboard →
     </a>
     {% endif %}
 
 </div>
 
 <script>
-// Save current result to localStorage history
 const currentResult = {
     date: new Date().toLocaleDateString(),
     score: {{ (result.overall_score * 100) | round(1) }},
-    topics: {{ result.topic_scores | length }}
+    topics: {{ result.topic_scores | length }},
+    type: "{{ test_type or 'unknown' }}"
 };
 
 function loadHistory() {
@@ -154,18 +183,25 @@ function renderHistory() {
     noHistory.classList.add('d-none');
     table.classList.remove('d-none');
 
-    tbody.innerHTML = history.map((r, i) => `
+    tbody.innerHTML = [...history].reverse().map((r, i) => `
         <tr>
             <td>${history.length - i}</td>
             <td>${r.date}</td>
             <td>
-                <span class="badge ${r.score >= 70 ? 'bg-success' : r.score >= 40 ? 'bg-warning text-dark' : 'bg-danger'}">
+                <span class="badge ${
+                    r.score >= 70 ? 'bg-success' :
+                    r.score >= 40 ? 'bg-warning text-dark' :
+                    'bg-danger'
+                }">
                     ${r.score}%
                 </span>
             </td>
-            <td>${r.topics} topics</td>
+            <td>
+                ${r.topics} topics
+                ${r.type ? `<small class="text-muted">(${r.type})</small>` : ''}
+            </td>
         </tr>
-    `).reverse().join('');
+    `).join('');
 }
 
 function clearHistory() {
@@ -175,14 +211,11 @@ function clearHistory() {
     }
 }
 
-// Add current result to history on page load
+// Save current result to history
 const history = loadHistory();
 history.push(currentResult);
-// Keep only last 20 results
 if (history.length > 20) history.shift();
 saveHistory(history);
-
-// Render on load
 renderHistory();
 </script>
 
