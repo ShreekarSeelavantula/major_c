@@ -2,23 +2,18 @@ from fastapi import APIRouter, Request, UploadFile, File, HTTPException, status,
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from bson import ObjectId
+from PIL import Image
+import io
 
 from app.database import fs, syllabus_collection
 from app.services.syllabus_parser import extract_text_from_pdf
-from app.services.ocr_service import extract_text_with_ocr
+from app.services.ocr_service import extract_text_with_ocr, extract_text_from_image
 from app.services.syllabus_validator import analyze_syllabus
 from app.services.syllabus_structurer import structure_syllabus
 from app.services.subject_detector import detect_subjects
 from app.services.planner_service import PlannerService
 from app.services.topic_cleaner import TopicCleaner
 from app.storage.learner_store import get_learner_state
-
-# -------------------------------------------------------
-# NOTE: syllabus_pipeline and topic_complexity_engine
-# imports were removed — those files are deleted.
-# evaluate_topic is called directly from complexity_engine
-# via the inline logic below.
-# -------------------------------------------------------
 from app.services.complexity_engine import compute_complexity
 from app.services.topic_analyzer import analyze_topic
 
@@ -36,10 +31,7 @@ MAX_SIZE = 10 * 1024 * 1024
 
 
 # --------------------------------------------------
-# evaluate_topic replacement
-# Previously imported from topic_complexity_engine.py
-# (now deleted). This replicates the same behaviour
-# using the existing complexity_engine + topic_analyzer.
+# evaluate_topic
 # --------------------------------------------------
 def evaluate_topic(topic_title: str, subtopics: list, topic_index: int) -> dict:
     """
@@ -55,9 +47,9 @@ def evaluate_topic(topic_title: str, subtopics: list, topic_index: int) -> dict:
         "difficulty": result["complexity"],
         "total_score": result["score"],
         "subtopic_score": features.get("subtopics", 1),
-        "verb_score": 0,
-        "density_score": 0,
-        "dependency_score": 0,
+        "verb_score": features.get("verb_score", 0),
+        "density_score": features.get("density_score", 0),
+        "dependency_score": features.get("dependency_score", 0),
     }
 
 
@@ -98,10 +90,16 @@ async def upload_syllabus(request: Request, file: UploadFile = File(...)):
     preview_text = ""
 
     if file.content_type == "application/pdf":
+        # Try fast text extraction first
         preview_text = extract_text_from_pdf(contents, max_pages=3)
 
+        # Fall back to OCR if text extraction returned too little
         if not preview_text or len(preview_text.strip()) < 50:
             preview_text = extract_text_with_ocr(contents)
+
+    elif file.content_type in ("image/jpeg", "image/png"):
+        # FIX: images now go through OCR directly
+        preview_text = extract_text_from_image(contents)
 
     syllabus_id = syllabus_collection.insert_one({
         "user_id": ObjectId(user_id),
@@ -171,8 +169,18 @@ def validate_syllabus(request: Request, syllabus_id: str):
     if not analysis["is_syllabus"]:
         raise HTTPException(status_code=400, detail=analysis["reason"])
 
-    file_bytes = fs.get(syllabus["file_id"]).read()
-    full_text = extract_text_from_pdf(file_bytes)
+    # For PDFs: extract full text now
+    # For images: preview_text already has full OCR text
+    if syllabus["content_type"] == "application/pdf":
+        file_bytes = fs.get(syllabus["file_id"]).read()
+        full_text = extract_text_from_pdf(file_bytes)
+
+        # OCR fallback for scanned PDFs
+        if not full_text or len(full_text.strip()) < 50:
+            full_text = extract_text_with_ocr(file_bytes)
+    else:
+        # Image — reuse the preview text as full text
+        full_text = syllabus.get("preview_text", "")
 
     subjects = detect_subjects(full_text)
 

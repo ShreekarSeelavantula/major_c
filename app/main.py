@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
@@ -20,10 +25,12 @@ app = FastAPI(title="Prep Genie | AI Study Planner")
 # --------------------------------------------------
 # 2. Session middleware
 # --------------------------------------------------
+SESSION_SECRET = os.getenv("SESSION_SECRET", "prepgenie-secret-key")
+
 app.add_middleware(
     SessionMiddleware,
-    secret_key="prepgenie-secret-key",   # move to .env in production
-    max_age=60 * 60 * 24                 # 1 day
+    secret_key=SESSION_SECRET,
+    max_age=60 * 60 * 24    # 1 day
 )
 
 # --------------------------------------------------
@@ -34,7 +41,6 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # --------------------------------------------------
 # 4. Routes
 # --------------------------------------------------
-
 # Public pages (home, login, signup, dashboard, profile)
 app.include_router(pages.router)
 
@@ -58,7 +64,6 @@ app.include_router(diagnostic.router)
 
 # Daily progress tracker (today's tasks, mark done, auto regenerate)
 app.include_router(progress.router)
-
 
 # --------------------------------------------------
 # 5. Error handlers

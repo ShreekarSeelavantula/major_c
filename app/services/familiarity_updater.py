@@ -1,4 +1,5 @@
 import math
+import time
 from datetime import datetime
 
 # -----------------------------
@@ -12,16 +13,18 @@ def _apply_retention_decay(topic_state):
     """
     Apply exponential forgetting curve
     """
-
     last = topic_state.get("last_updated")
-
     if not last:
         return topic_state
 
-    days_passed = (time.time() - last) / 86400
+    # Handle both Unix timestamp (float) and ISO string formats
+    if isinstance(last, (int, float)):
+        days_passed = (time.time() - last) / 86400
+    else:
+        # ISO string format — skip decay here, handled in learner_updater
+        return topic_state
 
     decay_factor = math.exp(-RETENTION_DECAY_RATE * days_passed)
-
     topic_state["retention"] = round(
         topic_state.get("retention", 1.0) * decay_factor,
         3
@@ -42,12 +45,10 @@ def update_familiarity(learner_state, topic_scores):
     - Confidence tracking
     - Revision scheduling
     """
-
     if "topic_states" not in learner_state:
         learner_state["topic_states"] = {}
 
     for topic, score in topic_scores.items():
-
         topic_state = learner_state["topic_states"].get(topic)
 
         # ---------------------------------
@@ -73,12 +74,10 @@ def update_familiarity(learner_state, topic_scores):
         # Smooth familiarity learning
         # ---------------------------------
         old_familiarity = topic_state.get("familiarity", 0.0)
-
         new_familiarity = (
             SMOOTHING_ALPHA * score +
             (1 - SMOOTHING_ALPHA) * old_familiarity
         )
-
         topic_state["familiarity"] = round(new_familiarity, 3)
 
         # ---------------------------------
@@ -95,7 +94,8 @@ def update_familiarity(learner_state, topic_scores):
         # ---------------------------------
         topic_state["attempts"] = topic_state.get("attempts", 0) + 1
 
-        topic_state["last_updated"] = time.time()
+        # Always store as ISO string going forward
+        topic_state["last_updated"] = datetime.utcnow().date().isoformat()
 
         # ---------------------------------
         # Revision scheduling logic

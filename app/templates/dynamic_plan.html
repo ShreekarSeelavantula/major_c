@@ -4,12 +4,11 @@
 
 {% block content %}
 
-<!-- Header -->
 <div class="d-flex justify-content-between align-items-center mb-2">
     <div>
         <h2 class="fw-bold mb-0">⚡ Dynamic Study Plan</h2>
         <p class="text-muted mb-0">
-            Track your progress — check off topics as you complete them
+            Complete each day's quiz to mark topics as done
         </p>
     </div>
 </div>
@@ -32,7 +31,7 @@
         <div class="row text-center">
             <div class="col-4">
                 <div class="fw-bold fs-4 text-success" id="completedCount">0</div>
-                <small class="text-muted">Completed</small>
+                <small class="text-muted">Topics Done</small>
             </div>
             <div class="col-4">
                 <div class="fw-bold fs-4 text-primary" id="remainingCount">0</div>
@@ -40,36 +39,34 @@
             </div>
             <div class="col-4">
                 <div class="fw-bold fs-4 text-warning" id="pctDisplay">0%</div>
-                <small class="text-muted">Done</small>
+                <small class="text-muted">Complete</small>
             </div>
         </div>
-
         <div class="progress mt-3" style="height:10px; border-radius:50px;">
-            <div id="progressBar"
-                 class="progress-bar bg-success"
+            <div id="progressBar" class="progress-bar bg-success"
                  role="progressbar"
-                 style="width:0%; border-radius:50px;
-                        transition:width 0.8s ease;">
+                 style="width:0%; border-radius:50px; transition:width 0.8s ease;">
             </div>
         </div>
+        <p class="text-muted small text-center mt-2 mb-0">
+            Score ≥ 80% on a topic's quiz to mark it complete
+        </p>
     </div>
 </div>
 
-<!-- Schedule -->
 <h5 class="fw-bold mb-3">📅 Your Schedule</h5>
 
 <div class="row">
 
 {% for day, tasks in schedule.items() %}
 <div class="col-md-6 mb-4">
-    <div class="card shadow-sm border-0 h-100">
+    <div class="card shadow-sm border-0 h-100" id="dayCard_{{ day }}">
 
         <div class="card-header bg-primary text-white d-flex
                     justify-content-between align-items-center">
             <h6 class="mb-0">Day {{ day }}</h6>
             <small class="opacity-75">
-                {{ tasks | selectattr("type", "equalto", "study") | list | length }}
-                topic(s)
+                {{ tasks | selectattr("type", "equalto", "study") | list | length }} topic(s)
             </small>
         </div>
 
@@ -79,66 +76,69 @@
                 {% for task in tasks %}
 
                     {% if task.type == "study" %}
-                    {#
-                        ⭐ FIX: data-key is now "day__DAY__topic__TOPIC"
-                        This makes every checkbox uniquely identifiable even
-                        when the same topic appears across multiple days.
-                        Previously, only data-topic was used, which caused
-                        all matching topics across all days to get checked
-                        at the same time.
-                    #}
-                    <li class="list-group-item d-flex justify-content-between
-                                align-items-center study-item py-3"
-                        data-topic="{{ task.topic }}">
-                        <div class="d-flex align-items-center gap-2">
-                            <input type="checkbox"
-                                   class="form-check-input topic-checkbox mt-0"
-                                   id="cb_{{ day }}_{{ loop.index }}"
-                                   data-key="day__{{ day }}__topic__{{ task.topic }}"
-                                   data-topic="{{ task.topic }}">
-                            <label for="cb_{{ day }}_{{ loop.index }}"
-                                   class="topic-label mb-0">
-                                <strong>{{ task.topic }}</strong>
-                                <br>
-                                <small class="text-muted">
-                                    {{ task.complexity }} level
-                                </small>
-                            </label>
+                    <li class="list-group-item py-3 study-item"
+                        id="topic_item_{{ day }}_{{ loop.index }}"
+                        data-topic="{{ task.topic }}"
+                        data-day="{{ day }}">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex align-items-center gap-2 flex-grow-1">
+                                <!-- Status icon (replaces checkbox) -->
+                                <span class="topic-status-icon"
+                                      id="status_{{ day }}_{{ loop.index }}"
+                                      style="font-size:1.2rem; flex-shrink:0;">
+                                    📘
+                                </span>
+                                <div>
+                                    <strong class="topic-label"
+                                            id="label_{{ day }}_{{ loop.index }}">
+                                        {{ task.topic }}
+                                    </strong>
+                                    <br>
+                                    <small class="text-muted">{{ task.complexity }} level</small>
+                                </div>
+                            </div>
+                            <span class="badge bg-success px-2 py-1 time-fmt ms-2"
+                                  data-hours="{{ task.hours }}">
+                                ⏱ {{ task.hours }}
+                            </span>
                         </div>
-                        <span class="badge bg-success px-2 py-1 time-fmt"
-                              data-hours="{{ task.hours }}">
-                            ⏱ {{ task.hours }}
-                        </span>
                     </li>
 
                     {% elif task.type == "revision" %}
                     <li class="list-group-item d-flex justify-content-between
-                                align-items-center bg-light py-3"
-                        data-topic="{{ task.topic }}">
-                        <div class="d-flex align-items-center gap-2">
-                            <input type="checkbox"
-                                   class="form-check-input topic-checkbox mt-0"
-                                   id="cb_rev_{{ day }}_{{ loop.index }}"
-                                   data-key="day__{{ day }}__rev__{{ task.topic }}"
-                                   data-topic="{{ task.topic }}">
-                            <label for="cb_rev_{{ day }}_{{ loop.index }}"
-                                   class="topic-label mb-0">
-                                🔁 <strong>Revision:</strong> {{ task.topic }}
-                            </label>
+                                align-items-center bg-light py-3">
+                        <div>
+                            🔁 <strong>Revision:</strong> {{ task.topic }}
                         </div>
-                        <span class="badge bg-warning text-dark px-2 py-1
-                                     time-fmt"
+                        <span class="badge bg-warning text-dark px-2 py-1 time-fmt"
                               data-hours="{{ task.hours }}">
                             ⏱ {{ task.hours }}
                         </span>
                     </li>
 
                     {% elif task.type == "micro_test" %}
-                    <li class="list-group-item bg-light px-3 py-2">
-                        <span class="text-muted small">
-                            📝 Daily Quiz — {{ task.questions }} questions
-                            <span class="badge bg-secondary ms-1">Coming Soon</span>
-                        </span>
+                    <!-- Daily Quiz per topic -->
+                    <li class="list-group-item bg-light p-0">
+                        <div class="px-3 py-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span>📝 <strong>Topic Quiz</strong></span>
+                                    <br>
+                                    <small class="text-muted">
+                                        Score 80%+ to complete each topic
+                                    </small>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary"
+                                        id="quizBtn_{{ day }}"
+                                        onclick="startDailyQuiz('{{ day }}', this)">
+                                    Start Quiz →
+                                </button>
+                            </div>
+                            <div class="quiz-area mt-2"
+                                 id="quiz_day_{{ day }}"
+                                 style="display:none;">
+                            </div>
+                        </div>
                     </li>
 
                     {% endif %}
@@ -154,24 +154,12 @@
 
 </div>
 
-<!-- Completed Topics Section -->
-<div id="completedSection" style="display:none;" class="mt-4">
-    <h5 class="fw-bold mb-3 text-success">✅ Completed Sessions</h5>
-    <div class="card shadow-sm border-0 border-start border-success border-4">
-        <div class="card-body">
-            <div id="completedList" class="d-flex flex-wrap gap-2"></div>
-        </div>
-    </div>
-</div>
-
 {% else %}
 
 <div class="text-center py-5">
     <i class="bi bi-calendar-x fs-1 text-muted mb-3 d-block"></i>
     <h6 class="fw-semibold">No plan found</h6>
-    <a href="/dashboard" class="btn btn-outline-primary mt-2">
-        Go to Dashboard
-    </a>
+    <a href="/dashboard" class="btn btn-outline-primary mt-2">Go to Dashboard</a>
 </div>
 
 {% endif %}
@@ -179,8 +167,7 @@
 <div class="mt-4 d-flex justify-content-between">
     <a href="/dashboard" class="btn btn-outline-secondary">← Dashboard</a>
     {% if syllabus_id %}
-    <a href="/progress/today/{{ syllabus_id }}"
-       class="btn btn-primary">
+    <a href="/progress/today/{{ syllabus_id }}" class="btn btn-primary">
         📅 Today's Tasks
     </a>
     {% endif %}
@@ -188,170 +175,260 @@
 
 
 <script>
-// ─────────────────────────────────────────
-// TIME FORMATTER
-// ─────────────────────────────────────────
+// ── Time formatter ──
 function formatTime(hours) {
-    const totalMins = Math.round(hours * 60);
-    const h = Math.floor(totalMins / 60);
-    const m = totalMins % 60;
-    if (h === 0) return `${m} min`;
-    if (m === 0) return `${h} hr${h > 1 ? 's' : ''}`;
-    return `${h} hr${h > 1 ? 's' : ''} ${m} min`;
+    const m = Math.round(hours * 60);
+    const h = Math.floor(m / 60), min = m % 60;
+    if (h === 0) return `${min} min`;
+    if (min === 0) return `${h} hr${h > 1 ? 's' : ''}`;
+    return `${h} hr${h > 1 ? 's' : ''} ${min} min`;
 }
-
 document.querySelectorAll('.time-fmt').forEach(el => {
     const raw = parseFloat(el.dataset.hours);
     if (!isNaN(raw)) el.textContent = '⏱ ' + formatTime(raw);
 });
 
-
-// ─────────────────────────────────────────
-// ⭐ BUG FIX EXPLANATION
-//
-// OLD BUG:
-//   localStorage stored completed items by topic name alone,
-//   e.g. "Plain Text and Cipher Text".
-//   When the same topic appears on Day 1, Day 2, Day 3,
-//   checking Day 1's checkbox caused ALL three to get
-//   visually checked — because renderAll() matched by
-//   topic name string across every checkbox on the page.
-//
-// ROOT CAUSE:
-//   completed.includes(topic)  ← matched by topic name only
-//   This is true for EVERY checkbox with the same topic name.
-//
-// FIX:
-//   Each checkbox now has a unique data-key attribute:
-//   "day__1__topic__Plain Text and Cipher Text"
-//   "day__2__topic__Plain Text and Cipher Text"
-//   "day__3__topic__Plain Text and Cipher Text"
-//
-//   Storage and lookup both use data-key, never data-topic.
-//   This means checking Day 1 ONLY affects Day 1's checkbox.
-//   Day 2 and Day 3 remain independent.
-//
-// The completed topics panel at the bottom still shows
-// topic names (not keys) for readability.
-// ─────────────────────────────────────────
-
-// ⭐ Storage key is per syllabus to avoid cross-plan bleed
-const STORAGE_KEY = 'completedKeys_{{ syllabus_id }}';
+// ── Topic completion tracking (via quiz score) ──
+const STORAGE_KEY = 'completedTopics_dyn_{{ syllabus_id }}';
+const PASS_THRESHOLD = 0.8;  // 80% to mark complete
 
 function getCompleted() {
-    try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    } catch { return []; }
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch { return {}; }
 }
 
-function saveCompleted(arr) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-
-    // ── Keep the old 'completedTopics' key in sync ──
-    // today.html and plans.html use localStorage.getItem('completedTopics')
-    // to highlight done topics. We populate it with unique topic names
-    // (deduped) extracted from completed keys so those pages still work.
-    const topicNames = arr.map(key => {
-        // key format: "day__N__topic__TOPIC NAME" or "day__N__rev__TOPIC NAME"
-        const parts = key.split('__');
-        // parts[0]="day", parts[1]=dayNum, parts[2]="topic"/"rev", parts[3+]=topic name
-        return parts.slice(3).join('__');
-    });
-    const unique = [...new Set(topicNames)];
-    localStorage.setItem('completedTopics', JSON.stringify(unique));
+function saveCompleted(obj) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
 }
 
-// ⭐ Each checkbox is identified ONLY by its own data-key
-document.querySelectorAll('.topic-checkbox').forEach(cb => {
-    cb.addEventListener('change', function () {
-        const key = this.dataset.key;   // unique per day+topic
-        let completed = getCompleted();
-
-        if (this.checked) {
-            if (!completed.includes(key)) {
-                completed.push(key);
-            }
-        } else {
-            completed = completed.filter(k => k !== key);
-        }
-
-        saveCompleted(completed);
-        renderAll();
-    });
-});
-
-// ⭐ renderAll — matches each checkbox by its own data-key ONLY
-// This is the critical fix: we never touch a checkbox based on
-// its topic name. We only compare checkbox.dataset.key against
-// the stored completed keys array.
-function renderAll() {
+function markTopicComplete(topic, score) {
     const completed = getCompleted();
-    let totalTopics = 0;
-    let completedCount = 0;
+    completed[topic] = { score: score, date: new Date().toLocaleDateString() };
+    saveCompleted(completed);
+    renderCompletionUI();
+}
 
-    document.querySelectorAll('.topic-checkbox').forEach(cb => {
-        const key   = cb.dataset.key;    // ⭐ unique per day+topic
-        const label = cb.closest('li')?.querySelector('.topic-label');
+function renderCompletionUI() {
+    const completed = getCompleted();
+    let total = 0, done = 0;
 
-        totalTopics++;
+    document.querySelectorAll('.study-item').forEach(li => {
+        const topic = li.dataset.topic;
+        const day   = li.dataset.day;
+        total++;
 
-        if (completed.includes(key)) {
-            completedCount++;
-            cb.checked = true;
-            if (label) {
-                label.style.textDecoration = 'line-through';
-                label.style.opacity = '0.4';
-            }
+        const statusEls = li.querySelectorAll('.topic-status-icon');
+        const labelEls  = li.querySelectorAll('.topic-label');
+
+        if (completed[topic]) {
+            done++;
+            statusEls.forEach(el => el.textContent = '✅');
+            labelEls.forEach(el => {
+                el.style.textDecoration = 'line-through';
+                el.style.opacity = '0.5';
+            });
         } else {
-            cb.checked = false;
-            if (label) {
-                label.style.textDecoration = 'none';
-                label.style.opacity = '1';
-            }
+            statusEls.forEach(el => el.textContent = '📘');
+            labelEls.forEach(el => {
+                el.style.textDecoration = 'none';
+                el.style.opacity = '1';
+            });
         }
     });
 
-    // Update summary counters
-    const remaining = totalTopics - completedCount;
-    const pct = totalTopics > 0
-        ? Math.round((completedCount / totalTopics) * 100)
-        : 0;
-
-    document.getElementById('completedCount').textContent = completedCount;
-    document.getElementById('remainingCount').textContent = remaining;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    document.getElementById('completedCount').textContent = done;
+    document.getElementById('remainingCount').textContent = total - done;
     document.getElementById('pctDisplay').textContent     = pct + '%';
     document.getElementById('progressBar').style.width   = pct + '%';
+}
 
-    // Completed sessions list at bottom — show friendly topic names
-    const section = document.getElementById('completedSection');
-    const list    = document.getElementById('completedList');
+renderCompletionUI();
 
-    if (completed.length === 0) {
-        section.style.display = 'none';
-    } else {
-        section.style.display = 'block';
+// ── Daily Quiz (full questions, score-gated completion) ──
+let quizState = {};
 
-        // Extract readable label: "Day N — Topic Name"
-        const labels = completed.map(key => {
-            const parts = key.split('__');
-            const dayNum   = parts[1];
-            const topicName = parts.slice(3).join('__');
-            const prefix   = parts[2] === 'rev' ? '🔁 ' : '📘 ';
-            return `${prefix}Day ${dayNum}: ${topicName}`;
-        });
+async function startDailyQuiz(day, btn) {
+    const area = document.getElementById(`quiz_day_${day}`);
 
-        list.innerHTML = labels.map(label =>
-            `<span class="badge bg-success bg-opacity-15 text-success
-                          border border-success px-3 py-2"
-                   style="text-decoration:none; font-size:0.75rem;">
-                ✓ ${label}
-             </span>`
-        ).join('');
+    if (quizState[day] && quizState[day].loaded) {
+        area.style.display = area.style.display === 'none' ? 'block' : 'none';
+        btn.textContent = area.style.display === 'none' ? 'Start Quiz →' : 'Hide Quiz';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Loading...';
+
+    try {
+        const res  = await fetch(`/plan/quiz/questions/${day}`);
+        const data = await res.json();
+
+        if (data.error) {
+            area.innerHTML = '<p class="text-muted small mt-2">No questions available for this day yet.</p>';
+            area.style.display = 'block';
+            btn.textContent = 'Start Quiz →';
+            btn.disabled = false;
+            return;
+        }
+
+        quizState[day] = {
+            questions: data.questions,
+            topic_map: data.topic_map,
+            answers: {},
+            loaded: true
+        };
+
+        renderQuiz(day, area);
+        area.style.display = 'block';
+        btn.textContent = 'Hide Quiz';
+        btn.disabled = false;
+
+    } catch(e) {
+        area.innerHTML = '<p class="text-danger small mt-2">Failed to load quiz.</p>';
+        area.style.display = 'block';
+        btn.textContent = 'Start Quiz →';
+        btn.disabled = false;
     }
 }
 
-// Run on page load to restore saved state
-renderAll();
+function renderQuiz(day, area) {
+    const { questions, topic_map } = quizState[day];
+    let html = '<div class="border-top pt-3">';
+
+    // Show ALL questions for ALL topics
+    for (const [tid, qs] of Object.entries(questions)) {
+        const topicName = topic_map[tid] || tid;
+        html += `
+            <div class="mb-3 p-2 rounded"
+                 style="background:rgba(13,110,253,0.05);"
+                 id="topic_quiz_${day}_${tid}">
+                <p class="fw-semibold small mb-2 text-primary">
+                    📘 ${topicName}
+                </p>`;
+
+        qs.forEach((q, i) => {
+            html += `<p class="small mb-2 fw-semibold">${i+1}. ${q.question}</p>`;
+            q.options.forEach(opt => {
+                const key = `${tid}_${i}`;
+                const safeOpt = opt.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                html += `
+                    <div class="form-check mb-1">
+                        <input class="form-check-input" type="radio"
+                               name="quiz_${day}_${key}"
+                               value="${opt}"
+                               onchange="recordAnswer('${day}','${key}','${opt.replace(/'/g, "\\'")}')">
+                        <label class="form-check-label small">${opt}</label>
+                    </div>`;
+            });
+            html += '<hr class="my-2">';
+        });
+
+        html += `</div>`;
+    }
+
+    html += `
+        <button class="btn btn-success btn-sm w-100 mt-1"
+                onclick="submitDailyQuiz('${day}')">
+            Submit Quiz ✅
+        </button>
+        <div id="quiz_result_${day}" class="mt-2"></div>
+    </div>`;
+
+    area.innerHTML = html;
+}
+
+function recordAnswer(day, key, value) {
+    if (quizState[day]) quizState[day].answers[key] = value;
+}
+
+async function submitDailyQuiz(day) {
+    const state    = quizState[day];
+    const resultEl = document.getElementById(`quiz_result_${day}`);
+    if (!state) return;
+
+    resultEl.innerHTML = '<p class="text-muted small">Submitting...</p>';
+
+    try {
+        const res  = await fetch('/plan/quiz/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                answers: state.answers,
+                questions: state.questions,
+                topic_map: state.topic_map
+            })
+        });
+        const data = await res.json();
+
+        const overall = data.overall_score;
+        const cls = overall >= 70 ? 'text-success'
+                  : overall >= 40 ? 'text-warning' : 'text-danger';
+
+        let rows = '';
+        let allPassed = true;
+
+        for (const [topic, score] of Object.entries(data.topic_scores || {})) {
+            const passed = score >= 80;
+            if (!passed) allPassed = false;
+
+            const badge = passed ? 'bg-success' : score >= 40 ? 'bg-warning text-dark' : 'bg-danger';
+            const icon  = passed ? '✅' : '❌';
+
+            rows += `
+                <div class="d-flex justify-content-between align-items-center mb-2 p-2
+                            rounded" style="background: ${passed ? 'rgba(25,135,84,0.08)' : 'rgba(220,53,69,0.05)'}">
+                    <small class="fw-semibold">${topic}</small>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge ${badge}">${score}%</span>
+                        <span>${icon}</span>
+                        ${passed
+                            ? '<small class="text-success">Completed!</small>'
+                            : '<small class="text-danger">Score 80%+ to complete</small>'
+                        }
+                    </div>
+                </div>`;
+
+            // Mark topic complete in localStorage if score >= 80%
+            if (passed) {
+                markTopicComplete(topic, score);
+            }
+        }
+
+        // Retry button if not all passed
+        const retryBtn = !allPassed
+            ? `<button class="btn btn-outline-warning btn-sm w-100 mt-2"
+                       onclick="retryQuiz('${day}')">
+                   🔁 Retry Failed Topics
+               </button>`
+            : '';
+
+        resultEl.innerHTML = `
+            <div class="card border-0 bg-light p-3 mt-2">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="fw-semibold">Overall Score</span>
+                    <span class="fw-bold ${cls}">${overall}% (${data.total_correct}/${data.total_questions})</span>
+                </div>
+                ${rows}
+                ${retryBtn}
+                <small class="text-muted mt-2 d-block">
+                    ✅ Familiarity scores updated automatically.
+                </small>
+            </div>`;
+
+    } catch(e) {
+        resultEl.innerHTML = '<p class="text-danger small">Submission failed. Try again.</p>';
+    }
+}
+
+function retryQuiz(day) {
+    // Reset answers and re-render quiz
+    if (quizState[day]) {
+        quizState[day].answers = {};
+        const area = document.getElementById(`quiz_day_${day}`);
+        renderQuiz(day, area);
+    }
+}
 </script>
 
 {% endblock %}

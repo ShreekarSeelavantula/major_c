@@ -73,7 +73,6 @@
         </div>
     </div>
 
-    <!-- NEW: Study Streak + Retention Health -->
     <div class="col-md-3">
         <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
             <div class="card-body">
@@ -118,7 +117,7 @@
 </div>
 {% endif %}
 
-<!-- RETENTION WARNING BANNER — only shown when topics are fading -->
+<!-- RETENTION WARNING BANNER -->
 {% if at_risk_count > 0 %}
 <div class="alert border-0 shadow-sm rounded-4 mb-4"
      style="background: #fff8f0; border-left: 4px solid #fd7e14 !important;"
@@ -135,18 +134,23 @@
 </div>
 {% endif %}
 
-<!-- STUDY PLANS CARD -->
-<div class="card border-0 shadow-sm rounded-4">
+<!-- ACTIVE PLAN CARD -->
+{% if syllabus_id %}
+<div class="card border-0 shadow-sm rounded-4 mb-4">
     <div class="card-body p-4">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="fw-bold mb-0">Your Study Plans</h5>
-            <a href="/upload" class="btn btn-primary">
-                ➕ Create Plan
-            </a>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">📚 Active Study Plan</h5>
+            <div class="d-flex gap-2">
+                <a href="/progress/today/{{ syllabus_id }}"
+                   class="btn btn-sm btn-primary">
+                    📅 Today's Tasks
+                </a>
+                <a href="/plan/latest"
+                   class="btn btn-sm btn-outline-primary">
+                    📋 Full Plan
+                </a>
+            </div>
         </div>
-
-        {% if syllabus_id %}
         <div class="list-group">
             <div class="list-group-item list-group-item-action
                         d-flex justify-content-between align-items-center
@@ -167,37 +171,168 @@
                         {% endif %}
                     </small>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
-                <div class="d-flex gap-2">
-                    <a href="/progress/today/{{ syllabus_id }}"
-                       class="btn btn-sm btn-primary">
-                        📅 Today's Tasks
-                    </a>
-                    <a href="/plan/latest"
-                       class="btn btn-sm btn-outline-primary">
-                        📋 Full Plan
-                    </a>
+<!-- PREVIOUS PLANS SECTION -->
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">🗂️ Previous Subject Plans</h5>
+            <button class="btn btn-sm btn-outline-secondary"
+                    onclick="togglePreviousPlans()"
+                    id="togglePlansBtn">
+                ▼ Show Plans
+            </button>
+        </div>
+
+        <p class="text-muted small mb-3">
+            Continue a previous subject or review your past study history.
+        </p>
+
+        <!-- Collapsed panel with scrollable list -->
+        <div id="previousPlansPanel" style="display:none;">
+            <div style="max-height: 340px; overflow-y: auto;"
+                 class="border rounded-3 p-3 bg-light" id="previousPlansList">
+                <div class="text-center text-muted py-3" id="plansLoadingMsg">
+                    <div class="spinner-border spinner-border-sm me-2"></div>
+                    Loading your plans...
                 </div>
             </div>
         </div>
 
-        {% else %}
-
-        <div class="text-center py-5">
+        <!-- No plans state -->
+        {% if not syllabus_id %}
+        <div class="text-center py-4" id="noPlansState">
             <i class="bi bi-folder-x fs-1 text-muted mb-3 d-block"></i>
             <h6 class="fw-semibold">No Study Plans Yet</h6>
             <p class="text-muted">
                 Upload a syllabus and let AI generate
                 your personalized roadmap.
             </p>
-            <a href="/upload" class="btn btn-outline-primary mt-3">
+            <a href="/upload" class="btn btn-outline-primary mt-2">
                 Generate My First Plan
             </a>
         </div>
-
         {% endif %}
 
     </div>
 </div>
+
+<!-- Upload new plan button — bottom right, not inside the plans card -->
+<div class="d-flex justify-content-end mt-2 mb-4">
+    <a href="/upload" class="btn btn-primary px-4">
+        ➕ Upload New Syllabus
+    </a>
+</div>
+
+
+<script>
+let plansLoaded = false;
+
+function togglePreviousPlans() {
+    const panel = document.getElementById('previousPlansPanel');
+    const btn   = document.getElementById('togglePlansBtn');
+
+    if (panel.style.display === 'none') {
+        panel.style.display = 'block';
+        btn.textContent = '▲ Hide Plans';
+        if (!plansLoaded) {
+            loadPreviousPlans();
+        }
+    } else {
+        panel.style.display = 'none';
+        btn.textContent = '▼ Show Plans';
+    }
+}
+
+function loadPreviousPlans() {
+    plansLoaded = true;
+    const list = document.getElementById('previousPlansList');
+
+    // Load stored plan history from localStorage
+    // In real usage this would be an API call — for now we
+    // read what the backend injected as data attributes or
+    // show the single active plan we already know about.
+    const syllabus_id   = '{{ syllabus_id or "" }}';
+    const syllabus_name = '{{ syllabus_filename or "Untitled Plan" }}';
+    const familiarity   = '{{ (avg_familiarity * 100) | round(1) if avg_familiarity else "—" }}';
+    const streak        = '{{ streak_days }}';
+
+    // Get any previous plans stored in localStorage by this session
+    let history = [];
+    try {
+        history = JSON.parse(localStorage.getItem('planHistory') || '[]');
+    } catch { history = []; }
+
+    // Merge the active plan into history if not already there
+    if (syllabus_id) {
+        const existing = history.find(p => p.id === syllabus_id);
+        if (!existing) {
+            history.unshift({
+                id:          syllabus_id,
+                name:        syllabus_name,
+                familiarity: familiarity,
+                streak:      streak,
+                date:        new Date().toLocaleDateString()
+            });
+            if (history.length > 20) history.pop();
+            localStorage.setItem('planHistory', JSON.stringify(history));
+        } else {
+            // Update familiarity and streak for existing entry
+            existing.familiarity = familiarity;
+            existing.streak      = streak;
+            localStorage.setItem('planHistory', JSON.stringify(history));
+        }
+    }
+
+    if (history.length === 0) {
+        list.innerHTML = `
+            <div class="text-center text-muted py-3">
+                <i class="bi bi-archive fs-2 mb-2 d-block"></i>
+                No previous plans found.
+                <br>
+                <a href="/upload" class="btn btn-outline-primary btn-sm mt-2">
+                    Upload a Syllabus
+                </a>
+            </div>`;
+        return;
+    }
+
+    list.innerHTML = history.map((plan, i) => `
+        <div class="d-flex justify-content-between align-items-center
+                    p-3 mb-2 bg-white rounded-3 shadow-sm
+                    border ${plan.id === '${syllabus_id}' ? 'border-primary' : ''}">
+            <div style="min-width:0; flex:1;">
+                <div class="fw-semibold text-truncate">
+                    ${i === 0 ? '<span class="badge bg-success me-1" style="font-size:0.65rem;">ACTIVE</span>' : ''}
+                    ${plan.name}
+                </div>
+                <small class="text-muted">
+                    Familiarity: ${plan.familiarity}%
+                    &nbsp;·&nbsp;
+                    🔥 ${plan.streak} day streak
+                    &nbsp;·&nbsp;
+                    ${plan.date}
+                </small>
+            </div>
+            <div class="d-flex gap-2 ms-3 flex-shrink-0">
+                <a href="/progress/today/${plan.id}"
+                   class="btn btn-sm btn-primary">
+                    Continue →
+                </a>
+                <a href="/plan/latest"
+                   class="btn btn-sm btn-outline-secondary">
+                    View
+                </a>
+            </div>
+        </div>
+    `).join('');
+}
+</script>
 
 {% endblock %}

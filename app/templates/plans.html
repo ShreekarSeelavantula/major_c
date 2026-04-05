@@ -4,13 +4,10 @@
 
 {% block content %}
 
-<!-- Header -->
 <div class="d-flex justify-content-between align-items-center mb-2">
     <div>
         <h2 class="fw-bold mb-0">📋 Full Study Plan</h2>
-        <p class="text-muted mb-0">
-            Your complete day-by-day schedule
-        </p>
+        <p class="text-muted mb-0">Your complete day-by-day schedule</p>
     </div>
     <div class="d-flex gap-2 align-items-center">
         {% if syllabus_id %}
@@ -41,7 +38,6 @@
 
 {% if schedule %}
 
-<!-- Remaining Topics Panel -->
 <div id="leftoverPanel" style="display:none;" class="mb-4">
     <div class="card border-warning shadow-sm">
         <div class="card-header bg-warning text-dark fw-bold">
@@ -108,22 +104,12 @@
                     </li>
 
                     {% elif task.type == "micro_test" %}
-                    <!-- ⭐ Renamed to Daily Quiz, different purpose -->
-                    <li class="list-group-item bg-light p-0">
-                        <div class="px-3 py-2 d-flex justify-content-between
-                                    align-items-center">
-                            <div>
-                                <span>📝 <strong>Daily Quiz</strong></span>
-                                <br>
-                                <small class="text-muted">
-                                    {{ task.questions }} questions on today's topics
-                                </small>
-                            </div>
-                            <!-- ⭐ Future feature placeholder -->
-                            <span class="badge bg-secondary text-white">
-                                Coming Soon
-                            </span>
-                        </div>
+                    <!-- No quiz shown in full plan view — quiz is in Dynamic Plan only -->
+                    <li class="list-group-item bg-light">
+                        <small class="text-muted">
+                            📝 {{ task.questions }}-question quiz available in
+                            <a href="/plan/dynamic">Dynamic Plan →</a>
+                        </small>
                     </li>
 
                     {% endif %}
@@ -145,46 +131,38 @@
     <i class="bi bi-calendar-x fs-1 text-muted mb-3 d-block"></i>
     <h6 class="fw-semibold">No plan found</h6>
     <p class="text-muted">Please generate a plan first.</p>
-    <a href="/dashboard" class="btn btn-outline-primary mt-2">
-        Go to Dashboard
-    </a>
+    <a href="/dashboard" class="btn btn-outline-primary mt-2">Go to Dashboard</a>
 </div>
 
 {% endif %}
 
 <div class="mt-4 d-flex justify-content-between">
-    <a href="/dashboard" class="btn btn-outline-secondary">
-        ← Dashboard
-    </a>
-    <a href="/upload" class="btn btn-outline-primary">
-        Upload New Syllabus
-    </a>
+    <a href="/dashboard" class="btn btn-outline-secondary">← Dashboard</a>
+    <a href="/upload" class="btn btn-outline-primary">Upload New Syllabus</a>
 </div>
 
 <script>
-// Time formatter
+// ── Time formatter ──
 function formatTime(hours) {
-    const totalMins = Math.round(hours * 60);
-    const h = Math.floor(totalMins / 60);
-    const m = totalMins % 60;
-    if (h === 0) return `${m} min`;
-    if (m === 0) return `${h} hr${h > 1 ? 's' : ''}`;
-    return `${h} hr${h > 1 ? 's' : ''} ${m} min`;
+    const m = Math.round(hours * 60);
+    const h = Math.floor(m / 60), min = m % 60;
+    if (h === 0) return `${min} min`;
+    if (min === 0) return `${h} hr${h > 1 ? 's' : ''}`;
+    return `${h} hr${h > 1 ? 's' : ''} ${min} min`;
 }
-
 document.querySelectorAll('.time-fmt-badge').forEach(el => {
     const raw = parseFloat(el.dataset.hours);
     if (!isNaN(raw)) el.textContent = '⏱ ' + formatTime(raw);
 });
 
+// ── Remaining topics ──
 function getCompletedTopics() {
-    try {
-        return JSON.parse(localStorage.getItem('completedTopics') || '[]');
-    } catch { return []; }
+    try { return JSON.parse(localStorage.getItem('completedTopics_dyn_{{ syllabus_id }}') || '{}'); }
+    catch { return {}; }
 }
 
 function toggleLeftover() {
-    const panel = document.getElementById('leftoverPanel');
+    const panel  = document.getElementById('leftoverPanel');
     const listEl = document.getElementById('remainingTopicsList');
 
     if (panel.style.display === 'none') {
@@ -193,20 +171,15 @@ function toggleLeftover() {
 
         document.querySelectorAll('.study-task').forEach(li => {
             const topic = li.getAttribute('data-topic');
-            if (topic && !completed.includes(topic)) {
-                remaining.push(topic);
-            }
+            if (topic && !completed[topic]) remaining.push(topic);
         });
 
-        if (remaining.length === 0) {
-            listEl.innerHTML =
-                '<p class="text-success mb-0">🎉 All topics completed!</p>';
-        } else {
-            listEl.innerHTML = remaining.map(t =>
-                `<span class="badge bg-warning text-dark
-                              me-2 mb-2 px-3 py-2">${t}</span>`
-            ).join('');
-        }
+        listEl.innerHTML = remaining.length === 0
+            ? '<p class="text-success mb-0">🎉 All topics completed!</p>'
+            : remaining.map(t =>
+                `<span class="badge bg-warning text-dark me-2 mb-2 px-3 py-2">${t}</span>`
+              ).join('');
+
         panel.style.display = 'block';
     } else {
         panel.style.display = 'none';
